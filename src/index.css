@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rose-light: #FCE9E9;
+  --rose: #E6A4A4;
+  --rose-dark: #B76E79;
+  --gold: #F5C26B;
+  --blush: #FAF6F2;
+  --text-dark: #3D2B2B;
+}
+
+body {
+  background: var(--blush);
+  color: var(--text-dark);
+  font-family: 'Montserrat', sans-serif;
+}
+h1, .logo {
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--rose-dark);
+  letter-spacing: 1px;
+}
+button, .cta {
+  background: linear-gradient(90deg, var(--rose), var(--gold));
+  color: white;
+  border-radius: 9999px;
+  padding: 12px 32px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(183, 110, 121, 0.4);
+  transition: all 0.3s ease;
+}
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(183, 110, 121, 0.5);
+}

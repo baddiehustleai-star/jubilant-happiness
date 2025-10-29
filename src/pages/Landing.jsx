@@ -1,8 +1,10 @@
+import logo from "../assets/photo2profit-logo.svg";
+
 export default function Landing() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-blush text-dark text-center px-6">
       <img
-        src="/src/assets/photo2profit-logo.svg"
+        src={logo}
         alt="Photo2Profit Logo"
         className="w-48 mb-6 drop-shadow-xl"
       />

@@ -1,30 +1,134 @@
-# Photo to Profit Boss
+# Photo2Profit 💎
 
-💎✨ Photo to Profit Boss – AI-Powered Reseller & Refiller App 🚀💻
+Turn your photos into profit — AI-powered listings, background removal, and instant cross-posting.
 
-**Automate. Scale. Optimize.**
+A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring rose-gold branding and elegant typography.
 
-Photo to Profit Boss is an AI-powered platform designed to help digital entrepreneurs and resellers automate product refilling, listings, and operations. This repository contains the codebase, architecture, and roadmap for building a fully automated reselling solution.
+## ✨ Features
 
-## Overview
+- 🎨 **Rose-Gold Theme** - Custom color palette with blush, rose, and gold tones
+- 💎 **Luxe Design** - Cinzel Decorative + Montserrat typography
+- ⚡ **Vite** - Lightning-fast dev server and optimized builds
+- ⚛️ **React 18** - Modern React with hooks
+- 🎯 **TailwindCSS** - Utility-first styling with custom configuration
+- 📱 **Responsive** - Mobile-first design approach
 
-Transform your reselling business with AI-powered automation. Photo to Profit Boss streamlines product management, inventory refilling, and listing optimization to help you scale faster and maximize profits.
+## 🚀 Quick Start
 
-## Features
+```bash
+# Install dependencies
+npm install
 
-- 🤖 **AI-Powered Automation** - Intelligent product refilling and listing management
-- 📦 **Inventory Management** - Track and automate product restocking
-- 💰 **Profit Optimization** - Data-driven insights to maximize margins
-- 🚀 **Scalable Architecture** - Built to grow with your business
+# Start development server
+npm run dev
 
-## Getting Started
+# Build for production
+npm run build
 
-This repository is currently under development. Check back soon for setup instructions and documentation.
+# Preview production build
+npm run preview
+```
 
-## Note
+Your app will be running at `http://localhost:5173`
 
-Repository URLs and links reference the current repository name (`jubilant-happiness`). These links may change after the repository is officially renamed to `photo-to-profit-boss`.
+## 📁 Project Structure
 
-## License
+```
+├── index.html                      # HTML entry point
+├── package.json                    # Dependencies and scripts
+├── vite.config.js                  # Vite configuration
+├── tailwind.config.js              # Custom Tailwind theme
+├── postcss.config.js               # PostCSS configuration
+└── src/
+    ├── main.jsx                    # React entry point
+    ├── index.css                   # Global styles + Tailwind
+    ├── pages/
+    │   └── Landing.jsx             # Landing page component
+    └── assets/
+        └── photo2profit-logo.svg   # Logo placeholder
+```
+
+## 🎨 Custom Theme
+
+The starter includes a pre-configured rose-gold color palette:
+
+- **Blush**: `#FAF6F2` - Background
+- **Rose**: `#E6A4A4` - Primary accent
+- **Rose Dark**: `#B76E79` - Headers and emphasis
+- **Gold**: `#F5C26B` - Secondary accent
+- **Dark**: `#3D2B2B` - Text
+
+### Using Custom Colors
+
+```jsx
+// In Tailwind classes
+<div className="bg-blush text-rose-dark">
+  <button className="bg-rose hover:bg-gold">Click me</button>
+</div>
+```
+
+## 🔤 Typography
+
+- **Headers**: Cinzel Decorative (serif) - `font-diamond`
+- **Body**: Montserrat (sans-serif) - `font-sans`
+
+Google Fonts are loaded via CDN in `src/index.css`.
+
+## 📦 Tech Stack
+
+- **React**: ^18.3.1
+- **Vite**: ^5.4.1
+- **TailwindCSS**: ^3.4.14
+- **PostCSS**: ^8.4.38
+- **Autoprefixer**: ^10.4.19
+
+## 🛠️ Customization
+
+### Replace the Logo
+
+Replace `src/assets/photo2profit-logo.svg` with your own logo:
+
+```jsx
+// The logo is imported in Landing.jsx
+import logo from "../assets/photo2profit-logo.svg";
+```
+
+### Update Colors
+
+Edit `tailwind.config.js` to customize the color palette:
+
+```js
+theme: {
+  extend: {
+    colors: {
+      // Add your custom colors here
+    }
+  }
+}
+```
+
+### Modify Typography
+
+Update font imports in `src/index.css` and font families in `tailwind.config.js`.
+
+## 📝 Scripts
+
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build for production (outputs to `/dist`)
+- `npm run preview` - Preview production build locally
+
+## 🚢 Deployment
+
+The built files are static and can be deployed to any hosting service:
+
+- **Vercel**: `vercel deploy`
+- **Netlify**: Drag & drop the `/dist` folder
+- **GitHub Pages**: Use the `/dist` folder as your site source
+
+## 📄 License
 
 See [LICENSE](LICENSE) for details.
+
+---
+
+**Built with 💎 for Photo2Profit**

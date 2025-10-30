@@ -13,14 +13,19 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Daily Ads and Social Posts
-        if: github.event.schedule == '0 6 * * *'
+        if: github.event.schedule == '0 6 * * *' || github.event_name == 'workflow_dispatch'
         run: node scripts/generate-daily-ads.js
 
       - name: Weekly Analytics Report
-        if: github.event.schedule == '0 12 * * 0'
+        if: github.event.schedule == '0 12 * * 0' || github.event_name == 'workflow_dispatch'
         run: node scripts/generate-weekly-report.js
 
       - name: Monthly Market Refresh
-        if: github.event.schedule == '0 3 1 * *'
+        if: github.event.schedule == '0 3 1 * *' || github.event_name == 'workflow_dispatch'
         run: node scripts/monthly-pricing-refresh.js

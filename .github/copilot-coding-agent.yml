@@ -1,0 +1,15 @@
+name: photo2profit-copilot-agent
+default_branch: main
+languages:
+  - javascript
+  - jsx
+  - json
+package_manager: npm
+dev_commands:
+  - npm install
+  - npm run dev
+build_commands:
+  - npm run build
+notes: |
+  This YAML provides minimal metadata for humans and tooling about the repo and common commands.
+  Update if scripts or default branch change.

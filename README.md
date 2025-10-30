@@ -1,165 +1,185 @@
-# Photo2Profit 💎
+# 💎 Photo2Profit — AI-Powered Resale Automation Platform
 
-Turn your photos into profit — AI-powered listings, background removal, and instant cross-posting.
+> Note for automated contributors: see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and guidance for Copilot coding agents.
 
-A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring rose-gold branding and elegant typography.
-
-## ✨ Features
-
-- 🎨 **Rose-Gold Theme** - Custom color palette with blush, rose, and gold tones
-- 💎 **Luxe Design** - Cinzel Decorative + Montserrat typography
-- ⚡ **Vite** - Lightning-fast dev server and optimized builds
-- ⚛️ **React 18** - Modern React with hooks
-- 🎯 **TailwindCSS** - Utility-first styling with custom configuration
-- 📱 **Responsive** - Mobile-first design approach
-
-## 🚀 Quick Start
-
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-Your app will be running at `http://localhost:5173`
-
-## 📁 Project Structure
-
-```
-├── index.html                      # HTML entry point
-├── package.json                    # Dependencies and scripts
-├── vite.config.js                  # Vite configuration
-├── tailwind.config.js              # Custom Tailwind theme
-├── postcss.config.js               # PostCSS configuration
-└── src/
-    ├── main.jsx                    # React entry point
-    ├── index.css                   # Global styles + Tailwind
-    ├── pages/
-    │   └── Landing.jsx             # Landing page component
-    └── assets/
-        └── photo2profit-logo.svg   # Logo placeholder
-```
-
-## 🎨 Custom Theme
-
-The starter includes a pre-configured rose-gold color palette:
-
-- **Blush**: `#FAF6F2` - Background
-- **Rose**: `#E6A4A4` - Primary accent
-- **Rose Dark**: `#B76E79` - Headers and emphasis
-- **Gold**: `#F5C26B` - Secondary accent
-- **Dark**: `#3D2B2B` - Text
-
-### Using Custom Colors
-
-```jsx
-// In Tailwind classes
-<div className="bg-blush text-rose-dark">
-  <button className="bg-rose hover:bg-gold">Click me</button>
-</div>
-```
-
-## 🔤 Typography
-
-- **Headers**: Cinzel Decorative (serif) - `font-diamond`
-- **Body**: Montserrat (sans-serif) - `font-sans`
-
-Google Fonts are loaded via CDN in `src/index.css`.
-
-## 📦 Tech Stack
-
-- **React**: ^18.3.1
-- **Vite**: ^5.4.1
-- **TailwindCSS**: ^3.4.14
-- **PostCSS**: ^8.4.38
-- **Autoprefixer**: ^10.4.19
-
-## 🛠️ Customization
-
-### Replace the Logo
-
-Replace `src/assets/photo2profit-logo.svg` with your own logo:
-
-```jsx
-// The logo is imported in Landing.jsx
-import logo from "../assets/photo2profit-logo.svg";
-```
-
-### Update Colors
-
-Edit `tailwind.config.js` to customize the color palette:
-
-```js
-theme: {
-  extend: {
-    colors: {
-      // Add your custom colors here
-    }
-  }
-}
-```
-
-### Modify Typography
-
-Update font imports in `src/index.css` and font families in `tailwind.config.js`.
-
-## 📝 Scripts
-
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build for production (outputs to `/dist`)
-- `npm run preview` - Preview production build locally
-
-## 🔥 Firebase Integration
-
-Photo2Profit includes a complete Firebase integration for organized storage and live data management.
-
-### Quick Links
-- **[Firebase Setup Guide](./FIREBASE_SETUP.md)** - Configure Firebase and Firestore
-- **[Storage Organization Guide](./STORAGE_ORGANIZATION.md)** - Complete storage system documentation
-- **[Quick Reference](./STORAGE_QUICK_REFERENCE.md)** - Handy commands and code snippets
-
-### Features
-- 🗂️ **Organized Storage** - Automatic category-based folder structure
-- 📁 **Listing Isolation** - Each listing in its own folder with unique IDs
-- 🖼️ **Multi-Image Support** - Upload multiple images per listing
-- 🔍 **Searchable** - Rich metadata for filtering and queries
-- 📊 **Scalable** - Production-ready for unlimited listings
-- 🧹 **Maintainable** - Easy cleanup and management
-
-### Upload a Listing
-```bash
-# Single image
-node scripts/upload-listing.js ./photo.jpg
-
-# Multiple images
-node scripts/upload-listing.js multi ./front.jpg ./back.jpg
-
-# Bulk upload
-node scripts/upload-listing.js bulk ./item1.jpg ./item2.jpg ./item3.jpg
-```
-
-See [STORAGE_QUICK_REFERENCE.md](./STORAGE_QUICK_REFERENCE.md) for more examples.
-
-## 🚢 Deployment
-
-The built files are static and can be deployed to any hosting service:
-
-- **Vercel**: `vercel deploy`
-- **Netlify**: Drag & drop the `/dist` folder
-- **GitHub Pages**: Use the `/dist` folder as your site source
-
-## 📄 License
-
-See [LICENSE](LICENSE) for details.
+> **Turn Any Photo Into Profit.**  
+> Upload a product photo, let AI generate a perfect listing (title, description, and price), then automatically cross-post to top marketplaces like eBay, Poshmark, Mercari, Depop, and Facebook Shop.
 
 ---
 
-**Built with 💎 for Photo2Profit**
+## 🚀 Overview
+
+Photo2Profit is an AI resale automation platform that helps resellers, thrift sellers, and small businesses turn photos into polished listings instantly.
+
+✅ Remove backgrounds  
+✅ Generate titles and descriptions  
+✅ Suggest prices (Thrift → Market → Boutique)  
+✅ Cross-post to multiple marketplaces  
+✅ Export ready-to-upload CSVs  
+✅ Automated weekly updates + email exports  
+
+---
+
+## 🧠 Key Features
+
+| Feature | Description |
+|----------|-------------|
+| 🪄 **AI Listing Generator** | Instantly creates SEO-optimized titles, descriptions, and price tiers |
+| 🧺 **Cross-Posting Automation** | Supports eBay, Poshmark, Mercari, Depop, Facebook Shop, and more |
+| 💾 **Firebase Integration** | Secure Storage + Firestore database for user listings |
+| 📊 **Export History Center** | View and re-download generated CSVs anytime |
+| 📬 **Weekly Scheduler** | Automatically refreshes prices and emails new CSV exports |
+| 💳 **Stripe Billing Ready** | Built to integrate with $1 trial → monthly plan |
+
+---
+
+## 🏗️ Project Structure
+
+```
+
+photo2profit/
+├── .github/agents/photo2profit.json       # Agent manifest for Copilot or GitHub AI
+├── functions/index.js                     # Weekly export Cloud Function
+├── scripts/crosspost/                     # Platform adapters (eBay, Poshmark, etc.)
+├── src/pages/Photo2ProfitDashboard.jsx    # Main web app UI
+├── src/components/ExportHistory.jsx       # Export history & download center
+├── src/aiListingGenerator.js              # AI listing generation logic
+├── src/firebaseUpload.js                  # Firebase upload + Firestore save
+└── .env.example                           # Environment template
+
+```
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1️⃣ Clone & Install
+```bash
+git clone https://github.com/yourusername/photo2profit.git
+cd photo2profit
+npm install
+```
+
+### 2️⃣ Configure Environment Variables
+
+Copy `.env.example` → `.env` and fill in your keys:
+
+```env
+# Firebase
+FIREBASE_API_KEY=
+FIREBASE_AUTH_DOMAIN=
+FIREBASE_PROJECT_ID=
+FIREBASE_STORAGE_BUCKET=
+FIREBASE_MESSAGING_SENDER_ID=
+FIREBASE_APP_ID=
+
+# Stripe (optional)
+STRIPE_SECRET_KEY=
+STRIPE_PRICE_ID=
+
+# APIs
+REMOVEBG_API_KEY=
+EBAY_APP_ID=
+EBAY_CERT_ID=
+EBAY_DEV_ID=
+EBAY_OAUTH_TOKEN=
+
+# SendGrid (for weekly emails)
+SENDGRID_API_KEY=
+```
+
+### 3️⃣ Firebase Setup
+
+```bash
+firebase login
+firebase init functions
+```
+
+Deploy the weekly scheduler:
+
+```bash
+# Set your SendGrid key
+firebase functions:config:set sendgrid.key="your_sendgrid_api_key"
+
+# Deploy just this function
+firebase deploy --only functions:weeklyExport
+```
+
+### 4️⃣ Local Development
+
+```bash
+npm run dev
+```
+
+Visit: **[http://localhost:5173](http://localhost:5173)**
+
+---
+
+## 🌐 Deployment
+
+Deploy your frontend with **Vercel** or **Firebase Hosting**:
+
+* Connect your GitHub repo
+* Add your `.env` variables
+* Deploy the main branch
+
+Your weekly scheduler runs automatically from Firebase Cloud Functions.
+
+---
+
+## 🧩 Cross-Posting Supported Platforms
+
+| Platform                 | Method                |
+| ------------------------ | --------------------- |
+| **eBay**                 | Full API integration  |
+| **Poshmark**             | CSV export            |
+| **Mercari**              | CSV export            |
+| **Depop**                | CSV export            |
+| **Facebook Shop**        | CSV export            |
+| **Facebook Marketplace** | Copy-ready data       |
+| **Instagram Shop**       | via Facebook Shop CSV |
+| **Pinterest / TikTok**   | Optional social share |
+
+---
+
+## 🧠 Roadmap
+
+| Phase          | Focus                                              |
+| -------------- | -------------------------------------------------- |
+| **MVP (Now)**  | AI listings, cross-posting, weekly exports         |
+| **Next**       | OAuth integrations for live posting                |
+| **Pro**        | AI trend analytics, auto pricing, referral rewards |
+| **Enterprise** | API for thrift stores & reseller networks          |
+
+---
+
+## 💰 Monetization Plan
+
+* $1 trial → $9.99/month
+* Pro plan: $19.99/month (includes trend reports + advanced cross-posting)
+* Affiliate commissions for referrals
+* B2B tier for boutique resellers
+
+---
+
+## 🩷 Credits
+
+Built with:
+
+* React + Tailwind
+* Firebase + Firestore
+* Stripe
+* SendGrid
+* OpenAI / Gemini APIs
+* Designed and manifested by **Baddie AI Hustle & Heal** ✨
+
+---
+
+## 📞 Support
+
+For setup help or business collaboration:
+📧 **[support@photo2profit.app](mailto:support@photo2profit.app)**
+🌐 [photo2profit.app](https://photo2profit.app) *(coming soon)*
+
+```
+## 🔄 Automation Workflows

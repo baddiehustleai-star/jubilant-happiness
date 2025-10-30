@@ -1,12 +1,6 @@
 {
   "name": "Photo2Profit Development",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
-  
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    }
-  },
 
   "customizations": {
     "vscode": {
@@ -20,7 +14,7 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": "explicit"
+          "source.fixAll.eslint": true
         }
       }
     }

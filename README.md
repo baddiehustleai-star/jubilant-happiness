@@ -117,6 +117,37 @@ Update font imports in `src/index.css` and font families in `tailwind.config.js`
 - `npm run build` - Build for production (outputs to `/dist`)
 - `npm run preview` - Preview production build locally
 
+## 🔥 Firebase Integration
+
+Photo2Profit includes a complete Firebase integration for organized storage and live data management.
+
+### Quick Links
+- **[Firebase Setup Guide](./FIREBASE_SETUP.md)** - Configure Firebase and Firestore
+- **[Storage Organization Guide](./STORAGE_ORGANIZATION.md)** - Complete storage system documentation
+- **[Quick Reference](./STORAGE_QUICK_REFERENCE.md)** - Handy commands and code snippets
+
+### Features
+- 🗂️ **Organized Storage** - Automatic category-based folder structure
+- 📁 **Listing Isolation** - Each listing in its own folder with unique IDs
+- 🖼️ **Multi-Image Support** - Upload multiple images per listing
+- 🔍 **Searchable** - Rich metadata for filtering and queries
+- 📊 **Scalable** - Production-ready for unlimited listings
+- 🧹 **Maintainable** - Easy cleanup and management
+
+### Upload a Listing
+```bash
+# Single image
+node scripts/upload-listing.js ./photo.jpg
+
+# Multiple images
+node scripts/upload-listing.js multi ./front.jpg ./back.jpg
+
+# Bulk upload
+node scripts/upload-listing.js bulk ./item1.jpg ./item2.jpg ./item3.jpg
+```
+
+See [STORAGE_QUICK_REFERENCE.md](./STORAGE_QUICK_REFERENCE.md) for more examples.
+
 ## 🚢 Deployment
 
 The built files are static and can be deployed to any hosting service:

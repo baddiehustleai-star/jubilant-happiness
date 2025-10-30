@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "../assets/photo2profit-logo.svg";
 
 export default function Landing() {
@@ -15,7 +16,16 @@ export default function Landing() {
         Turn your photos into profit — AI-powered listings, background removal,
         and instant cross-posting 💎
       </p>
-      <button className="cta">Start Now</button>
+      <div className="flex gap-4">
+        <Link to="/upload">
+          <button className="cta">Start Now</button>
+        </Link>
+        <Link to="/workspace">
+          <button className="px-6 py-3 border-2 border-rose text-rose rounded-full hover:bg-rose hover:text-white transition-all font-semibold">
+            View Workspace
+          </button>
+        </Link>
+      </div>
     </main>
   );
 }

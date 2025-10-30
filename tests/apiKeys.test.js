@@ -17,10 +17,12 @@ describe('apiKeys configuration', () => {
     expect(apiKeys.firebase).toHaveProperty('appId');
   });
 
-  it('has stripe configuration', () => {
+  it('has stripe configuration with publishable key only', () => {
     expect(apiKeys.stripe).toBeDefined();
-    expect(apiKeys.stripe).toHaveProperty('secretKey');
+    expect(apiKeys.stripe).toHaveProperty('publishableKey');
     expect(apiKeys.stripe).toHaveProperty('priceId');
+    // Ensure secret key is NOT exposed
+    expect(apiKeys.stripe).not.toHaveProperty('secretKey');
   });
 
   it('has removeBg configuration', () => {
@@ -36,17 +38,16 @@ describe('apiKeys configuration', () => {
     expect(apiKeys.ebay).toHaveProperty('oauthToken');
   });
 
-  it('has sendGrid configuration', () => {
-    expect(apiKeys.sendGrid).toBeDefined();
-    expect(apiKeys.sendGrid).toHaveProperty('apiKey');
+  it('does not expose server-side only keys', () => {
+    // SendGrid should NOT be exposed to frontend
+    expect(apiKeys.sendGrid).toBeUndefined();
   });
 
   it('returns empty strings when environment variables are not set', () => {
     // Since we're in test environment without env vars, all should be empty strings
     expect(typeof apiKeys.firebase.apiKey).toBe('string');
-    expect(typeof apiKeys.stripe.secretKey).toBe('string');
+    expect(typeof apiKeys.stripe.publishableKey).toBe('string');
     expect(typeof apiKeys.removeBg.apiKey).toBe('string');
     expect(typeof apiKeys.ebay.appId).toBe('string');
-    expect(typeof apiKeys.sendGrid.apiKey).toBe('string');
   });
 });

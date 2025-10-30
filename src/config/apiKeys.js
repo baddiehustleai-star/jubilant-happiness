@@ -1,10 +1,14 @@
 /**
  * API Keys Configuration
  * Centralizes all API keys from environment variables
+ *
+ * Note: Only client-safe keys should be prefixed with VITE_ and exposed to the frontend.
+ * Server-only keys (like Stripe secret key and SendGrid API key) should NOT have the VITE_ prefix
+ * and should only be used in server-side code (e.g., Firebase Functions, backend APIs).
  */
 
 const apiKeys = {
-  // Firebase Configuration
+  // Firebase Configuration (client-safe)
   firebase: {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
@@ -14,28 +18,24 @@ const apiKeys = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
   },
 
-  // Stripe Configuration
+  // Stripe Configuration (client-safe - publishable key only)
+  // Note: Stripe secret key should NEVER be exposed to the frontend
   stripe: {
-    secretKey: import.meta.env.VITE_STRIPE_SECRET_KEY || '',
+    publishableKey: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '',
     priceId: import.meta.env.VITE_STRIPE_PRICE_ID || '',
   },
 
-  // External APIs
+  // External APIs (client-safe)
   removeBg: {
     apiKey: import.meta.env.VITE_REMOVEBG_API_KEY || '',
   },
 
-  // eBay Configuration
+  // eBay Configuration (client-safe)
   ebay: {
     appId: import.meta.env.VITE_EBAY_APP_ID || '',
     certId: import.meta.env.VITE_EBAY_CERT_ID || '',
     devId: import.meta.env.VITE_EBAY_DEV_ID || '',
     oauthToken: import.meta.env.VITE_EBAY_OAUTH_TOKEN || '',
-  },
-
-  // SendGrid Configuration
-  sendGrid: {
-    apiKey: import.meta.env.VITE_SENDGRID_API_KEY || '',
   },
 };
 

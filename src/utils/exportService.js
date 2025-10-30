@@ -4,6 +4,14 @@ import { storage, db } from '../config/firebase';
 import { getCSVGenerator } from './csvAdapters';
 
 /**
+ * Generate timestamp for filenames
+ * @returns {string} Timestamp in format suitable for filenames
+ */
+function generateTimestamp() {
+  return new Date().toISOString().replace(/[:.]/g, '-');
+}
+
+/**
  * Upload CSV to Firebase Storage
  * @param {string} csvContent - CSV content as string
  * @param {string} platform - Platform name
@@ -11,7 +19,7 @@ import { getCSVGenerator } from './csvAdapters';
  * @returns {Promise<string>} Download URL
  */
 export async function uploadCSVToStorage(csvContent, platform, userId) {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const timestamp = generateTimestamp();
   const filename = `exports/${userId}/${platform}_export_${timestamp}.csv`;
   const storageRef = ref(storage, filename);
   
@@ -67,7 +75,7 @@ export async function generateAndUploadExport(listings, platform, userId) {
     const downloadURL = await uploadCSVToStorage(csvContent, platform, userId);
     
     // Log to Firestore
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const timestamp = generateTimestamp();
     const filename = `${platform}_export_${timestamp}.csv`;
     
     const exportId = await logExportToFirestore({

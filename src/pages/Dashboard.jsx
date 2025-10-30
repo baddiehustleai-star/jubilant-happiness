@@ -3,7 +3,9 @@ import ExportHistory from '../components/ExportHistory';
 import { generateAndUploadExport } from '../utils/exportService';
 
 export default function Dashboard() {
-  const [userId] = useState('demo-user'); // In production, get from auth context
+  // TODO: Replace with actual auth context when Firebase Auth is implemented
+  // For now, using demo-user for demonstration purposes
+  const [userId] = useState('demo-user');
   const [selectedPlatform, setSelectedPlatform] = useState('mercari');
   const [isGenerating, setIsGenerating] = useState(false);
   const [message, setMessage] = useState(null);

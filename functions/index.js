@@ -5,8 +5,14 @@ const Papa = require('papaparse');
 
 admin.initializeApp();
 
-// Initialize SendGrid
-sgMail.setApiKey(functions.config().sendgrid?.key || process.env.SENDGRID_API_KEY);
+// Initialize SendGrid with API key from Firebase Functions config
+// Set via: firebase functions:config:set sendgrid.key="YOUR_API_KEY"
+const sendGridKey = functions.config().sendgrid?.key;
+if (sendGridKey) {
+  sgMail.setApiKey(sendGridKey);
+} else {
+  console.warn('SendGrid API key not configured. Email notifications will fail.');
+}
 
 /**
  * Generate AI-powered market trend summary

@@ -15,12 +15,17 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 
 ## 🚀 Quick Start
 
+### 1️⃣ Install Dependencies
+
 ```bash
-## 📄 License
+npm install
+```
 
-See [LICENSE](LICENSE) for details.
+### 2️⃣ Environment Variables
 
+Create a `.env` file in the root directory with the following variables:
 
+```bash
 # APIs
 REMOVEBG_API_KEY=
 EBAY_APP_ID=
@@ -125,5 +130,8 @@ For setup help or business collaboration:
 📧 **[support@photo2profit.app](mailto:support@photo2profit.app)**
 🌐 [photo2profit.app](https://photo2profit.app) *(coming soon)*
 
-```
-## 🔄 Automation Workflows
+---
+
+## 📄 License
+
+See [LICENSE](LICENSE) for details.

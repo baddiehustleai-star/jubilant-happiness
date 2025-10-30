@@ -1,0 +1,16 @@
+{
+  "name": "photo2profit-functions",
+  "description": "Cloud Functions for Photo2Profit",
+  "version": "1.0.0",
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "@sendgrid/mail": "^8.0.0",
+    "papaparse": "^5.4.1"
+  },
+  "private": true
+}

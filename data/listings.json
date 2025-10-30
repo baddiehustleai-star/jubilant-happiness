@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Vintage Denim Jacket",
+    "description": "Classic Levi's trucker jacket, size M. Great condition.",
+    "price": "$45",
+    "tags": ["vintage", "denim", "style"],
+    "image": "https://example.com/jacket.jpg",
+    "url": "https://poshmark.com/listing/123"
+  },
+  {
+    "title": "Dewalt Cordless Drill",
+    "description": "Includes battery + charger. Works perfectly.",
+    "price": "$60",
+    "tags": ["tools", "DIY", "hardware"],
+    "image": "https://example.com/drill.jpg",
+    "url": "https://ebay.com/item/456"
+  }
+]

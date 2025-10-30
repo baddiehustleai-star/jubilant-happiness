@@ -18,19 +18,44 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 ## 🚀 Quick Start
 
 ```bash
-##  License
+# Install dependencies
+npm install
 
-See [LICENSE](LICENSE) for details.
+# Start the development server
+npm run dev
 
+# Build for production
+npm run build
 
-# APIs
+# Preview the production build
+npm run preview
+```
+
+## 🔐 Environment variables
+
+Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):
+
+```env
+# Firebase
+FIREBASE_API_KEY=
+FIREBASE_AUTH_DOMAIN=
+FIREBASE_PROJECT_ID=
+FIREBASE_STORAGE_BUCKET=
+FIREBASE_MESSAGING_SENDER_ID=
+FIREBASE_APP_ID=
+
+# Stripe (optional)
+STRIPE_SECRET_KEY=
+STRIPE_PRICE_ID=
+
+# APIs (optional)
 REMOVEBG_API_KEY=
 EBAY_APP_ID=
 EBAY_CERT_ID=
 EBAY_DEV_ID=
 EBAY_OAUTH_TOKEN=
 
-# SendGrid (for weekly emails)
+# SendGrid (for weekly emails in Cloud Functions)
 SENDGRID_API_KEY=
 ```
 
@@ -127,6 +152,6 @@ For setup help or business collaboration:
 📧 **[support@photo2profit.app](mailto:support@photo2profit.app)**
 🌐 [photo2profit.app](https://photo2profit.app) _(coming soon)_
 
-```
-## 🔄 Automation Workflows
-```
+## 🤝 Contributing
+
+Please see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and CI expectations. Pull requests should pass lint, format:check, tests, and build.

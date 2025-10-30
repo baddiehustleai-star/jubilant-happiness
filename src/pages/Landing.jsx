@@ -43,7 +43,7 @@ export default function Landing() {
             <div className="text-sm text-gray-600 mb-4">7-day trial, then $9.99/month</div>
             <button
               className="cta w-full text-lg mb-3"
-              onClick={() => (window.location.href = '#signup')}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               Start Your $1 Trial Now
             </button>
@@ -59,7 +59,7 @@ export default function Landing() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email for early access"
+                placeholder="Enter your email to get started"
                 required
                 className="flex-1 px-4 py-3 rounded-full border-2 border-rose focus:outline-none focus:border-rose-dark"
               />

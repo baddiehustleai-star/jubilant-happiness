@@ -42,6 +42,9 @@ const SEASONAL_FACTORS = {
   'fall': { 'Dress': 1.0, 'Top': 1.0, 'Shoes': 1.0, 'Bag': 1.1, 'Jewelry': 1.0 }
 };
 
+// Pricing constants
+const PRICE_ENDING = 0.99;  // Standard pricing strategy to end prices with .99
+
 /**
  * Get current season
  */
@@ -118,7 +121,7 @@ function calculateOptimizedPrice(listing) {
   const optimizedPrice = retailValue * conditionMultiplier * demandMultiplier * seasonalMultiplier;
   
   // Round to nearest .99
-  const roundedPrice = Math.floor(optimizedPrice) + 0.99;
+  const roundedPrice = Math.floor(optimizedPrice) + PRICE_ENDING;
   
   // Calculate difference from current price
   const priceDifference = roundedPrice - currentPrice;

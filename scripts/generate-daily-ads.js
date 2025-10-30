@@ -75,7 +75,9 @@ function generateHashtags(listing) {
     `#${category.replace(/\s+/g, '')}`
   ];
   
-  const additionalHashtags = tags.map(tag => `#${tag.replace(/\s+/g, '')}`);
+  const additionalHashtags = tags && Array.isArray(tags) 
+    ? tags.map(tag => `#${tag.replace(/\s+/g, '')}`)
+    : [];
   
   return [...baseHashtags, ...additionalHashtags].join(' ');
 }

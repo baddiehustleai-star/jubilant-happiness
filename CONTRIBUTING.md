@@ -6,7 +6,7 @@ Thanks for your interest in contributing! This project uses a few simple quality
 
 - Install dependencies: `npm install`
 - Start dev server: `npm run dev`
-- Run all local checks: `npm run lint && npm run format:check && npm test && npm run build`
+- Quick verify (mirrors CI): `npm run verify`
 
 ## Pull Requests
 

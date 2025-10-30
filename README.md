@@ -31,6 +31,12 @@ npm run build
 npm run preview
 ```
 
+Quick local verify (mirrors CI):
+
+```bash
+npm run verify
+```
+
 ## 🔐 Environment variables
 
 Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):

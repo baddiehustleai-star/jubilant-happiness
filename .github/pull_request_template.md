@@ -9,9 +9,19 @@ Describe the purpose of this change in 1–3 sentences.
 
 ## How to test locally
 
-1. npm install
-2. npm run dev (or npm run build)
-3. Additional steps/screens to verify
+Run these in a clean clone to mirror CI (or simply `npm run verify`):
+
+```bash
+npm ci
+npm run format:check
+npm run lint
+npm test
+npm run build
+# Optional during development:
+npm run dev
+```
+
+- Additional steps/screens to verify (what pages, data, roles)
 
 ## Risks and rollbacks
 

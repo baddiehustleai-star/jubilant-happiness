@@ -31,6 +31,39 @@ npm run preview
 
 Your app will be running at `http://localhost:5173`
 
+## 💻 Visual Studio Code Setup
+
+This project includes VS Code workspace settings for an optimal development experience.
+
+### Recommended Extensions
+
+When you open this project in VS Code, you'll be prompted to install recommended extensions:
+
+- **ESLint** - JavaScript linting
+- **Prettier** - Code formatting
+- **Tailwind CSS IntelliSense** - Tailwind class autocomplete
+- **ES7+ React/Redux/React-Native snippets** - React code snippets
+- **Vite** - Vite project support
+- **Path Intellisense** - Autocomplete for file paths
+- **Auto Rename Tag** - Automatically rename paired HTML/JSX tags
+- **GitLens** - Enhanced Git integration
+
+### Debugging
+
+The project includes launch configurations for debugging in Chrome:
+
+1. Press `F5` or go to Run & Debug panel
+2. Select "Launch Chrome against localhost"
+3. The dev server will start automatically and Chrome will open with debugging enabled
+
+### Available Tasks
+
+Access tasks via `Terminal > Run Task` or `Ctrl+Shift+B`:
+
+- **npm: dev** - Start development server
+- **npm: build** - Build for production
+- **npm: preview** - Preview production build
+
 ## 📁 Project Structure
 
 ```

@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "label": "npm: dev",
+      "detail": "vite",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "problemMatcher": [],
+      "label": "npm: build",
+      "detail": "vite build"
+    },
+    {
+      "type": "npm",
+      "script": "preview",
+      "problemMatcher": [],
+      "label": "npm: preview",
+      "detail": "vite preview"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "recommendations": [
+    // Essential extensions for React development
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    
+    // Tailwind CSS support
+    "bradlc.vscode-tailwindcss",
+    
+    // JavaScript/React extensions
+    "dsznajder.es7-react-js-snippets",
+    "xabikos.javascriptsnippets",
+    
+    // Vite support
+    "antfu.vite",
+    
+    // Path intellisense
+    "christian-kohler.path-intellisense",
+    
+    // Auto rename tag
+    "formulahendry.auto-rename-tag",
+    
+    // Better comments
+    "aaron-bond.better-comments",
+    
+    // Git integration
+    "eamodio.gitlens"
+  ]
+}

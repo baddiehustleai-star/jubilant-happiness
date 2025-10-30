@@ -1,0 +1,183 @@
+{
+  "listings": [
+    {
+      "id": "001",
+      "brand": "Zara",
+      "category": "Dress",
+      "condition": "Like New",
+      "size": "M",
+      "price": 45.00,
+      "description": "Stunning floral midi dress perfect for spring and summer occasions. Features a flattering A-line silhouette and side zip closure.",
+      "features": [
+        "100% Cotton",
+        "Floral print",
+        "Midi length",
+        "Side zip",
+        "Lined"
+      ],
+      "tags": ["floral", "midi", "casual", "spring", "summer"],
+      "photos": 5
+    },
+    {
+      "id": "002",
+      "brand": "H&M",
+      "category": "Top",
+      "condition": "Excellent",
+      "size": "S",
+      "price": 18.00,
+      "description": "Classic white button-down blouse with subtle details. Perfect for work or casual wear.",
+      "features": [
+        "Cotton blend",
+        "Button front",
+        "Long sleeves",
+        "Collar"
+      ],
+      "tags": ["white", "blouse", "classic", "workwear"],
+      "photos": 4
+    },
+    {
+      "id": "003",
+      "brand": "Nike",
+      "category": "Shoes",
+      "condition": "Good",
+      "size": "8",
+      "price": 55.00,
+      "description": "Nike Air Max sneakers in great condition. Comfortable for everyday wear with iconic Nike styling.",
+      "features": [
+        "Air Max technology",
+        "Mesh upper",
+        "Rubber sole",
+        "Lace-up closure"
+      ],
+      "tags": ["sneakers", "athletic", "casual", "comfortable"],
+      "photos": 6
+    },
+    {
+      "id": "004",
+      "brand": "Coach",
+      "category": "Bag",
+      "condition": "Excellent",
+      "size": "One Size",
+      "price": 180.00,
+      "description": "Authentic Coach crossbody bag in signature canvas. Perfect condition with minimal wear. Comes with authenticity card.",
+      "features": [
+        "Signature canvas",
+        "Leather trim",
+        "Adjustable strap",
+        "Multiple compartments",
+        "Gold hardware"
+      ],
+      "tags": ["designer", "luxury", "crossbody", "authentic"],
+      "photos": 8
+    },
+    {
+      "id": "005",
+      "brand": "Zara",
+      "category": "Top",
+      "condition": "New",
+      "size": "L",
+      "price": 28.00,
+      "description": "Brand new with tags! Trendy crop top with puff sleeves. Never worn, perfect condition.",
+      "features": [
+        "Puff sleeves",
+        "Crop length",
+        "Square neckline",
+        "Back button closure",
+        "New with tags"
+      ],
+      "tags": ["nwt", "crop", "trendy", "puff-sleeves"],
+      "photos": 5
+    },
+    {
+      "id": "006",
+      "brand": "Adidas",
+      "category": "Shoes",
+      "condition": "Like New",
+      "size": "9",
+      "price": 65.00,
+      "description": "Adidas Superstar sneakers in excellent condition. Classic three stripes design, barely worn.",
+      "features": [
+        "Leather upper",
+        "Rubber shell toe",
+        "Three stripes",
+        "Iconic style"
+      ],
+      "tags": ["sneakers", "classic", "athletic", "streetwear"],
+      "photos": 6
+    },
+    {
+      "id": "007",
+      "brand": "H&M",
+      "category": "Dress",
+      "condition": "Good",
+      "size": "XS",
+      "price": 22.00,
+      "description": "Cute mini dress with floral pattern. Shows minor wear but still in great condition.",
+      "features": [
+        "Short sleeves",
+        "Mini length",
+        "Floral print",
+        "Fit and flare"
+      ],
+      "tags": ["mini", "floral", "casual", "summer"],
+      "photos": 4
+    },
+    {
+      "id": "008",
+      "brand": "Zara",
+      "category": "Bag",
+      "condition": "Excellent",
+      "size": "One Size",
+      "price": 42.00,
+      "description": "Stylish tote bag in neutral beige color. Perfect for everyday use or work.",
+      "features": [
+        "Faux leather",
+        "Top handles",
+        "Interior pockets",
+        "Snap closure"
+      ],
+      "tags": ["tote", "work", "everyday", "neutral"],
+      "photos": 5
+    },
+    {
+      "id": "009",
+      "brand": "Zara",
+      "category": "Jewelry",
+      "condition": "New",
+      "size": "One Size",
+      "price": 15.00,
+      "description": "Statement gold-tone earrings, never worn. Modern geometric design.",
+      "features": [
+        "Gold-tone",
+        "Geometric design",
+        "Post back",
+        "New condition"
+      ],
+      "tags": ["jewelry", "earrings", "gold", "statement"],
+      "photos": 3
+    },
+    {
+      "id": "010",
+      "brand": "Nike",
+      "category": "Top",
+      "condition": "Excellent",
+      "size": "M",
+      "price": 25.00,
+      "description": "Nike Dri-FIT athletic top in perfect condition. Great for workouts or casual wear.",
+      "features": [
+        "Dri-FIT technology",
+        "Moisture-wicking",
+        "Stretchy fabric",
+        "Nike swoosh logo"
+      ],
+      "tags": ["athletic", "workout", "activewear", "nike"],
+      "photos": 4
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2025-10-30",
+    "totalListings": 10,
+    "description": "Sample listings data for Photo2Profit automation testing"
+  }
+}

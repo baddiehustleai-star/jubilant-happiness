@@ -12,6 +12,9 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 - ⚛️ **React 18** - Modern React with hooks
 - 🎯 **TailwindCSS** - Utility-first styling with custom configuration
 - 📱 **Responsive** - Mobile-first design approach
+- 📦 **Export History & Download Center** - Generate and manage CSV exports for multiple platforms
+- 🔄 **Weekly Automation** - Automated CSV generation and email notifications
+- 🤖 **AI Market Insights** - AI-generated market trend summaries
 
 ## 🚀 Quick Start
 
@@ -31,6 +34,21 @@ npm run preview
 
 Your app will be running at `http://localhost:5173`
 
+## 📦 Export History & Download Center
+
+The Export History & Download Center allows you to generate CSV exports for multiple resale platforms and manage your export history. See [docs/EXPORT_HISTORY.md](docs/EXPORT_HISTORY.md) for detailed documentation.
+
+### Key Features:
+- **Multi-Platform Support**: Mercari, Depop, Poshmark, eBay
+- **Automated Exports**: Weekly CSV generation with email notifications
+- **Export History**: Track and download all your exports
+- **AI Market Trends**: Get weekly insights about your listings
+- **Firebase Integration**: Secure storage and real-time updates
+
+### Quick Access:
+- Dashboard: Navigate to `/dashboard` after starting the dev server
+- Documentation: See [docs/EXPORT_HISTORY.md](docs/EXPORT_HISTORY.md)
+
 ## 📁 Project Structure
 
 ```
@@ -39,11 +57,25 @@ Your app will be running at `http://localhost:5173`
 ├── vite.config.js                  # Vite configuration
 ├── tailwind.config.js              # Custom Tailwind theme
 ├── postcss.config.js               # PostCSS configuration
+├── .env.example                    # Firebase configuration template
+├── docs/
+│   └── EXPORT_HISTORY.md          # Export feature documentation
+├── functions/
+│   ├── package.json               # Cloud Functions dependencies
+│   └── index.js                   # Weekly automation & exports
 └── src/
     ├── main.jsx                    # React entry point
     ├── index.css                   # Global styles + Tailwind
+    ├── config/
+    │   └── firebase.js            # Firebase configuration
+    ├── utils/
+    │   ├── csvAdapters.js         # CSV generators for platforms
+    │   └── exportService.js       # Export logic & Firebase API
+    ├── components/
+    │   └── ExportHistory.jsx      # Export history table
     ├── pages/
-    │   └── Landing.jsx             # Landing page component
+    │   ├── Landing.jsx            # Landing page component
+    │   └── Dashboard.jsx          # Dashboard with export features
     └── assets/
         └── photo2profit-logo.svg   # Logo placeholder
 ```
@@ -81,6 +113,10 @@ Google Fonts are loaded via CDN in `src/index.css`.
 - **TailwindCSS**: ^3.4.14
 - **PostCSS**: ^8.4.38
 - **Autoprefixer**: ^10.4.19
+- **Firebase**: ^11.0.0 (Auth, Firestore, Storage, Functions)
+- **React Router**: ^7.0.0
+- **PapaParse**: ^5.4.1 (CSV generation)
+- **SendGrid**: ^8.0.0 (Email notifications)
 
 ## 🛠️ Customization
 

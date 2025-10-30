@@ -1,0 +1,170 @@
+{
+  "name": "Photo2Profit AI Resell Business Agent",
+  "description": "AI-powered automation agent for photo-based reselling business operations, including listing optimization, pricing strategies, and multi-platform management",
+  "version": "1.0.0",
+  "capabilities": [
+    "listing-optimization",
+    "pricing-analysis",
+    "inventory-management",
+    "market-research",
+    "social-media-automation",
+    "performance-analytics"
+  ],
+  "platforms": {
+    "supported": [
+      "poshmark",
+      "mercari",
+      "facebook-marketplace",
+      "ebay",
+      "depop",
+      "vinted",
+      "instagram",
+      "tiktok"
+    ],
+    "primary": ["poshmark", "mercari", "facebook-marketplace"]
+  },
+  "automation": {
+    "daily_tasks": [
+      "generate_social_media_posts",
+      "optimize_listings",
+      "price_adjustments",
+      "respond_to_inquiries",
+      "cross_post_new_items"
+    ],
+    "weekly_tasks": [
+      "performance_analytics",
+      "inventory_audit",
+      "trend_analysis",
+      "competitor_research"
+    ],
+    "monthly_tasks": [
+      "pricing_strategy_refresh",
+      "market_expansion_analysis",
+      "roi_reporting",
+      "seasonal_adjustments"
+    ]
+  },
+  "features": {
+    "photo_analysis": {
+      "enabled": true,
+      "capabilities": [
+        "quality_assessment",
+        "background_removal",
+        "lighting_optimization",
+        "angle_suggestions",
+        "style_categorization"
+      ]
+    },
+    "listing_optimization": {
+      "enabled": true,
+      "features": [
+        "seo_title_generation",
+        "description_enhancement",
+        "tag_suggestions",
+        "category_matching",
+        "trending_keyword_integration"
+      ]
+    },
+    "pricing_intelligence": {
+      "enabled": true,
+      "strategies": [
+        "market_comparison",
+        "demand_analysis",
+        "seasonal_adjustments",
+        "quick_sale_optimization",
+        "profit_maximization"
+      ]
+    },
+    "social_media": {
+      "enabled": true,
+      "platforms": ["instagram", "tiktok", "facebook"],
+      "content_types": [
+        "outfit_styling",
+        "before_after_transforms",
+        "styling_tips",
+        "haul_videos",
+        "customer_testimonials"
+      ]
+    }
+  },
+  "branding": {
+    "business_name": "Photo2Profit",
+    "tagline": "Turn Photos Into Profit",
+    "style_guidelines": {
+      "tone": "friendly, authentic, aspirational",
+      "hashtags": ["#Photo2Profit", "#ResellLife", "#ThriftFlip", "#SustainableFashion"],
+      "colors": ["#FF6B9D", "#4ECDC4", "#45B7D1", "#FFA07A"],
+      "aesthetic": "clean, bright, lifestyle-focused"
+    }
+  },
+  "categories": {
+    "fashion": {
+      "subcategories": ["womens", "mens", "kids", "shoes", "accessories", "vintage"],
+      "trending_items": ["y2k", "cottagecore", "streetwear", "minimalist"],
+      "seasonal_focus": true
+    },
+    "home_decor": {
+      "subcategories": ["furniture", "lighting", "textiles", "art", "plants"],
+      "trending_styles": ["boho", "minimalist", "vintage", "industrial"]
+    },
+    "electronics": {
+      "subcategories": ["phones", "gaming", "audio", "computers", "smart_home"],
+      "condition_focus": true
+    },
+    "collectibles": {
+      "subcategories": ["vintage", "toys", "books", "art", "sports"],
+      "authentication_required": true
+    }
+  },
+  "ai_prompts": {
+    "listing_titles": {
+      "template": "Create an SEO-optimized title for {item_type} with {key_features}. Include trending keywords and brand if applicable. Max 80 characters.",
+      "examples": [
+        "Vintage Levi's 501 Jeans High Waisted Y2K Mom Jeans Size 28 90s Grunge",
+        "iPhone 13 Pro Max 128GB Unlocked Excellent Condition Space Gray"
+      ]
+    },
+    "descriptions": {
+      "template": "Write a compelling description for {item} emphasizing {selling_points}. Include measurements, condition, styling suggestions, and care instructions.",
+      "structure": ["hook", "details", "styling_tips", "measurements", "condition", "care"]
+    },
+    "social_posts": {
+      "instagram": "Create an Instagram post about {item} with lifestyle focus, styling tips, and relevant hashtags",
+      "tiktok": "Generate TikTok video concept for {item} with trending audio suggestions and viral potential"
+    }
+  },
+  "analytics": {
+    "kpis": [
+      "gross_revenue",
+      "profit_margin",
+      "listing_conversion_rate",
+      "average_sale_time",
+      "social_engagement",
+      "repeat_customers"
+    ],
+    "reporting_frequency": "weekly",
+    "goals": {
+      "monthly_revenue": 2000,
+      "profit_margin": 60,
+      "listing_conversion": 15,
+      "average_sale_days": 14
+    }
+  },
+  "integrations": {
+    "required": [],
+    "optional": [
+      "google_analytics",
+      "facebook_pixel",
+      "mailchimp",
+      "canva_api",
+      "paypal_api"
+    ]
+  },
+  "settings": {
+    "auto_pricing": true,
+    "cross_posting": true,
+    "social_automation": true,
+    "analytics_tracking": true,
+    "inventory_sync": true
+  }
+}

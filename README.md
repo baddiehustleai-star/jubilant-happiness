@@ -1,5 +1,7 @@
 # 💎 Photo2Profit — AI-Powered Resale Automation Platform
 
+[![CI](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml)
+
 > Note for automated contributors: see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and guidance for Copilot coding agents.
 
 A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring rose-gold branding and elegant typography.
@@ -63,9 +65,9 @@ Visit: **[http://localhost:5173](http://localhost:5173)**
 
 Deploy your frontend with **Vercel** or **Firebase Hosting**:
 
-* Connect your GitHub repo
-* Add your `.env` variables
-* Deploy the main branch
+- Connect your GitHub repo
+- Add your `.env` variables
+- Deploy the main branch
 
 Your weekly scheduler runs automatically from Firebase Cloud Functions.
 
@@ -99,10 +101,10 @@ Your weekly scheduler runs automatically from Firebase Cloud Functions.
 
 ## 💰 Monetization Plan
 
-* $1 trial → $9.99/month
-* Pro plan: $19.99/month (includes trend reports + advanced cross-posting)
-* Affiliate commissions for referrals
-* B2B tier for boutique resellers
+- $1 trial → $9.99/month
+- Pro plan: $19.99/month (includes trend reports + advanced cross-posting)
+- Affiliate commissions for referrals
+- B2B tier for boutique resellers
 
 ---
 
@@ -110,12 +112,12 @@ Your weekly scheduler runs automatically from Firebase Cloud Functions.
 
 Built with:
 
-* React + Tailwind
-* Firebase + Firestore
-* Stripe
-* SendGrid
-* OpenAI / Gemini APIs
-* Designed and manifested by **Baddie AI Hustle & Heal** ✨
+- React + Tailwind
+- Firebase + Firestore
+- Stripe
+- SendGrid
+- OpenAI / Gemini APIs
+- Designed and manifested by **Baddie AI Hustle & Heal** ✨
 
 ---
 
@@ -123,7 +125,8 @@ Built with:
 
 For setup help or business collaboration:
 📧 **[support@photo2profit.app](mailto:support@photo2profit.app)**
-🌐 [photo2profit.app](https://photo2profit.app) *(coming soon)*
+🌐 [photo2profit.app](https://photo2profit.app) _(coming soon)_
 
 ```
 ## 🔄 Automation Workflows
+```

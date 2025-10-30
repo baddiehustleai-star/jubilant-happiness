@@ -16,11 +16,12 @@ export default [
         console: 'readonly',
       },
     },
-    plugins: {
-      react: reactPlugin,
-    },
+    plugins: { react: reactPlugin },
     rules: {
       'react/react-in-jsx-scope': 'off',
+      // Ensure variables used in JSX are marked as used
+      'react/jsx-uses-react': 'warn',
+      'react/jsx-uses-vars': 'warn',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
     settings: {

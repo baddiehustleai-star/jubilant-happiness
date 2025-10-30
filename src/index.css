@@ -5,12 +5,12 @@
 @tailwind utilities;
 
 :root {
-  --rose-light: #FCE9E9;
-  --rose: #E6A4A4;
-  --rose-dark: #B76E79;
-  --gold: #F5C26B;
-  --blush: #FAF6F2;
-  --text-dark: #3D2B2B;
+  --rose-light: #fce9e9;
+  --rose: #e6a4a4;
+  --rose-dark: #b76e79;
+  --gold: #f5c26b;
+  --blush: #faf6f2;
+  --text-dark: #3d2b2b;
 }
 
 body {
@@ -18,12 +18,14 @@ body {
   color: var(--text-dark);
   font-family: 'Montserrat', sans-serif;
 }
-h1, .logo {
+h1,
+.logo {
   font-family: 'Cinzel Decorative', serif;
   color: var(--rose-dark);
   letter-spacing: 1px;
 }
-button, .cta {
+button,
+.cta {
   background: linear-gradient(90deg, var(--rose), var(--gold));
   color: white;
   border-radius: 9999px;

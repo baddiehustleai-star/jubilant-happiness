@@ -15,6 +15,26 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 
 ## 🚀 Quick Start
 
+### Option 1: GitHub Codespaces (Recommended)
+
+Open this repository in GitHub Codespaces for a fully configured development environment:
+
+1. Click the **Code** button on GitHub
+2. Select the **Codespaces** tab
+3. Click **Create codespace on [branch]**
+
+The environment will automatically:
+- Install all dependencies
+- Configure VS Code extensions for React and TailwindCSS
+- Set up port forwarding for the dev server
+
+Once the codespace is ready, run:
+```bash
+npm run dev
+```
+
+### Option 2: Local Development
+
 ```bash
 # Install dependencies
 npm install

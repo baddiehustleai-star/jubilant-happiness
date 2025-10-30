@@ -2,16 +2,27 @@
 
 Turn your photos into profit — AI-powered listings, background removal, and instant cross-posting.
 
-A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring rose-gold branding and elegant typography.
+A modern, luxe-themed React application built with **Vite + TailwindCSS** featuring rose-gold branding and elegant typography.
 
 ## ✨ Features
 
+### Currently Implemented
 - 🎨 **Rose-Gold Theme** - Custom color palette with blush, rose, and gold tones
 - 💎 **Luxe Design** - Cinzel Decorative + Montserrat typography
 - ⚡ **Vite** - Lightning-fast dev server and optimized builds
 - ⚛️ **React 18** - Modern React with hooks
 - 🎯 **TailwindCSS** - Utility-first styling with custom configuration
 - 📱 **Responsive** - Mobile-first design approach
+- 🚀 **Photo Upload** - Drag-and-drop and file browser support with preview
+- 📊 **Workspace Dashboard** - Project management interface with stats
+- 🔄 **Routing** - React Router for seamless navigation
+
+### Coming Soon
+- 🤖 **AI-Powered Listings** - Generate compelling product descriptions
+- ✂️ **Background Removal** - Professional photo editing
+- 📤 **Cross-Posting** - Share to multiple marketplaces instantly
+- 🔐 **Authentication** - User accounts and data management
+- 💾 **Export/Download** - Save and share your listings
 
 ## 🚀 Quick Start
 
@@ -40,12 +51,14 @@ Your app will be running at `http://localhost:5173`
 ├── tailwind.config.js              # Custom Tailwind theme
 ├── postcss.config.js               # PostCSS configuration
 └── src/
-    ├── main.jsx                    # React entry point
+    ├── main.jsx                    # React entry point with routing
     ├── index.css                   # Global styles + Tailwind
     ├── pages/
-    │   └── Landing.jsx             # Landing page component
+    │   ├── Landing.jsx             # Landing page component
+    │   ├── Upload.jsx              # Photo upload with drag-and-drop
+    │   └── Workspace.jsx           # Dashboard for project management
     └── assets/
-        └── photo2profit-logo.svg   # Logo placeholder
+        └── photo2profit-logo.svg   # Logo
 ```
 
 ## 🎨 Custom Theme
@@ -77,10 +90,66 @@ Google Fonts are loaded via CDN in `src/index.css`.
 ## 📦 Tech Stack
 
 - **React**: ^18.3.1
+- **React Router DOM**: ^6.28.0
 - **Vite**: ^5.4.1
 - **TailwindCSS**: ^3.4.14
 - **PostCSS**: ^8.4.38
 - **Autoprefixer**: ^10.4.19
+
+## 🎯 Current Features
+
+### Landing Page
+- Beautiful hero section with logo and branding
+- Call-to-action buttons for Upload and Workspace
+- Responsive design with rose-gold theme
+
+### Upload Page
+- Drag-and-drop file upload
+- File browser for image selection
+- Live image preview
+- Remove and process image options
+- Feature cards explaining capabilities
+
+### Workspace Dashboard
+- Project statistics (total, processed, pending)
+- Recent projects grid with thumbnails
+- Project status badges
+- Edit and export buttons (ready for integration)
+- Navigation header with quick upload access
+
+## 🚀 Next Development Steps
+
+To complete the Photo2Profit application, implement these features:
+
+1. **Background Removal API Integration**
+   - Integrate with background removal service (remove.bg, etc.)
+   - Add processing indicators and progress bars
+   - Show before/after comparison
+
+2. **AI-Powered Listing Generator**
+   - Integrate with OpenAI/GPT API for product descriptions
+   - Add form for product details (price, category, condition)
+   - Generate optimized titles and descriptions
+
+3. **Cross-Posting Integration**
+   - Add marketplace connectors (eBay, Poshmark, Mercari, etc.)
+   - Implement OAuth flows for authentication
+   - Batch posting capability
+
+4. **User Authentication**
+   - Add Firebase Auth or Auth0
+   - User profiles and settings
+   - Secure API endpoints
+
+5. **Backend API**
+   - Set up Express/Node.js or Firebase backend
+   - Store user projects and images
+   - Handle API integrations securely
+
+6. **Enhanced Image Editor**
+   - Crop, rotate, and resize tools
+   - Filters and adjustments
+   - Text overlay for watermarks
 
 ## 🛠️ Customization
 

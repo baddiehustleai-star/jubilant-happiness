@@ -1,0 +1,56 @@
+name: 🧠 Setup Copilot Instructions
+description: Configure and onboard GitHub Copilot instructions for this repository
+title: "Setup Copilot Instructions"
+labels: ["enhancement", "documentation", "copilot"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Summary
+        Configure and onboard GitHub Copilot instructions for this repository following best practices for Copilot coding agents.
+
+        ## Goal
+        Enable Copilot to understand this project's purpose, coding style, and workflow — so it can assist effectively with all new feature development, bug fixes, and AI automation logic for Photo2Profit.
+
+  - type: checkboxes
+    id: tasks
+    attributes:
+      label: Tasks
+      description: What needs to be completed
+      options:
+        - label: Create `.github/copilot-instructions.md`
+          required: false
+        - label: Include overview of repository purpose (AI photo-to-listing automation, Firebase integration, Stripe billing, cross-posting)
+          required: false
+        - label: Document coding style and best practices (React + Vite + Tailwind stack, component-driven design, Firebase Functions)
+          required: false
+        - label: Add workflow guidelines (commit message format, branch naming conventions, PR review checklist)
+          required: false
+        - label: Verify Copilot uses this context for all generated code in this repo
+          required: false
+
+  - type: checkboxes
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Definition of done
+      options:
+        - label: `.github/copilot-instructions.md` file created and committed
+          required: true
+        - label: Instructions clearly describe repo purpose, tech stack, and style conventions
+          required: true
+        - label: Copilot recognizes these instructions when generating code suggestions
+          required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Any additional information about this setup request
+      placeholder: Add any specific requirements, custom conventions, or special considerations...
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Reference
+        📘 [GitHub Copilot Customization Docs](https://docs.github.com/en/copilot/customizing-copilot)

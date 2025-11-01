@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { uploadPhoto, uploadMultiplePhotos } from '../utils/storage.js';
 
 export default function PhotoUpload({ userId = 'anonymous', onUploadComplete = null }) {
@@ -9,13 +9,33 @@ export default function PhotoUpload({ userId = 'anonymous', onUploadComplete = n
   const [error, setError] = useState(null);
   const [uploadResults, setUploadResults] = useState([]);
 
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      previews.forEach((url) => window.URL.revokeObjectURL(url));
+    };
+  }, [previews]);
+
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files);
+
+    // Validate file types before creating previews
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const invalidFiles = files.filter((file) => !validTypes.includes(file.type));
+
+    if (invalidFiles.length > 0) {
+      setError('Please select only JPEG, PNG, GIF, or WebP images.');
+      return;
+    }
+
+    // Revoke old preview URLs to free memory
+    previews.forEach((url) => window.URL.revokeObjectURL(url));
+
     setSelectedFiles(files);
     setError(null);
     setUploadResults([]);
 
-    // Create preview URLs
+    // Create preview URLs (safe: blob URLs are created by the browser)
     const previewUrls = files.map((file) => window.URL.createObjectURL(file));
     setPreviews(previewUrls);
   };
@@ -51,6 +71,9 @@ export default function PhotoUpload({ userId = 'anonymous', onUploadComplete = n
   };
 
   const handleClear = () => {
+    // Revoke preview URLs to free memory
+    previews.forEach((url) => window.URL.revokeObjectURL(url));
+
     setSelectedFiles([]);
     setPreviews([]);
     setProgress(0);

@@ -1,9 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../assets/photo2profit-logo.svg';
 
 export default function Dashboard() {
   const [items, setItems] = useState([]);
   const [dragActive, setDragActive] = useState(false);
+
+  // Cleanup object URLs when component unmounts
+  useEffect(() => {
+    return () => {
+      items.forEach((item) => {
+        if (item.preview) {
+          URL.revokeObjectURL(item.preview);
+        }
+      });
+    };
+  }, [items]);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -44,6 +55,11 @@ export default function Dashboard() {
   };
 
   const removeItem = (id) => {
+    // Revoke object URL before removing item
+    const itemToRemove = items.find((item) => item.id === id);
+    if (itemToRemove && itemToRemove.preview) {
+      URL.revokeObjectURL(itemToRemove.preview);
+    }
     setItems(items.filter((item) => item.id !== id));
   };
 

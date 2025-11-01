@@ -3,11 +3,12 @@
 ## 🚀 Current Status
 
 ### ✅ **What's Already Set Up**
-- **Frontend Integration**: Stripe.js installed and payment service created
-- **Firebase Functions**: Server-side Stripe operations configured
+- **Frontend Integration**: Stripe.js installed and payment service using Firebase callable functions
+- **Firebase Functions**: Server-side Stripe operations configured with v2 callable functions
 - **Webhook Handlers**: Subscription and payment event processing
 - **Database Schema**: Firestore collections for subscriptions and payments
 - **Environment Variables**: Template ready for your Stripe keys
+- **API Integration**: Frontend properly integrated with Firebase callable functions (fixed)
 
 ### ❌ **What You Need to Complete**
 1. **Create Stripe Account** and get API keys
@@ -170,13 +171,17 @@ await paymentService.subscribeToPro(userId, userEmail);
 
 // Open customer portal
 await paymentService.createCustomerPortalSession(customerId);
+
+// Note: The payment service now uses Firebase callable functions
+// via httpsCallable() instead of REST API endpoints
 ```
 
 ### Backend (Firebase Functions)
-- **`createCheckoutSession`**: Creates Stripe checkout
-- **`createPortalSession`**: Customer billing portal
-- **`stripeWebhook`**: Handles subscription events
-- **`getUserSubscription`**: Gets current subscription status
+- **`createCheckoutSession`**: Creates Stripe checkout (callable function)
+- **`createPortalSession`**: Customer billing portal (callable function)
+- **`stripeWebhook`**: Handles subscription events (HTTP endpoint)
+- **`getUserSubscription`**: Gets current subscription status (callable function)
+- **`cancelSubscription`**: Cancel user subscription (callable function)
 
 ### Database (Firestore)
 ```javascript

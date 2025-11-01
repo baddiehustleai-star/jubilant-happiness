@@ -12,7 +12,7 @@ The app is designed for **resellers and small businesses** who want to save time
 
 - **Frontend:** React + Vite + Tailwind CSS
 - **Backend:** Firebase (Firestore, Storage, Cloud Functions)
-- **Payments:** Stripe Checkout ($1 Trial → $14.99/month recurring)
+- **Payments:** Stripe Checkout ($1 Trial → $9.99/month recurring)
 - **AI Services:** OpenAI / Gemini for listing generation
 - **Background Removal:** remove.bg API
 - **Automation Scripts:** Node.js cross-posting adapters for marketplaces
@@ -22,6 +22,8 @@ The app is designed for **resellers and small businesses** who want to save time
 ---
 
 ## 🧱 File & Folder Structure
+
+_Note: This structure represents the intended architecture. Some directories and files may be added as features are developed._
 
 ```
 .github/
@@ -70,7 +72,7 @@ api/create-checkout-session.js         → Stripe Checkout API (for Vercel)
 
 5. **Stripe Integration:**
    - Use environment variables for secret keys.
-   - `$1 trial` → converts to `$14.99/month` subscription.
+   - `$1 trial` → converts to `$9.99/month` subscription.
    - On success: redirect to `/dashboard`.
    - On cancel: redirect to `/`.
 

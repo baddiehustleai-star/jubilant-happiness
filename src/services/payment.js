@@ -1,6 +1,6 @@
 // Stripe payment service for Photo2Profit subscriptions
 import { loadStripe } from '@stripe/stripe-js';
-import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 // Initialize Stripe

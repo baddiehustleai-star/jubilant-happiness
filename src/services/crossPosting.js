@@ -100,7 +100,7 @@ export class EbayService {
   }
 
   // Mock eBay response for development
-  mockEbayResponse(listing) {
+  mockEbayResponse(_listing) {
     return {
       success: true,
       itemId: `MOCK${Date.now()}`,

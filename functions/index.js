@@ -1,6 +1,5 @@
 // Firebase Cloud Functions for Photo2Profit Stripe Integration
 const { onCall, onRequest, HttpsError } = require('firebase-functions/v2/https');
-const { onDocumentCreated } = require('firebase-functions/v2/firestore');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
 

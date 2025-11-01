@@ -1,7 +1,8 @@
 // Stripe Payment Service for Photo2Profit
 import { loadStripe } from '@stripe/stripe-js';
-import { auth, db } from '../firebase';
+import { auth, db, functions } from '../firebase';
 import { doc, setDoc, getDoc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 
 // Initialize Stripe
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
@@ -27,30 +28,22 @@ class PaymentService {
         throw new Error('User must be authenticated');
       }
 
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          priceId,
-          userId,
-          email,
-          successUrl: `${window.location.origin}/dashboard?success=true`,
-          cancelUrl: `${window.location.origin}/dashboard?canceled=true`,
-        }),
+      // Call Firebase Cloud Function
+      const createCheckoutSession = httpsCallable(functions, 'createCheckoutSession');
+      const result = await createCheckoutSession({
+        priceId,
+        userId,
+        email,
+        successUrl: `${window.location.origin}/dashboard?success=true`,
+        cancelUrl: `${window.location.origin}/dashboard?canceled=true`,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
-
-      const session = await response.json();
+      const { sessionId } = result.data;
       
       // Redirect to Stripe Checkout
       const stripe = await this.initialize();
       const { error } = await stripe.redirectToCheckout({
-        sessionId: session.sessionId,
+        sessionId,
       });
 
       if (error) {
@@ -78,23 +71,15 @@ class PaymentService {
   // Create customer portal session
   async createCustomerPortalSession(customerId) {
     try {
-      const response = await fetch('/api/create-portal-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          customerId,
-          returnUrl: `${window.location.origin}/dashboard`,
-        }),
+      // Call Firebase Cloud Function
+      const createPortalSession = httpsCallable(functions, 'createPortalSession');
+      const result = await createPortalSession({
+        customerId,
+        returnUrl: `${window.location.origin}/dashboard`,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create portal session');
-      }
-
-      const session = await response.json();
-      window.location.href = session.url;
+      const { url } = result.data;
+      window.location.href = url;
 
     } catch (error) {
       console.error('Portal session error:', error);

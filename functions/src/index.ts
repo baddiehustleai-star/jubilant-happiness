@@ -158,7 +158,11 @@ export const stripeWebhook = functions.https.onRequest(async (req, res) => {
     event = stripe.webhooks.constructEvent(req.rawBody, sig, webhookSecret);
   } catch (err) {
     functions.logger.error('Webhook signature verification failed', { error: err });
-    res.status(400).send(`Webhook Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+    // Use JSON response to avoid XSS vulnerability
+    res.status(400).json({ 
+      error: 'Webhook signature verification failed',
+      message: err instanceof Error ? err.message : 'Unknown error'
+    });
     return;
   }
 

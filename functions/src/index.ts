@@ -261,24 +261,27 @@ export const onPhotoUpload = functions.firestore
     // - remove.bg for background removal
     // - Generate listing title, description, tags, price
 
-    // For now, just mark as processed (placeholder)
-    await snap.ref.update({
-      status: 'processing',
-      processedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
-
-    // Simulate AI processing delay
-    setTimeout(async () => {
+    // For now, mark as processed immediately (placeholder)
+    // In production, this should call actual AI services synchronously or queue for processing
+    try {
       await snap.ref.update({
         status: 'processed',
         processed: true,
+        processedAt: admin.firestore.FieldValue.serverTimestamp(),
+        // Placeholder data - replace with actual AI processing
         aiTags: ['fashion', 'clothing'],
         suggestedTitle: 'Beautiful Item',
         suggestedDescription: 'High-quality item in excellent condition.',
         suggestedPrice: '29.99',
         category: 'Clothing',
       });
-    }, 2000);
+    } catch (error) {
+      functions.logger.error('Error processing photo', { userId, uploadId, error });
+      await snap.ref.update({
+        status: 'error',
+        error: 'Failed to process image',
+      });
+    }
 
     return null;
   });

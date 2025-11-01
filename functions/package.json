@@ -2,7 +2,6 @@
   "name": "photo2profit-functions",
   "version": "1.0.0",
   "description": "Firebase Cloud Functions for Photo2Profit",
-  "type": "module",
   "main": "lib/index.js",
   "engines": {
     "node": "20"

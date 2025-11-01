@@ -1,0 +1,44 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function hasActiveSubscription() {
+      return isAuthenticated() && 
+        firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.subscriptionStatus in ['active', 'trialing'];
+    }
+    
+    function validImageFile() {
+      return request.resource.size < 25 * 1024 * 1024 && // 25MB limit
+        request.resource.contentType.matches('image/.*');
+    }
+
+    // User uploads directory
+    match /uploads/{userId}/{allPaths=**} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && 
+        hasActiveSubscription() && 
+        validImageFile();
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
+    // Public assets (logos, etc.)
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Block all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

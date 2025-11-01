@@ -80,17 +80,17 @@ export async function uploadPhoto(file, userId = 'anonymous', onProgress = null)
  */
 export async function uploadMultiplePhotos(files, userId = 'anonymous', onProgress = null) {
   const totalFiles = files.length;
-  let completedFiles = 0;
+  const completedFiles = { count: 0 }; // Use object for reference stability
 
   const uploadPromises = files.map((file) =>
     uploadPhoto(file, userId, (fileProgress) => {
       if (onProgress) {
         // Calculate overall progress
-        const overallProgress = ((completedFiles + fileProgress / 100) / totalFiles) * 100;
+        const overallProgress = ((completedFiles.count + fileProgress / 100) / totalFiles) * 100;
         onProgress(overallProgress);
       }
     }).then((result) => {
-      completedFiles++;
+      completedFiles.count++;
       return result;
     })
   );

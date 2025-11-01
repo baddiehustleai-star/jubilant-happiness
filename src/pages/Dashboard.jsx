@@ -44,8 +44,8 @@ export default function Dashboard() {
   };
 
   const handleFiles = (files) => {
-    const newItems = Array.from(files).map((file, index) => ({
-      id: Date.now() + index,
+    const newItems = Array.from(files).map((file) => ({
+      id: crypto.randomUUID(),
       name: file.name,
       file: file,
       preview: URL.createObjectURL(file),

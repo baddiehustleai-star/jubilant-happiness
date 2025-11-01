@@ -16,6 +16,7 @@ export default [
         console: 'readonly',
         URL: 'readonly',
         alert: 'readonly',
+        crypto: 'readonly',
       },
     },
     plugins: { react: reactPlugin },

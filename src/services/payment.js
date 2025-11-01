@@ -121,7 +121,17 @@ class PaymentService {
     }
   }
 
-  // Update user subscription in Firestore
+  /**
+   * Update user subscription in Firestore
+   * @param {string} userId - User ID
+   * @param {Object} subscriptionData - Subscription data with short field names
+   * @param {string} subscriptionData.status - Subscription status (mapped to subscriptionStatus)
+   * @param {string} subscriptionData.plan - Plan name (mapped to subscriptionPlan)
+   * @param {string} subscriptionData.customerId - Stripe customer ID (mapped to stripeCustomerId)
+   * @param {string} subscriptionData.subscriptionId - Stripe subscription ID (mapped to stripeSubscriptionId)
+   * @param {Date} subscriptionData.currentPeriodEnd - Period end date
+   * @param {boolean} [subscriptionData.cancelAtPeriodEnd] - Whether to cancel at period end
+   */
   async updateUserSubscription(userId, subscriptionData) {
     try {
       const userRef = doc(db, 'users', userId);

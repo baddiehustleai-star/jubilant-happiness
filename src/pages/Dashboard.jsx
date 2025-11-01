@@ -30,7 +30,11 @@ export default function Dashboard() {
 
   const handleFileInput = (e) => {
     const files = Array.from(e.target.files);
-    setUploadedFiles((prev) => [...prev, ...files]);
+    const imageFiles = files.filter((file) => file.type.startsWith('image/'));
+
+    if (imageFiles.length > 0) {
+      setUploadedFiles((prev) => [...prev, ...imageFiles]);
+    }
   };
 
   const removeFile = (index) => {

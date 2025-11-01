@@ -123,7 +123,7 @@ class UploadService {
 
       // 7. Update database with results
       this.updateUploadState(uploadId, { stage: 'finalizing', progress: 90 });
-      const finalRecord = await this.updateUploadRecord(uploadRecord.id, {
+      await this.updateUploadRecord(uploadRecord.id, {
         originalUrl: originalUpload.url,
         thumbnails,
         aiAnalysis,

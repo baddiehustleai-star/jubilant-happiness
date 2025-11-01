@@ -54,13 +54,12 @@ class PaymentService {
     const status = 'active';
     
     const subscriptionData = {
-      subscriptionStatus: status,
-      subscriptionPlan: plan,
-      stripeCustomerId: `demo_cus_${Date.now()}`,
-      stripeSubscriptionId: `demo_sub_${Date.now()}`,
+      status: status,
+      plan: plan,
+      customerId: `demo_cus_${Date.now()}`,
+      subscriptionId: `demo_sub_${Date.now()}`,
       currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
       cancelAtPeriodEnd: false,
-      updatedAt: new Date(),
     };
 
     await this.updateUserSubscription(userId, subscriptionData);
@@ -221,6 +220,11 @@ class PaymentService {
       console.error('Error tracking usage:', error);
       throw error;
     }
+  }
+
+  // Alias for trackUsage
+  async updateUsage(userId, type, count = 1) {
+    return this.trackUsage(userId, type, count);
   }
 
   // Get current month usage

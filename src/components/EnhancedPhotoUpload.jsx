@@ -1,7 +1,7 @@
 // Enhanced Photo Upload Component with AI processing
 import { useState, useRef } from 'react';
 
-export default function EnhancedPhotoUpload({ user, onUploadComplete, maxFiles = 5 }) {
+export default function EnhancedPhotoUpload({ user: _user, onUploadComplete, maxFiles = 5 }) {
   const [dragActive, setDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [processing, setProcessing] = useState(false);

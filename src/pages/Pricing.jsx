@@ -7,7 +7,6 @@ const PricingPage = () => {
   const { user } = useAuth();
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedPlan, setSelectedPlan] = useState('pro');
 
   useEffect(() => {
     if (user) {

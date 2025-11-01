@@ -1,7 +1,7 @@
 // User Dashboard - Main hub for Photo2Profit users
 import { useState, useEffect } from 'react';
 import { authService } from '../services/auth';
-import { paymentService, formatPrice, formatDate } from '../services/payment';
+import { paymentService, formatDate } from '../services/payment';
 import EnhancedPhotoUpload from '../components/EnhancedPhotoUpload';
 
 export default function Dashboard({ user }) {

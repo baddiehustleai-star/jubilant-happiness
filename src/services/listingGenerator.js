@@ -53,7 +53,7 @@ class ListingGeneratorService {
   }
 
   // OpenAI GPT-4 Vision analysis
-  async analyzeWithOpenAI(imageUrl, imageFile) {
+  async analyzeWithOpenAI(imageUrl, _imageFile) {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -199,7 +199,7 @@ class ListingGeneratorService {
   }
 
   // Generate mock listing for demo/fallback
-  generateMockListing(imageUrl) {
+  generateMockListing(_imageUrl) {
     const mockListings = [
       {
         title: 'Vintage Designer Handbag - Excellent Condition',

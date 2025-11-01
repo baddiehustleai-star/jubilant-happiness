@@ -4,97 +4,233 @@
 
 > Note for automated contributors: see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and guidance for Copilot coding agents.
 
-A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring rose-gold branding and elegant typography.
+A modern, luxe-themed SaaS platform built with **React 18 + Vite + Firebase** that helps resellers automate their listing creation with AI-powered descriptions, background removal, and multi-platform cross-posting.
 
 ## ✨ Features
 
+### Core Platform
 - 🎨 **Rose-Gold Theme** - Custom color palette with blush, rose, and gold tones
 - 💎 **Luxe Design** - Cinzel Decorative + Montserrat typography
 - ⚡ **Vite** - Lightning-fast dev server and optimized builds
-- ⚛️ **React 18** - Modern React with hooks
+- ⚛️ **React 18** - Modern React with hooks and Router
 - 🎯 **TailwindCSS** - Utility-first styling with custom configuration
 - 📱 **Responsive** - Mobile-first design approach
 
+### Business Features
+- 🔐 **Firebase Authentication** - Secure user signup and login
+- 📸 **Photo Upload** - Drag-and-drop with progress tracking
+- 🤖 **AI Listing Generation** - OpenAI/Gemini integration for smart descriptions
+- ✂️ **Background Removal** - remove.bg API integration
+- 💳 **Stripe Payment** - Subscription management ($1 trial, $14.99/mo Pro)
+- 📊 **Usage Tracking** - Monitor uploads, AI calls, and storage
+- 🌐 **Cross-Posting** - Export to eBay, Poshmark, Mercari, Depop, and more
+- ☁️ **Cloud Functions** - Automated webhook handling and weekly exports
+
 ## 🚀 Quick Start
 
+### 1️⃣ Install Dependencies
+
 ```bash
-# Install dependencies
 npm install
-
-# Start the development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview the production build
-npm run preview
 ```
 
-## 🔐 Environment variables
+### 2️⃣ Configure Environment Variables
 
-Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):
+Copy `.env.example` to `.env` and configure your API keys:
 
+```bash
+cp .env.example .env
+```
+
+Required for production:
 ```env
-# Firebase
-FIREBASE_API_KEY=
-FIREBASE_AUTH_DOMAIN=
-FIREBASE_PROJECT_ID=
-FIREBASE_STORAGE_BUCKET=
-FIREBASE_MESSAGING_SENDER_ID=
-FIREBASE_APP_ID=
+# Firebase (required)
+VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-app.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
 
-# Stripe (optional)
-STRIPE_SECRET_KEY=
-STRIPE_PRICE_ID=
-
-# APIs (optional)
-REMOVEBG_API_KEY=
-EBAY_APP_ID=
-EBAY_CERT_ID=
-EBAY_DEV_ID=
-EBAY_OAUTH_TOKEN=
-
-# SendGrid (for weekly emails in Cloud Functions)
-SENDGRID_API_KEY=
+# Stripe (required for payments)
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PRICE_ID_TRIAL=price_...
+STRIPE_PRICE_ID_PRO=price_...
+STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
-### 3️⃣ Firebase Setup
+Optional for enhanced features:
+```env
+# AI Services (for listing generation)
+VITE_OPENAI_API_KEY=sk-...
+VITE_GEMINI_API_KEY=...
 
-```bash
-firebase login
-firebase init functions
+# Background Removal
+VITE_REMOVEBG_API_KEY=...
+
+# eBay Integration
+VITE_EBAY_APP_ID=...
+VITE_EBAY_CERT_ID=...
+VITE_EBAY_DEV_ID=...
+VITE_EBAY_OAUTH_TOKEN=...
+
+# SendGrid (for weekly emails)
+SENDGRID_API_KEY=SG...
 ```
 
-Deploy the weekly scheduler:
-
-```bash
-# Set your SendGrid key
-firebase functions:config:set sendgrid.key="your_sendgrid_api_key"
-
-# Deploy just this function
-firebase deploy --only functions:weeklyExport
-```
-
-### 4️⃣ Local Development
+### 3️⃣ Start Development Server
 
 ```bash
 npm run dev
 ```
 
-Visit: **[http://localhost:5173](http://localhost:5173)**
+Visit **[http://localhost:5173](http://localhost:5173)**
+
+The app will work in demo mode even without API keys configured.
+
+## 🔥 Firebase Setup
+
+### Initial Setup
+
+1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
+
+2. Enable the following services:
+   - Authentication (Email/Password provider)
+   - Firestore Database
+   - Storage
+   - Cloud Functions
+
+3. Update `.firebaserc` with your project ID:
+```json
+{
+  "projects": {
+    "default": "your-firebase-project-id"
+  }
+}
+```
+
+4. Deploy Firestore rules and indexes:
+```bash
+firebase deploy --only firestore:rules,firestore:indexes
+```
+
+5. Deploy Storage rules:
+```bash
+firebase deploy --only storage
+```
+
+### Deploy Cloud Functions
+
+```bash
+cd functions
+npm install
+cd ..
+
+# Configure Stripe secrets
+firebase functions:config:set stripe.secret_key="sk_test_..."
+firebase functions:config:set stripe.webhook_secret="whsec_..."
+firebase functions:config:set sendgrid.key="SG..."
+
+# Deploy functions
+firebase deploy --only functions
+```
+
+### Deploy Frontend to Firebase Hosting
+
+```bash
+npm run build
+firebase deploy --only hosting
+```
 
 ---
 
-## 🌐 Deployment
+## 🌐 Alternative Deployment Options
 
-Deploy your frontend with **Vercel** or **Firebase Hosting**:
+### Vercel (Recommended for Frontend)
 
-- Connect your GitHub repo
-- Add your `.env` variables
-- Deploy the main branch
+1. Connect your GitHub repo to Vercel
+2. Add environment variables in Vercel dashboard
+3. Deploy automatically on push
 
-Your weekly scheduler runs automatically from Firebase Cloud Functions.
+### Netlify
+
+1. Connect your GitHub repo
+2. Build command: `npm run build`
+3. Publish directory: `dist`
+4. Add environment variables
+
+---
+
+## 👨‍💻 Development
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+npm run format       # Format code with Prettier
+npm run format:check # Check code formatting
+npm run test         # Run tests
+npm run test:watch   # Run tests in watch mode
+```
+
+### Project Structure
+
+```
+jubilant-happiness/
+├── src/
+│   ├── assets/           # Static assets (logos, images)
+│   ├── components/       # React components
+│   │   └── EnhancedPhotoUpload.jsx
+│   ├── pages/            # Page components
+│   │   ├── Landing.jsx   # Landing page
+│   │   ├── Auth.jsx      # Login/Signup
+│   │   ├── Dashboard.jsx # User dashboard
+│   │   └── Pricing.jsx   # Pricing page
+│   ├── services/         # Business logic services
+│   │   ├── auth.js           # Firebase Auth
+│   │   ├── upload.js         # File upload & processing
+│   │   ├── payment.js        # Stripe integration
+│   │   ├── listingGenerator.js # AI listing generation
+│   │   ├── backgroundRemoval.js # remove.bg API
+│   │   └── crossPosting.js   # Multi-platform export
+│   ├── App.jsx          # Main app component
+│   ├── main.jsx         # Entry point
+│   ├── index.css        # Global styles
+│   └── firebase.js      # Firebase config
+├── functions/           # Firebase Cloud Functions
+│   └── src/
+│       └── index.ts     # Stripe webhooks & automation
+├── tests/               # Test files
+├── firebase.json        # Firebase configuration
+├── firestore.rules      # Firestore security rules
+├── storage.rules        # Storage security rules
+└── package.json         # Dependencies & scripts
+```
+
+### Technology Stack
+
+**Frontend:**
+- React 18 with hooks
+- Vite for blazing fast builds
+- React Router for navigation
+- TailwindCSS for styling
+- Firebase SDK for backend
+
+**Backend:**
+- Firebase Authentication
+- Firestore for database
+- Firebase Storage for files
+- Cloud Functions for serverless
+
+**Integrations:**
+- Stripe for payments
+- OpenAI/Gemini for AI
+- remove.bg for background removal
+- eBay, Poshmark, Mercari APIs
 
 ---
 

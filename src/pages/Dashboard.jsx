@@ -85,7 +85,11 @@ export default function Dashboard() {
         status: 'pending'
       };
 
-      // In a real app, you would add this to Firestore
+      // Add photo metadata to Firestore
+      const { addDoc } = await import('firebase/firestore');
+      await addDoc(collection(db, 'photos'), photoData);
+
+      // Update local state
       setPhotos([photoData, ...photos]);
       window.alert('Photo uploaded successfully!');
       

@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18 <21"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,7 +14,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify": "npm run format:check && npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "firebase": "^12.5.0",

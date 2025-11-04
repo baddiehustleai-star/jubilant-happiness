@@ -31,35 +31,56 @@ npm run build
 npm run preview
 ```
 
-## 🔐 Environment variables
+## 🔐 Firebase Configuration
 
-Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):
+### Quick Setup
+1. **Copy the environment template:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Get your Firebase credentials:**
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Select project: **jubilant-happiness-11477832**
+   - Navigate to: Project Settings → General → Your apps
+   - Copy your `apiKey` and `appId` values
+   - Update the `.env` file with these values
+
+3. **Enable Firebase Services:**
+   - Authentication (Email/Password + Google)
+   - Firestore Database (test mode, location: us-central1)
+   - Storage (test mode)
+
+4. **Verify your setup:**
+   ```bash
+   ./verify-firebase-setup.sh
+   ```
+
+📚 **Detailed Instructions:** See [`GETTING_FIREBASE_API_KEYS.md`](./GETTING_FIREBASE_API_KEYS.md) for step-by-step guide
+
+### Environment Variables
+
+Your `.env` file should contain:
 
 ```env
-# Firebase
-FIREBASE_API_KEY=
-FIREBASE_AUTH_DOMAIN=
-FIREBASE_PROJECT_ID=
-FIREBASE_STORAGE_BUCKET=
-FIREBASE_MESSAGING_SENDER_ID=
-FIREBASE_APP_ID=
+# Firebase Configuration (REQUIRED)
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=jubilant-happiness-11477832.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=jubilant-happiness-11477832
+VITE_FIREBASE_STORAGE_BUCKET=jubilant-happiness-11477832.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=758851214311
+VITE_FIREBASE_APP_ID=your_app_id_here
 
 # Stripe (optional)
-STRIPE_SECRET_KEY=
-STRIPE_PRICE_ID=
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_key
+STRIPE_SECRET_KEY=sk_test_your_stripe_key
 
 # APIs (optional)
-REMOVEBG_API_KEY=
-EBAY_APP_ID=
-EBAY_CERT_ID=
-EBAY_DEV_ID=
-EBAY_OAUTH_TOKEN=
-
-# SendGrid (for weekly emails in Cloud Functions)
-SENDGRID_API_KEY=
+VITE_GEMINI_API_KEY=your_gemini_key
+VITE_REMOVEBG_API_KEY=your_removebg_key
 ```
 
-### 3️⃣ Firebase Setup
+### 3️⃣ Firebase Cloud Functions (Optional)
 
 ```bash
 firebase login

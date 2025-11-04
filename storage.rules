@@ -1,0 +1,35 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Users can upload files to their own folders
+    match /photos/{userId}/{fileName} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Users can upload files to uploads folder with their userId
+    match /uploads/{userId}/{fileName} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow users to upload profile images
+    match /profile-images/{userId}/{fileName} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Public uploads folder (be careful with this!)
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null 
+        && request.resource.size < 10 * 1024 * 1024  // Max 10MB
+        && request.resource.contentType.matches('image/.*'); // Only images
+    }
+    
+    // Processed images (can be read by owner)
+    match /processed/{userId}/{fileName} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false; // Only backend can write here
+    }
+  }
+}

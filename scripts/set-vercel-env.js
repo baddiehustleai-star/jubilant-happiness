@@ -5,7 +5,9 @@
  * Set environment variables on a Vercel project using the Vercel API.
  * Requires VERCEL_TOKEN and VERCEL_PROJECT_ID in env.
  * Usage: VERCEL_TOKEN=token VERCEL_PROJECT_ID=proj node scripts/set-vercel-env.js KEY VALUE
+ * Or: node scripts/set-vercel-env.js KEY VALUE (loads from .env.local if present)
  */
+import 'dotenv/config';
 import fetch from 'node-fetch';
 
 async function main() {

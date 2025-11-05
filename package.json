@@ -11,9 +11,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepare": "husky"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
     "firebase": "^12.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -26,6 +28,9 @@
     "autoprefixer": "^10.4.19",
     "eslint": "^9.11.1",
     "eslint-plugin-react": "^7.37.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "node-fetch": "^3.3.2",
     "postcss": "^8.4.38",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.14",
@@ -34,5 +39,14 @@
   },
   "overrides": {
     "esbuild": ">=0.24.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
   }
 }

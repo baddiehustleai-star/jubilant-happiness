@@ -12,7 +12,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "validate-setup": "node scripts/validate-setup.js"
   },
   "dependencies": {
     "firebase": "^12.5.0",

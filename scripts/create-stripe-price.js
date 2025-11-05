@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* eslint-env node */
-/* eslint-disable no-undef */
+
 /**
  * Create a Stripe product and price programmatically.
  * Expects STRIPE_SECRET_KEY in env. Prints the created price ID to stdout.

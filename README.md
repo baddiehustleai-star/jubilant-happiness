@@ -21,6 +21,13 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 # Install dependencies
 npm install
 
+# Set up your environment (see detailed guide below)
+cp .env.example .env
+# Edit .env with your configuration
+
+# Validate your setup
+npm run validate-setup
+
 # Start the development server
 npm run dev
 
@@ -31,12 +38,23 @@ npm run build
 npm run preview
 ```
 
-## 🔐 Environment variables
+## 📖 Complete Setup Guide
 
-Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):
+**First time setting up?** See **[SETUP_GUIDE.md](./SETUP_GUIDE.md)** for detailed instructions on:
+
+- ✅ Setting up local environment variables
+- ✅ Configuring Firebase
+- ✅ Setting up Stripe payments and obtaining your Price ID
+- ✅ Deploying to Vercel with environment variables
+- ✅ Configuring optional integrations (Remove.bg, eBay, SendGrid)
+- ✅ Troubleshooting common issues
+
+## 🔐 Environment Variables
+
+The project uses **dotenv** for managing environment variables. Key variables include:
 
 ```env
-# Firebase
+# Firebase (required for authentication and data storage)
 FIREBASE_API_KEY=
 FIREBASE_AUTH_DOMAIN=
 FIREBASE_PROJECT_ID=
@@ -44,20 +62,30 @@ FIREBASE_STORAGE_BUCKET=
 FIREBASE_MESSAGING_SENDER_ID=
 FIREBASE_APP_ID=
 
-# Stripe (optional)
-STRIPE_SECRET_KEY=
-STRIPE_PRICE_ID=
+# Stripe (required for payment processing)
+STRIPE_SECRET_KEY=sk_test_...              # Server-side secret
+VITE_STRIPE_PRICE_ID=price_...            # Client-visible price ID
 
-# APIs (optional)
+# Optional APIs
 REMOVEBG_API_KEY=
 EBAY_APP_ID=
 EBAY_CERT_ID=
 EBAY_DEV_ID=
 EBAY_OAUTH_TOKEN=
-
-# SendGrid (for weekly emails in Cloud Functions)
 SENDGRID_API_KEY=
 ```
+
+**Note:** Variables prefixed with `VITE_` are exposed to the browser. Keep sensitive keys like `STRIPE_SECRET_KEY` WITHOUT the `VITE_` prefix.
+
+### Validate Your Setup
+
+After configuring your `.env` file, run:
+
+```bash
+npm run validate-setup
+```
+
+This checks that all required variables are set and properly formatted.
 
 ### 3️⃣ Firebase Setup
 

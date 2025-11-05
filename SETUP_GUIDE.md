@@ -12,8 +12,8 @@ This guide will help you set up your local development environment and configure
 ## Step 1: Clone and Install
 
 ```bash
-# Clone the repository
-git clone https://github.com/baddiehustleai-star/jubilant-happiness.git
+# Clone the repository (replace with your repository URL)
+git clone <your-repository-url>
 cd jubilant-happiness
 
 # Install dependencies

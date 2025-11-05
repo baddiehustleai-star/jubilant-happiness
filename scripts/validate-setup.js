@@ -11,9 +11,9 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import dotenv from 'dotenv';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const projectRoot = join(__dirname, '..');
+const scriptFile = fileURLToPath(import.meta.url);
+const scriptDir = dirname(scriptFile);
+const projectRoot = join(scriptDir, '..');
 
 // Colors for terminal output
 const colors = {
@@ -181,7 +181,8 @@ const nodeModules = join(projectRoot, 'node_modules');
 if (existsSync(nodeModules)) {
   success('node_modules directory exists');
 
-  // Check for critical dependencies
+  // Check for critical dependencies - these are essential for the app to run
+  // Note: This list should be updated when core dependencies change
   const criticalDeps = ['react', 'vite', 'stripe', 'firebase', 'husky', 'lint-staged'];
   let allDepsInstalled = true;
 

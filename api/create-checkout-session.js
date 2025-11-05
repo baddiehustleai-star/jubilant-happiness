@@ -1,13 +1,32 @@
 /* eslint-env node */
-/* eslint-disable no-undef */
+
 // Vercel / Netlify-style serverless function to create a Stripe Checkout session.
 // Requires: environment variable STRIPE_SECRET_KEY
 
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+// Helper to load local .env file for development if STRIPE_SECRET_KEY isn't set.
+async function ensureLocalEnv() {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    try {
+      // dynamic import works in ESM and avoids requiring dotenv in production
+      const dotenv = await import('dotenv');
+      dotenv.config({ path: process.cwd() + '/.env.local' });
+      console.info('Loaded .env.local for local development');
+    } catch (e) {
+      console.warn(
+        'Could not load .env.local (this is fine in production).',
+        e && e.message ? e.message : e
+      );
+    }
+  }
+}
 
 export default async function handler(req, res) {
+  await ensureLocalEnv();
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });

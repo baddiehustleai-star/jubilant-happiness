@@ -35,4 +35,5 @@ jobs:
           node ./scripts/set-vercel-env.js VITE_STRIPE_PRICE_ID "$PRICE_ID"
 
       - name: Output success
-        run: echo "Created Stripe price and set Vercel env: $PRICE_ID"
+        run: |
+          echo "Created Stripe price and set Vercel env: $PRICE_ID"

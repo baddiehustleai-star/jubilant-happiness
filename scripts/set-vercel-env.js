@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* eslint-env node */
-/* eslint-disable no-undef */
+
 /**
  * Set environment variables on a Vercel project using the Vercel API.
  * Requires VERCEL_TOKEN and VERCEL_PROJECT_ID in env.

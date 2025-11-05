@@ -1,6 +1,7 @@
 /* eslint-env browser */
-/* global URL, Image, alert */
+/* global URL, Image, fetch */
 import React, { useState } from 'react';
+import { createCheckout } from '../lib/stripe';
 
 export default function UploadDemo() {
   const [preview, setPreview] = useState(null);
@@ -65,7 +66,37 @@ export default function UploadDemo() {
         </button>
         <button
           className="cta bg-gray-600"
-          onClick={() => alert('Upgrade flow: connect Stripe checkout (see README)')}
+          onClick={async () => {
+            try {
+              setMessage('Redirecting to checkout...');
+              const priceId = import.meta.env.VITE_STRIPE_PRICE_ID || 'price_XXXXXXXXXXXX';
+              const successUrl = window.location.origin + '/';
+              const cancelUrl = window.location.origin + '/';
+              // Use client helper if available
+              try {
+                const json = await createCheckout({ priceId, successUrl, cancelUrl });
+                if (json.url) {
+                  window.location.href = json.url;
+                } else {
+                  setMessage('Could not start checkout. Deploy and set STRIPE_SECRET_KEY on the server.');
+                }
+              } catch (err) {
+                // Fallback to direct fetch (in case helper not available)
+                console.warn('createCheckout helper failed, falling back to fetch:', err);
+                const res = await fetch('/api/create-checkout-session', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ priceId, successUrl, cancelUrl }),
+                });
+                const json = await res.json();
+                if (res.ok && json.url) window.location.href = json.url;
+                else setMessage('Checkout failed: ' + (json.error || 'unknown'));
+              }
+            } catch (err) {
+              console.error(err);
+              setMessage('Checkout failed. Ensure your serverless function and STRIPE_SECRET_KEY are configured.');
+            }
+          }}
         >
           Upgrade
         </button>

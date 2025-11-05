@@ -5,7 +5,9 @@
  * Create a Stripe product and price programmatically.
  * Expects STRIPE_SECRET_KEY in env. Prints the created price ID to stdout.
  * Usage: STRIPE_SECRET_KEY=sk_test_xxx node scripts/create-stripe-price.js
+ * Or: node scripts/create-stripe-price.js (loads from .env.local if present)
  */
+import 'dotenv/config';
 import Stripe from 'stripe';
 
 async function main() {

@@ -18,7 +18,7 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 ## 🚀 Quick Start
 
 ```bash
-# Install dependencies
+# Install dependencies (this also sets up Git hooks via husky)
 npm install
 
 # Start the development server
@@ -29,35 +29,61 @@ npm run build
 
 # Preview the production build
 npm run preview
+
+# Run tests
+npm test
+
+# Lint and format code
+npm run lint
+npm run format
 ```
+
+**Pre-commit Hooks**: The project uses Husky and lint-staged to automatically lint and format your code before each commit. This ensures consistent code quality across the project.
 
 ## 🔐 Environment variables
 
-Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):
+For **local development**, copy `.env.example` to `.env.local` and fill in your values:
+
+```bash
+# Create your local environment file (gitignored, safe for secrets)
+cp .env.example .env.local
+```
+
+Or alternatively, copy `.env.local.example` which includes helpful comments:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Then edit `.env.local` with your actual values:
 
 ```env
 # Firebase
-FIREBASE_API_KEY=
-FIREBASE_AUTH_DOMAIN=
-FIREBASE_PROJECT_ID=
-FIREBASE_STORAGE_BUCKET=
-FIREBASE_MESSAGING_SENDER_ID=
-FIREBASE_APP_ID=
+FIREBASE_API_KEY=your-firebase-api-key
+FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+FIREBASE_APP_ID=your-app-id
 
-# Stripe (optional)
-STRIPE_SECRET_KEY=
-STRIPE_PRICE_ID=
+# Stripe (for payments)
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+VITE_STRIPE_PRICE_ID=price_your_stripe_price_id
 
-# APIs (optional)
-REMOVEBG_API_KEY=
-EBAY_APP_ID=
-EBAY_CERT_ID=
-EBAY_DEV_ID=
-EBAY_OAUTH_TOKEN=
+# Optional APIs
+REMOVEBG_API_KEY=your-removebg-api-key
+EBAY_APP_ID=your-ebay-app-id
+EBAY_CERT_ID=your-ebay-cert-id
+EBAY_DEV_ID=your-ebay-dev-id
+EBAY_OAUTH_TOKEN=your-ebay-oauth-token
 
-# SendGrid (for weekly emails in Cloud Functions)
-SENDGRID_API_KEY=
+# SendGrid (for transactional emails in Cloud Functions)
+SENDGRID_API_KEY=your-sendgrid-api-key
 ```
+
+**Note:** Variables prefixed with `VITE_` are exposed to the client-side code. All other variables are only available on the server side.
+
+For **production deployment** on Vercel, set these variables in the Vercel dashboard under "Settings → Environment Variables".
 
 ### 3️⃣ Firebase Setup
 

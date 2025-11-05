@@ -4,6 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Photo2Profit 💎</title>
+
+    <!-- Google Analytics 4 (replace G-XXXXXXX) -->
+    <!-- Paste your GA4 measurement ID into the src below -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX'); // <-- REPLACE with your GA4 ID
+    </script>
+
+    <!-- Sentry (client side) - replace SENTRY_DSN -->
+    <script>
+      // Optional: Sentry for crash reporting. Replace SENTRY_DSN with your key.
+      (function () {
+        const SENTRY_DSN = 'REPLACE_WITH_SENTRY_DSN';
+        if (SENTRY_DSN && SENTRY_DSN !== 'REPLACE_WITH_SENTRY_DSN') {
+          (function (c, o, n, s, e, r) {
+            c.Sentry = e;
+            c[e] =
+              c[e] ||
+              function () {
+                (c[e].q = c[e].q || []).push(arguments);
+              };
+            r = o.createElement(n);
+            r.async = 1;
+            r.src = s;
+            o.getElementsByTagName(n)[0].parentNode.appendChild(r);
+          })(
+            window,
+            document,
+            'script',
+            'https://browser.sentry-cdn.com/7.0.0/bundle.min.js',
+            'Sentry'
+          );
+          Sentry.init({ dsn: SENTRY_DSN, tracesSampleRate: 0.1 });
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,5 +1,8 @@
-export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+/* eslint-env node */
+/* eslint-disable no-undef */
+/** CommonJS tailwind config for compatibility (includes TS/TSX content and common plugins) */
+module.exports = {
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,html}'],
   theme: {
     extend: {
       colors: {
@@ -21,5 +24,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };

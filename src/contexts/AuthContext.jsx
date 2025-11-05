@@ -1,12 +1,12 @@
 // src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { 
-  onAuthStateChanged, 
-  signOut, 
+import {
+  onAuthStateChanged,
+  signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider
+  GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -35,7 +35,8 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, 
+    const unsubscribe = onAuthStateChanged(
+      auth,
       (user) => {
         console.log('🔥 Auth state changed:', user ? 'Signed in' : 'Signed out');
         setUser(user);
@@ -53,26 +54,26 @@ export const AuthProvider = ({ children }) => {
   }, [isDemoMode]);
 
   // Demo mode functions
-  const demoSignup = async (email, password) => {
+  const demoSignup = async (email, _password) => {
     console.log('🎭 Demo signup for:', email);
     const demoUser = {
       uid: 'demo-user-' + Date.now(),
       email,
       displayName: email.split('@')[0],
-      photoURL: null
+      photoURL: null,
     };
     setUser(demoUser);
     localStorage.setItem('demoUser', JSON.stringify(demoUser));
     return { user: demoUser };
   };
 
-  const demoSignin = async (email, password) => {
+  const demoSignin = async (email, _password) => {
     console.log('🎭 Demo signin for:', email);
     const demoUser = {
       uid: 'demo-user-' + Date.now(),
       email,
       displayName: email.split('@')[0],
-      photoURL: null
+      photoURL: null,
     };
     setUser(demoUser);
     localStorage.setItem('demoUser', JSON.stringify(demoUser));
@@ -85,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       uid: 'demo-google-user',
       email: 'demo@gmail.com',
       displayName: 'Demo User',
-      photoURL: 'https://via.placeholder.com/150'
+      photoURL: 'https://via.placeholder.com/150',
     };
     setUser(demoUser);
     localStorage.setItem('demoUser', JSON.stringify(demoUser));
@@ -101,7 +102,7 @@ export const AuthProvider = ({ children }) => {
   // Real Firebase functions
   const signup = async (email, password) => {
     if (isDemoMode) return demoSignup(email, password);
-    
+
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       return result;
@@ -113,7 +114,7 @@ export const AuthProvider = ({ children }) => {
 
   const signin = async (email, password) => {
     if (isDemoMode) return demoSignin(email, password);
-    
+
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       return result;
@@ -125,7 +126,7 @@ export const AuthProvider = ({ children }) => {
 
   const signInWithGoogle = async () => {
     if (isDemoMode) return demoSignInWithGoogle();
-    
+
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
@@ -138,7 +139,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     if (isDemoMode) return demoLogout();
-    
+
     try {
       await signOut(auth);
     } catch (error) {
@@ -165,12 +166,8 @@ export const AuthProvider = ({ children }) => {
     signin,
     signInWithGoogle,
     logout,
-    isDemoMode
+    isDemoMode,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };

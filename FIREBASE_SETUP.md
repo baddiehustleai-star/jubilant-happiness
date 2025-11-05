@@ -1,6 +1,7 @@
 # Firebase Setup Guide for Photo2Profit
 
 ## Project Information
+
 - **Project ID**: `photo2profit-758851214311`
 - **Project Number**: `758851214311`
 
@@ -35,6 +36,7 @@ VITE_FIREBASE_APP_ID=1:758851214311:web:... (from Firebase Console)
 In the Firebase Console for your project:
 
 #### **Authentication**
+
 1. Go to **Authentication** > **Sign-in method**
 2. Enable **Email/Password**
 3. Enable **Google** (optional but recommended)
@@ -43,12 +45,14 @@ In the Firebase Console for your project:
    - Your production domain
 
 #### **Firestore Database**
+
 1. Go to **Firestore Database**
 2. Click **Create database**
 3. Choose **Start in test mode** (or production mode with security rules)
 4. Select a location (recommend `us-central1`)
 
 #### **Storage**
+
 1. Go to **Storage**
 2. Click **Get started**
 3. Choose **Start in test mode** (configure rules later)
@@ -57,6 +61,7 @@ In the Firebase Console for your project:
 ### 4. Security Rules (Important!)
 
 #### **Firestore Rules** (`firestore.rules`)
+
 ```javascript
 rules_version = '2';
 service cloud.firestore {
@@ -65,19 +70,19 @@ service cloud.firestore {
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    
+
     // Users can read/write their own photos
     match /photos/{photoId} {
-      allow read, write: if request.auth != null && 
+      allow read, write: if request.auth != null &&
         request.auth.uid == resource.data.userId;
     }
-    
+
     // Users can read/write their own listings
     match /listings/{listingId} {
-      allow read, write: if request.auth != null && 
+      allow read, write: if request.auth != null &&
         request.auth.uid == resource.data.userId;
     }
-    
+
     // Public read access for certain collections (if needed)
     match /public/{document=**} {
       allow read: if true;
@@ -88,6 +93,7 @@ service cloud.firestore {
 ```
 
 #### **Storage Rules** (`storage.rules`)
+
 ```javascript
 rules_version = '2';
 service firebase.storage {
@@ -96,7 +102,7 @@ service firebase.storage {
     match /users/{userId}/{allPaths=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    
+
     // Public uploads folder (if needed)
     match /uploads/{allPaths=**} {
       allow read: if true;
@@ -109,12 +115,13 @@ service firebase.storage {
 ## 💡 Usage Examples
 
 ### Basic Authentication
+
 ```javascript
 import { useAuth } from '../contexts/AuthContext';
 
 function MyComponent() {
   const { user, signin, logout } = useAuth();
-  
+
   if (user) {
     return (
       <div>
@@ -123,26 +130,16 @@ function MyComponent() {
       </div>
     );
   }
-  
-  return (
-    <button onClick={() => signin('email@example.com', 'password')}>
-      Sign In
-    </button>
-  );
+
+  return <button onClick={() => signin('email@example.com', 'password')}>Sign In</button>;
 }
 ```
 
 ### Firestore Operations
+
 ```javascript
 import { db } from '../firebase';
-import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  doc, 
-  updateDoc, 
-  deleteDoc 
-} from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 // Add a document
 const addPhoto = async (photoData) => {
@@ -150,7 +147,7 @@ const addPhoto = async (photoData) => {
     const docRef = await addDoc(collection(db, 'photos'), {
       ...photoData,
       userId: auth.currentUser.uid,
-      createdAt: new Date()
+      createdAt: new Date(),
     });
     console.log('Document written with ID: ', docRef.id);
   } catch (error) {
@@ -174,6 +171,7 @@ const getPhotos = async () => {
 ```
 
 ### Storage Operations
+
 ```javascript
 import { storage } from '../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -209,7 +207,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <App />
     </AuthProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 ```
 
@@ -222,11 +220,11 @@ import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  
+
   if (loading) {
     return <div>Loading...</div>;
   }
-  
+
   return user ? children : <Navigate to="/login" />;
 };
 
@@ -244,10 +242,12 @@ export default ProtectedRoute;
 ## 🌐 Deployment Considerations
 
 ### Vercel/Netlify
+
 - Add environment variables in your hosting platform's dashboard
 - Set `VITE_FIREBASE_AUTH_DOMAIN` to your custom domain if using one
 
 ### Custom Domain
+
 - Add your domain to Firebase Auth authorized domains
 - Update `VITE_FIREBASE_AUTH_DOMAIN` if using custom domain
 
@@ -262,16 +262,19 @@ export default ProtectedRoute;
 ## 🆘 Common Issues
 
 ### "Firebase not configured" Error
+
 - Check if all environment variables are properly set
 - Ensure `.env` file is in the project root
 - Restart your development server after changing `.env`
 
 ### Authentication Not Working
+
 - Verify your domain is in Firebase Auth authorized domains
 - Check browser console for detailed error messages
 - Ensure Auth methods are enabled in Firebase Console
 
 ### Firestore Permission Denied
+
 - Check your Firestore security rules
 - Ensure user is authenticated before making requests
 - Verify the user has permission for the specific document

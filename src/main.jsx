@@ -11,7 +11,7 @@ import './index.css';
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-luxury-gradient">
@@ -22,14 +22,14 @@ const ProtectedRoute = ({ children }) => {
       </div>
     );
   }
-  
+
   return user ? children : <Navigate to="/login" />;
 };
 
 // Public Route Component (redirect to dashboard if logged in)
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-luxury-gradient">
@@ -40,7 +40,7 @@ const PublicRoute = ({ children }) => {
       </div>
     );
   }
-  
+
   return user ? <Navigate to="/dashboard" /> : children;
 };
 
@@ -50,39 +50,36 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* Public Routes */}
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
               <PublicRoute>
                 <Landing />
               </PublicRoute>
-            } 
+            }
           />
-          <Route 
-            path="/login" 
+          <Route
+            path="/login"
             element={
               <PublicRoute>
                 <Login />
               </PublicRoute>
-            } 
+            }
           />
-          
+
           {/* Firebase Test Route (public for testing) */}
-          <Route 
-            path="/firebase-test" 
-            element={<FirebaseTest />} 
-          />
-          
+          <Route path="/firebase-test" element={<FirebaseTest />} />
+
           {/* Protected Routes */}
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
-            } 
+            }
           />
-          
+
           {/* Catch all - redirect to landing */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

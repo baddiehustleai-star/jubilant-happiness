@@ -9,13 +9,13 @@ import {
   BrandButton,
   BrandInput,
   BrandBadge,
-  Logo
+  Logo,
 } from '../components/branding';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { signin, signup, signInWithGoogle, isDemoMode } = useAuth();
-  
+  const { signin, signup, isDemoMode } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
@@ -77,7 +77,7 @@ export default function Login() {
                 placeholder="Enter your email"
                 required
               />
-              
+
               <BrandInput
                 label="Password"
                 type="password"
@@ -95,21 +95,13 @@ export default function Login() {
                 </div>
               )}
 
-              <BrandButton
-                type="submit"
-                variant="primary"
-                disabled={loading}
-                className="w-full"
-              >
-                {loading ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}
+              <BrandButton type="submit" variant="primary" disabled={loading} className="w-full">
+                {loading ? 'Processing...' : isSignUp ? 'Create Account' : 'Sign In'}
               </BrandButton>
             </form>
 
             <div className="text-center mt-6">
-              <BrandButton
-                variant="ghost"
-                onClick={() => setIsSignUp(!isSignUp)}
-              >
+              <BrandButton variant="ghost" onClick={() => setIsSignUp(!isSignUp)}>
                 {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
               </BrandButton>
             </div>

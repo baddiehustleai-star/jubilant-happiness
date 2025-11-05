@@ -6,15 +6,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  savePhoto, 
-  getUserPhotos, 
-  saveListing, 
+import {
+  savePhoto,
+  getUserPhotos,
+  saveListing,
   getUserListings,
   updateUserProfile,
   getUserProfile,
   trackUsage,
-  uploadFile 
+  uploadFile,
 } from '../services/firebaseService';
 
 // Example 1: Photo Upload Component
@@ -24,30 +24,30 @@ export const PhotoUploadExample = () => {
 
   const handleFileUpload = async (files) => {
     setUploading(true);
-    
+
     try {
       for (const file of files) {
         // 1. Upload file to Firebase Storage
         const uploadResult = await uploadFile(file, 'photos');
-        
+
         // 2. Save photo metadata to Firestore
         const photoId = await savePhoto(uploadResult);
-        
+
         // 3. Track usage for billing/analytics
-        await trackUsage('photo_upload', { 
-          photoId, 
+        await trackUsage('photo_upload', {
+          photoId,
           fileSize: file.size,
-          fileType: file.type 
+          fileType: file.type,
         });
-        
+
         console.log('Photo uploaded successfully:', photoId);
       }
-      
+
       // Refresh photos list
       loadPhotos();
     } catch (error) {
       console.error('Upload failed:', error);
-      alert('Upload failed: ' + error.message);
+      console.error('Upload failed: ' + error.message);
     } finally {
       setUploading(false);
     }
@@ -69,7 +69,7 @@ export const PhotoUploadExample = () => {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Photo Upload Example</h2>
-      
+
       <input
         type="file"
         multiple
@@ -78,9 +78,9 @@ export const PhotoUploadExample = () => {
         disabled={uploading}
         className="mb-4"
       />
-      
+
       {uploading && <p>Uploading...</p>}
-      
+
       <div className="grid grid-cols-3 gap-4">
         {photos.map((photo) => (
           <div key={photo.id} className="border rounded p-2">
@@ -96,8 +96,7 @@ export const PhotoUploadExample = () => {
 // Example 2: Listing Management Component
 export const ListingManagementExample = () => {
   const [listings, setListings] = useState([]);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
-  
+
   const generateListing = async (photo) => {
     try {
       // This would typically call your AI service
@@ -108,18 +107,18 @@ export const ListingManagementExample = () => {
         price: 29.99,
         category: 'Electronics',
         tags: ['vintage', 'collectible'],
-        platforms: ['ebay', 'mercari', 'facebook']
+        platforms: ['ebay', 'mercari', 'facebook'],
       };
-      
+
       // Save to Firestore
       const listingId = await saveListing(listingData);
-      
+
       // Track usage
-      await trackUsage('listing_generation', { 
-        listingId, 
-        photoId: photo.id 
+      await trackUsage('listing_generation', {
+        listingId,
+        photoId: photo.id,
       });
-      
+
       console.log('Listing generated:', listingId);
       loadListings();
     } catch (error) {
@@ -143,15 +142,15 @@ export const ListingManagementExample = () => {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Listing Management Example</h2>
-      
+
       {/* This would be connected to your photo selection component */}
-      <button 
+      <button
         onClick={() => generateListing({ id: 'demo', name: 'demo-photo.jpg' })}
         className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
       >
         Generate Demo Listing
       </button>
-      
+
       <div className="space-y-4">
         {listings.map((listing) => (
           <div key={listing.id} className="border rounded p-4">
@@ -181,7 +180,7 @@ export const UserProfileExample = () => {
     displayName: '',
     businessName: '',
     defaultPlatforms: [],
-    preferences: {}
+    preferences: {},
   });
 
   const loadProfile = async () => {
@@ -193,7 +192,7 @@ export const UserProfileExample = () => {
           displayName: userProfile.displayName || '',
           businessName: userProfile.businessName || '',
           defaultPlatforms: userProfile.defaultPlatforms || [],
-          preferences: userProfile.preferences || {}
+          preferences: userProfile.preferences || {},
         });
       }
     } catch (error) {
@@ -225,7 +224,7 @@ export const UserProfileExample = () => {
   return (
     <div className="p-6 max-w-md">
       <h2 className="text-2xl font-bold mb-4">User Profile Example</h2>
-      
+
       {editing ? (
         <div className="space-y-4">
           <div>
@@ -233,29 +232,26 @@ export const UserProfileExample = () => {
             <input
               type="text"
               value={formData.displayName}
-              onChange={(e) => setFormData({...formData, displayName: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
               className="w-full border rounded px-3 py-2"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium mb-1">Business Name</label>
             <input
               type="text"
               value={formData.businessName}
-              onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
               className="w-full border rounded px-3 py-2"
             />
           </div>
-          
+
           <div className="flex space-x-2">
-            <button 
-              onClick={saveProfile}
-              className="bg-green-500 text-white px-4 py-2 rounded"
-            >
+            <button onClick={saveProfile} className="bg-green-500 text-white px-4 py-2 rounded">
               Save
             </button>
-            <button 
+            <button
               onClick={() => setEditing(false)}
               className="bg-gray-500 text-white px-4 py-2 rounded"
             >
@@ -265,11 +261,17 @@ export const UserProfileExample = () => {
         </div>
       ) : (
         <div className="space-y-3">
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Display Name:</strong> {profile?.displayName || 'Not set'}</p>
-          <p><strong>Business Name:</strong> {profile?.businessName || 'Not set'}</p>
-          
-          <button 
+          <p>
+            <strong>Email:</strong> {user.email}
+          </p>
+          <p>
+            <strong>Display Name:</strong> {profile?.displayName || 'Not set'}
+          </p>
+          <p>
+            <strong>Business Name:</strong> {profile?.businessName || 'Not set'}
+          </p>
+
+          <button
             onClick={() => setEditing(true)}
             className="bg-blue-500 text-white px-4 py-2 rounded"
           >
@@ -290,7 +292,7 @@ export const AuthenticationExample = () => {
 
   const handleEmailAuth = async (e) => {
     e.preventDefault();
-    
+
     try {
       if (isSignUp) {
         await signup(email, password);
@@ -301,7 +303,7 @@ export const AuthenticationExample = () => {
       }
     } catch (error) {
       console.error('Authentication error:', error);
-      alert(error.message);
+      console.error('Error message:', error.message);
     }
   };
 
@@ -311,7 +313,7 @@ export const AuthenticationExample = () => {
       console.log('Google sign-in successful');
     } catch (error) {
       console.error('Google auth error:', error);
-      alert(error.message);
+      console.error('Error message:', error.message);
     }
   };
 
@@ -320,10 +322,7 @@ export const AuthenticationExample = () => {
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-4">Welcome, {user.email}!</h2>
         <p className="mb-4">You are successfully authenticated with Firebase.</p>
-        <button 
-          onClick={logout}
-          className="bg-red-500 text-white px-4 py-2 rounded"
-        >
+        <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded">
           Sign Out
         </button>
       </div>
@@ -332,10 +331,8 @@ export const AuthenticationExample = () => {
 
   return (
     <div className="p-6 max-w-md">
-      <h2 className="text-2xl font-bold mb-4">
-        {isSignUp ? 'Sign Up' : 'Sign In'} Example
-      </h2>
-      
+      <h2 className="text-2xl font-bold mb-4">{isSignUp ? 'Sign Up' : 'Sign In'} Example</h2>
+
       <form onSubmit={handleEmailAuth} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
@@ -347,7 +344,7 @@ export const AuthenticationExample = () => {
             className="w-full border rounded px-3 py-2"
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium mb-1">Password</label>
           <input
@@ -358,26 +355,17 @@ export const AuthenticationExample = () => {
             className="w-full border rounded px-3 py-2"
           />
         </div>
-        
-        <button 
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded"
-        >
+
+        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
           {isSignUp ? 'Sign Up' : 'Sign In'}
         </button>
       </form>
-      
-      <button 
-        onClick={handleGoogleAuth}
-        className="w-full bg-red-500 text-white py-2 rounded mt-2"
-      >
+
+      <button onClick={handleGoogleAuth} className="w-full bg-red-500 text-white py-2 rounded mt-2">
         Continue with Google
       </button>
-      
-      <button 
-        onClick={() => setIsSignUp(!isSignUp)}
-        className="w-full text-blue-500 py-2 mt-2"
-      >
+
+      <button onClick={() => setIsSignUp(!isSignUp)} className="w-full text-blue-500 py-2 mt-2">
         {isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
       </button>
     </div>
@@ -392,25 +380,25 @@ export const CompleteFirebaseDemo = () => {
         <h1 className="text-4xl font-bold text-center mb-8">
           Photo2Profit Firebase Integration Examples
         </h1>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-lg shadow">
             <AuthenticationExample />
           </div>
-          
+
           <div className="bg-white rounded-lg shadow">
             <UserProfileExample />
           </div>
-          
+
           <div className="bg-white rounded-lg shadow">
             <PhotoUploadExample />
           </div>
-          
+
           <div className="bg-white rounded-lg shadow">
             <ListingManagementExample />
           </div>
         </div>
-        
+
         <div className="mt-8 bg-blue-50 border-l-4 border-blue-400 p-4">
           <h3 className="font-bold text-blue-800 mb-2">Getting Started:</h3>
           <ol className="list-decimal list-inside text-blue-700 space-y-1">

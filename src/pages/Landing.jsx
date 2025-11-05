@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
+import {
   BrandSection,
   BrandContainer,
   BrandHeading,
@@ -9,59 +9,62 @@ import {
   BrandCard,
   BrandNavigation,
   BrandFooter,
-  Logo
+  Logo,
 } from '../components/branding';
 
 export default function Landing() {
   const navigate = useNavigate();
-  
+
   const navigationActions = [
     {
       label: 'Sign In',
       variant: 'outline',
-      onClick: () => navigate('/login')
+      onClick: () => navigate('/login'),
     },
     {
       label: 'Get Started',
       variant: 'primary',
-      onClick: () => navigate('/login')
-    }
+      onClick: () => navigate('/login'),
+    },
   ];
 
   const features = [
     {
       title: 'AI-Powered Listings',
-      description: 'Generate compelling product descriptions and titles automatically using advanced AI',
-      icon: '🤖'
+      description:
+        'Generate compelling product descriptions and titles automatically using advanced AI',
+      icon: '🤖',
     },
     {
       title: 'Background Removal',
       description: 'Professional photo editing with one-click background removal',
-      icon: '✨'
+      icon: '✨',
     },
     {
       title: 'Cross-Platform Posting',
       description: 'Post to multiple marketplaces simultaneously with optimized formatting',
-      icon: '🚀'
+      icon: '🚀',
     },
     {
       title: 'Smart Pricing',
       description: 'Get AI-suggested pricing based on market analysis and trends',
-      icon: '💰'
-    }
+      icon: '💰',
+    },
   ];
 
   const testimonials = [
     {
       name: 'Sarah Chen',
       role: 'Online Seller',
-      quote: 'Photo2Profit increased my listing efficiency by 300%. I can now focus on sourcing while the AI handles the tedious work.'
+      quote:
+        'Photo2Profit increased my listing efficiency by 300%. I can now focus on sourcing while the AI handles the tedious work.',
     },
     {
       name: 'Mike Rodriguez',
       role: 'Reseller',
-      quote: 'The background removal feature alone saves me hours each week. The AI listings are spot-on every time.'
-    }
+      quote:
+        'The background removal feature alone saves me hours each week. The AI listings are spot-on every time.',
+    },
   ];
 
   return (
@@ -78,13 +81,18 @@ export default function Landing() {
               Turn Your Photos Into Profit
             </BrandHeading>
             <BrandText variant="white" size="xl" className="max-w-3xl mx-auto mb-8">
-              AI-powered listings, professional background removal, and instant cross-posting to maximize your reselling success
+              AI-powered listings, professional background removal, and instant cross-posting to
+              maximize your reselling success
             </BrandText>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <BrandButton size="lg" variant="white" onClick={() => navigate('/login')}>
                 Start Free Trial
               </BrandButton>
-              <BrandButton size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-rose-600">
+              <BrandButton
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-rose-600"
+              >
                 Watch Demo
               </BrandButton>
             </div>
@@ -112,9 +120,7 @@ export default function Landing() {
                   <BrandHeading level={4} className="mb-3">
                     {feature.title}
                   </BrandHeading>
-                  <BrandText variant="secondary">
-                    {feature.description}
-                  </BrandText>
+                  <BrandText variant="secondary">{feature.description}</BrandText>
                 </div>
               </BrandCard>
             ))}
@@ -189,9 +195,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {testimonials.map((testimonial, index) => (
               <BrandCard key={index} variant="default" padding="lg">
-                <BrandText className="italic mb-4">
-                  "{testimonial.quote}"
-                </BrandText>
+                <BrandText className="italic mb-4">"{testimonial.quote}"</BrandText>
                 <div>
                   <BrandText weight="semibold" className="mb-1">
                     {testimonial.name}
@@ -231,29 +235,29 @@ export default function Landing() {
             items: [
               { name: 'Features', href: '#features' },
               { name: 'Pricing', href: '#pricing' },
-              { name: 'API', href: '#api' }
-            ]
+              { name: 'API', href: '#api' },
+            ],
           },
           {
             title: 'Support',
             items: [
               { name: 'Help Center', href: '#help' },
               { name: 'Contact', href: '#contact' },
-              { name: 'Status', href: '#status' }
-            ]
-          }
+              { name: 'Status', href: '#status' },
+            ],
+          },
         ]}
         social={[
           {
             name: 'Twitter',
             href: '#',
-            icon: <span>🐦</span>
+            icon: <span>🐦</span>,
           },
           {
             name: 'Facebook',
             href: '#',
-            icon: <span>📘</span>
-          }
+            icon: <span>📘</span>,
+          },
         ]}
       />
     </div>

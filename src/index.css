@@ -6,16 +6,16 @@
 
 /* Photo2Profit Brand Variables */
 :root {
-  --rose-50: #FDF4F4;
-  --rose-100: #FCE9E9;
-  --rose-500: #E6A4A4;
-  --rose-700: #B76E79;
-  --gold-300: #FBE8C4;
-  --gold-500: #F5C26B;
-  --gold-700: #D18F1A;
-  --blush: #FAF6F2;
-  --text-dark: #3D2B2B;
-  --cream: #F9F5F1;
+  --rose-50: #fdf4f4;
+  --rose-100: #fce9e9;
+  --rose-500: #e6a4a4;
+  --rose-700: #b76e79;
+  --gold-300: #fbe8c4;
+  --gold-500: #f5c26b;
+  --gold-700: #d18f1a;
+  --blush: #faf6f2;
+  --text-dark: #3d2b2b;
+  --cream: #f9f5f1;
 }
 
 /* Base Styles */
@@ -32,14 +32,20 @@ body {
 }
 
 /* Typography Hierarchy */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   color: var(--text-dark);
   line-height: 1.2;
 }
 
-.brand-title, .logo {
+.brand-title,
+.logo {
   font-family: 'Cinzel Decorative', serif;
   color: var(--rose-700);
   letter-spacing: 1px;
@@ -57,15 +63,15 @@ h1, h2, h3, h4, h5, h6 {
   .btn-brand {
     @apply bg-brand-gradient text-white rounded-full px-8 py-3 font-semibold shadow-brand transition-all duration-300 hover:scale-105 hover:shadow-brand-lg;
   }
-  
+
   .btn-brand-outline {
     @apply border-2 border-rose-500 text-rose-500 rounded-full px-8 py-3 font-semibold transition-all duration-300 hover:bg-rose-500 hover:text-white hover:scale-105;
   }
-  
+
   .btn-gold {
     @apply bg-gold-gradient text-white rounded-full px-8 py-3 font-semibold shadow-gold transition-all duration-300 hover:scale-105 hover:shadow-gold-lg;
   }
-  
+
   .btn-secondary {
     @apply bg-cream text-dark rounded-full px-8 py-3 font-semibold border border-rose-200 transition-all duration-300 hover:bg-rose-100 hover:scale-105;
   }
@@ -76,11 +82,11 @@ h1, h2, h3, h4, h5, h6 {
   .card-brand {
     @apply bg-white rounded-2xl shadow-lg border border-rose-100 overflow-hidden;
   }
-  
+
   .card-luxury {
     @apply bg-luxury-gradient rounded-2xl shadow-brand-xl border border-gold-200 overflow-hidden;
   }
-  
+
   .card-hover {
     @apply transition-all duration-300 hover:scale-105 hover:shadow-brand-lg;
   }
@@ -91,7 +97,7 @@ h1, h2, h3, h4, h5, h6 {
   .input-brand {
     @apply w-full px-4 py-3 border border-rose-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-200 transition-all duration-200 bg-white;
   }
-  
+
   .input-brand:focus {
     outline: none;
   }
@@ -102,11 +108,11 @@ h1, h2, h3, h4, h5, h6 {
   .badge-brand {
     @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-rose-100 text-rose-700;
   }
-  
+
   .badge-gold {
     @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gold-100 text-gold-700;
   }
-  
+
   .badge-success {
     @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700;
   }
@@ -117,7 +123,7 @@ h1, h2, h3, h4, h5, h6 {
   .text-brand-gradient {
     @apply bg-brand-gradient bg-clip-text text-transparent;
   }
-  
+
   .text-gold-gradient {
     @apply bg-gold-gradient bg-clip-text text-transparent;
   }
@@ -128,22 +134,28 @@ h1, h2, h3, h4, h5, h6 {
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
-  
+
   .animate-brand-pulse {
     animation: brandPulse 2s ease-in-out infinite;
   }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @keyframes brandPulse {
-  0%, 100% { 
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(230, 164, 164, 0.7);
   }
-  50% { 
+  50% {
     box-shadow: 0 0 0 20px rgba(230, 164, 164, 0);
   }
 }
@@ -183,8 +195,9 @@ h1, h2, h3, h4, h5, h6 {
   body {
     background: white !important;
   }
-  
-  .btn-brand, .btn-gold {
+
+  .btn-brand,
+  .btn-gold {
     color: var(--text-dark) !important;
     background: transparent !important;
     border: 1px solid var(--text-dark) !important;

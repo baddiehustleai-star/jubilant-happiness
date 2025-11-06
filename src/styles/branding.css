@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-body {
+/* Luxe body gradient - can be overridden by specific components */
+body.luxe-theme {
   background: linear-gradient(135deg, #F8E0E7 0%, #FFF9F9 40%, #B76E79 100%);
   font-family: 'Poppins', sans-serif;
 }

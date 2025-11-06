@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       fontFamily: {
         diamond: ['"Cinzel Decorative"', 'serif'], // Diamond-style font
-        sans: ['Poppins', 'Inter', 'sans-serif'],
+        sans: ['Poppins', 'Montserrat', 'Inter', 'sans-serif'], // Include both Poppins and Montserrat
       },
       colors: {
         // ✨ Core Luxe Palette

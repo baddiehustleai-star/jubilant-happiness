@@ -1,0 +1,38 @@
+name: Setup Stripe Price & Vercel Env
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Create Stripe product & price
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: |
+          node ./scripts/create-stripe-price.js > price-id.txt
+          PRICE_ID=$(tail -n1 price-id.txt)
+          echo "PRICE_ID=$PRICE_ID" >> $GITHUB_ENV
+
+      - name: Set Vercel env (VITE_STRIPE_PRICE_ID)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          PRICE_ID: ${{ env.PRICE_ID }}
+        run: |
+          node ./scripts/set-vercel-env.js VITE_STRIPE_PRICE_ID "$PRICE_ID"
+
+      - name: Output success
+        run: echo "Created Stripe price and set Vercel env: $PRICE_ID"

@@ -1,0 +1,9 @@
+#!/bin/sh
+# Simple pre-commit hook that runs lint-staged. We use a minimal script to avoid errors when husky install isn't present.
+# This will run lint-staged (configured in package.json) before committing.
+
+# Fail fast
+set -e
+
+# Run lint-staged
+npx --no-install lint-staged

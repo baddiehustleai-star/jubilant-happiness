@@ -1,10 +1,30 @@
-export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
+      fontFamily: {
+        diamond: ['"Cinzel Decorative"', 'serif'], // Diamond-style font
+        sans: ['Poppins', 'Inter', 'sans-serif'],
+      },
       colors: {
-        // Photo2Profit Brand Colors
-        blush: '#FAF6F2',
+        // ✨ Core Luxe Palette
+        rosegold: {
+          DEFAULT: '#B76E79', // Metallic Rose Gold
+          light: '#E9CBA7',   // Champagne highlight
+          dark: '#8C4F58',    // Deep rose tone
+        },
+        blush: {
+          DEFAULT: '#F8E0E7', // Soft blush pink
+          light: '#FFF5F8',
+        },
+        diamond: '#E0E0E0',     // Silver sparkle accent
+        money: '#8DD3B1',       // Profit highlight green
+        softwhite: '#FFF9F9',   // Background white
+        // Legacy brand colors (keeping for backward compatibility)
         rose: {
           50: '#FDF4F4',
           100: '#FCE9E9',
@@ -36,21 +56,34 @@ export default {
           dark: '#D18F1A',
         },
         dark: '#3D2B2B',
-        // Additional brand variations
         cream: '#F9F5F1',
         bronze: '#CD7F32',
         champagne: '#F7E7CE',
-        // Status colors that match brand
         success: '#4ADE80',
-        warning: '#F5C26B', // Using brand gold
+        warning: '#F5C26B',
         error: '#EF4444',
-        info: '#E6A4A4', // Using brand rose
+        info: '#E6A4A4',
       },
-      fontFamily: {
-        diamond: ["'Cinzel Decorative'", 'serif'],
-        sans: ["'Montserrat'", 'sans-serif'],
-        display: ["'Cinzel Decorative'", 'serif'],
-        body: ["'Montserrat'", 'sans-serif'],
+      backgroundImage: {
+        // 💎 Metallic gradient backgrounds
+        'luxe-gradient': 'linear-gradient(135deg, #F8E0E7 0%, #B76E79 45%, #E9CBA7 100%)',
+        'diamond-glow': 'radial-gradient(circle at 30% 30%, #FFF5F8 0%, #F8E0E7 50%, #B76E79 100%)',
+        // Legacy gradients (keeping for backward compatibility)
+        'brand-gradient': 'linear-gradient(90deg, #E6A4A4, #F5C26B)',
+        'brand-gradient-r': 'linear-gradient(270deg, #E6A4A4, #F5C26B)',
+        'brand-gradient-vertical': 'linear-gradient(180deg, #E6A4A4, #F5C26B)',
+        'rose-gradient': 'linear-gradient(90deg, #FCE9E9, #E6A4A4)',
+        'gold-gradient': 'linear-gradient(90deg, #FBE8C4, #F5C26B)',
+        'luxury-gradient': 'linear-gradient(135deg, #FCE9E9 0%, #E6A4A4 25%, #F5C26B 75%, #FBE8C4 100%)',
+      },
+      boxShadow: {
+        'soft-glow': '0 4px 10px rgba(183, 110, 121, 0.3)',
+        'inner-glow': 'inset 0 0 8px rgba(233, 203, 167, 0.4)',
+        'brand': '0 4px 15px rgba(183, 110, 121, 0.4)',
+        'brand-lg': '0 6px 20px rgba(183, 110, 121, 0.5)',
+        'brand-xl': '0 10px 30px rgba(183, 110, 121, 0.3)',
+        'gold': '0 4px 15px rgba(245, 194, 107, 0.4)',
+        'gold-lg': '0 6px 20px rgba(245, 194, 107, 0.5)',
       },
       fontSize: {
         'brand-xs': ['0.75rem', { lineHeight: '1rem' }],
@@ -68,21 +101,6 @@ export default {
         '18': '4.5rem',
         '88': '22rem',
         '128': '32rem',
-      },
-      boxShadow: {
-        'brand': '0 4px 15px rgba(183, 110, 121, 0.4)',
-        'brand-lg': '0 6px 20px rgba(183, 110, 121, 0.5)',
-        'brand-xl': '0 10px 30px rgba(183, 110, 121, 0.3)',
-        'gold': '0 4px 15px rgba(245, 194, 107, 0.4)',
-        'gold-lg': '0 6px 20px rgba(245, 194, 107, 0.5)',
-      },
-      backgroundImage: {
-        'brand-gradient': 'linear-gradient(90deg, #E6A4A4, #F5C26B)',
-        'brand-gradient-r': 'linear-gradient(270deg, #E6A4A4, #F5C26B)',
-        'brand-gradient-vertical': 'linear-gradient(180deg, #E6A4A4, #F5C26B)',
-        'rose-gradient': 'linear-gradient(90deg, #FCE9E9, #E6A4A4)',
-        'gold-gradient': 'linear-gradient(90deg, #FBE8C4, #F5C26B)',
-        'luxury-gradient': 'linear-gradient(135deg, #FCE9E9 0%, #E6A4A4 25%, #F5C26B 75%, #FBE8C4 100%)',
       },
       animation: {
         'brand-pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',

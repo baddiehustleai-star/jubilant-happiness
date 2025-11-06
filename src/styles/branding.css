@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@400;600&display=swap');
+
+body {
+  background: linear-gradient(135deg, #F8E0E7 0%, #FFF9F9 40%, #B76E79 100%);
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, .diamond-text {
+  font-family: 'Cinzel Decorative', serif;
+  color: #B76E79;
+  background: linear-gradient(135deg, #E9CBA7, #B76E79);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 3px rgba(183, 110, 121, 0.2);
+}
+
+.btn-primary {
+  background: #B76E79;
+  color: white;
+  border-radius: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(183, 110, 121, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+.btn-primary:hover {
+  background: #E9CBA7;
+  color: #B76E79;
+  box-shadow: 0 0 12px rgba(233, 203, 167, 0.6);
+}

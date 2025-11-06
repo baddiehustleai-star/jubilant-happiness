@@ -6,6 +6,9 @@ import Landing from './pages/Landing.jsx';
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import FirebaseTest from './pages/FirebaseTest.jsx';
+import BrandTest from './components/BrandTest.jsx';
+import AuthTest from './components/AuthTest.jsx';
+import DashboardTest from './components/DashboardTest.jsx';
 import './index.css';
 
 // Protected Route Component
@@ -71,6 +74,24 @@ function App() {
           <Route 
             path="/firebase-test" 
             element={<FirebaseTest />} 
+          />
+          
+          {/* Brand Test Route (public for testing) */}
+          <Route 
+            path="/brand-test" 
+            element={<BrandTest />} 
+          />
+          
+          {/* Auth Test Route (public for testing) */}
+          <Route 
+            path="/auth-test" 
+            element={<AuthTest />} 
+          />
+          
+          {/* Dashboard Test Route (public for testing) */}
+          <Route 
+            path="/dashboard-test" 
+            element={<DashboardTest />} 
           />
           
           {/* Protected Routes */}

@@ -176,3 +176,16 @@ For setup help or business collaboration:
 ## 🤝 Contributing
 
 Please see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and CI expectations. Pull requests should pass lint, format:check, tests, and build.
+
+---
+
+## 🚀 Multi-Platform Release Guide
+
+Follow **[GOOGLE_PLAY_RELEASE.md](./GOOGLE_PLAY_RELEASE.md)** for Android  
+*(works on Linux or Windows using Android Studio)*  
+
+Follow **[APPLE_APP_STORE_RELEASE.md](./APPLE_APP_STORE_RELEASE.md)** for iOS  
+*(requires macOS and Xcode)*  
+
+Photo2Profit is ready to dominate web + mobile! 💎  
+Manifested by **Hustle & Heal™**

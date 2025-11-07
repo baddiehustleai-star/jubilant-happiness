@@ -1,0 +1,37 @@
+# 💎 Photo2Profit Icons
+
+This folder contains app icons for PWA, Android (Google Play), and iOS (App Store) deployment.
+
+## 📱 Required Icons
+
+Generate these sizes from your master icon design:
+
+- `icon-72x72.png` - Android legacy
+- `icon-96x96.png` - Android small
+- `icon-128x128.png` - Android medium
+- `icon-144x144.png` - Android large
+- `icon-152x152.png` - iOS small
+- `icon-192x192.png` - Android standard
+- `icon-384x384.png` - Android high-res
+- `icon-512x512.png` - PWA splash screens
+
+## 🎨 Design Guidelines
+
+**Brand Colors:**
+- Rose Gold: `#B76E79`
+- Champagne Gold: `#E9CBA7`
+- Soft Blush: `#F8E0E7`
+
+**Design Rules:**
+- ✅ Transparent background for PWA/Android
+- ❌ No transparency for iOS App Store (separate 1024×1024)
+- 💎 Diamond/gem motif with rose-gold gradient
+- 📸 Camera or photo element
+
+## 🚀 Quick Generate
+
+See `/public/icons/README.md` for complete icon generation and deployment guide.
+
+---
+
+> Manifested by **Hustle & Heal™** 💎

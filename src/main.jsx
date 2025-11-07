@@ -7,6 +7,8 @@ import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import FirebaseTest from './pages/FirebaseTest.jsx';
 import './index.css';
+import './styles/branding.css';
+import './styles/mobile.css';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {

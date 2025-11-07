@@ -1,0 +1,43 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Background -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8E0E7"/>
+      <stop offset="50%" style="stop-color:#B76E79"/>
+      <stop offset="100%" style="stop-color:#E9CBA7"/>
+    </linearGradient>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E9CBA7"/>
+      <stop offset="100%" style="stop-color:#B76E79"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <rect width="192" height="192" rx="32" fill="url(#bgGradient)"/>
+  
+  <!-- Camera Icon -->
+  <g transform="translate(48, 48)">
+    <!-- Camera Body -->
+    <rect x="12" y="24" width="72" height="48" rx="8" fill="url(#iconGradient)" stroke="#FFF" stroke-width="2"/>
+    <!-- Camera Lens -->
+    <circle cx="48" cy="48" r="16" fill="#FFF" stroke="url(#iconGradient)" stroke-width="3"/>
+    <circle cx="48" cy="48" r="10" fill="url(#iconGradient)"/>
+    <!-- Camera Flash -->
+    <rect x="20" y="16" width="8" height="8" rx="2" fill="#FFF"/>
+    <!-- Viewfinder -->
+    <rect x="32" y="16" width="16" height="8" rx="4" fill="url(#iconGradient)"/>
+  </g>
+  
+  <!-- Dollar Sign Overlay -->
+  <g transform="translate(120, 120)">
+    <circle cx="24" cy="24" r="20" fill="#8DD3B1" stroke="#FFF" stroke-width="2"/>
+    <text x="24" y="30" text-anchor="middle" fill="#FFF" font-family="Arial, sans-serif" font-size="20" font-weight="bold">$</text>
+  </g>
+  
+  <!-- Sparkle Effects -->
+  <g fill="#FFF" opacity="0.8">
+    <polygon points="32,32 34,28 36,32 40,30 36,34 34,38 32,34 28,36" />
+    <polygon points="152,48 154,44 156,48 160,46 156,50 154,54 152,50 148,52" />
+    <polygon points="168,128 170,124 172,128 176,126 172,130 170,134 168,130 164,132" />
+  </g>
+</svg>

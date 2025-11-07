@@ -1,5 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Hero from '../components/Hero';
+import Footer from '../components/Footer';
+import PWAInstallPrompt from '../components/PWAInstallPrompt';
 import { 
   BrandSection,
   BrandContainer,
@@ -7,9 +10,7 @@ import {
   BrandText,
   BrandButton,
   BrandCard,
-  BrandNavigation,
-  BrandFooter,
-  Logo
+  BrandNavigation
 } from '../components/branding';
 
 export default function Landing() {
@@ -69,28 +70,8 @@ export default function Landing() {
       {/* Navigation */}
       <BrandNavigation actions={navigationActions} />
 
-      {/* Hero Section */}
-      <BrandSection background="gradient" padding="xl">
-        <BrandContainer>
-          <div className="text-center">
-            <Logo size="lg" variant="white" className="mx-auto mb-8" />
-            <BrandHeading level={1} variant="white" gradient={false} className="mb-6">
-              Turn Your Photos Into Profit
-            </BrandHeading>
-            <BrandText variant="white" size="xl" className="max-w-3xl mx-auto mb-8">
-              AI-powered listings, professional background removal, and instant cross-posting to maximize your reselling success
-            </BrandText>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <BrandButton size="lg" variant="white" onClick={() => navigate('/login')}>
-                Start Free Trial
-              </BrandButton>
-              <BrandButton size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-rose-600">
-                Watch Demo
-              </BrandButton>
-            </div>
-          </div>
-        </BrandContainer>
-      </BrandSection>
+      {/* Hero Section with Luxe Theme */}
+      <Hero />
 
       {/* Features Section */}
       <BrandSection background="white" padding="xl">
@@ -223,39 +204,11 @@ export default function Landing() {
         </BrandContainer>
       </BrandSection>
 
-      {/* Footer */}
-      <BrandFooter
-        links={[
-          {
-            title: 'Product',
-            items: [
-              { name: 'Features', href: '#features' },
-              { name: 'Pricing', href: '#pricing' },
-              { name: 'API', href: '#api' }
-            ]
-          },
-          {
-            title: 'Support',
-            items: [
-              { name: 'Help Center', href: '#help' },
-              { name: 'Contact', href: '#contact' },
-              { name: 'Status', href: '#status' }
-            ]
-          }
-        ]}
-        social={[
-          {
-            name: 'Twitter',
-            href: '#',
-            icon: <span>🐦</span>
-          },
-          {
-            name: 'Facebook',
-            href: '#',
-            icon: <span>📘</span>
-          }
-        ]}
-      />
+      {/* Simple Luxe Footer */}
+      <Footer />
+
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
     </div>
   );
 }

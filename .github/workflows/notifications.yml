@@ -1,0 +1,93 @@
+name: 📢 Deployment Notifications
+
+on:
+  workflow_run:
+    workflows: ["🚀 Deploy to Vercel (with Cloud Run Gatekeeper)"]
+    types:
+      - completed
+
+jobs:
+  notify:
+    name: 🔔 Send Deployment Alert
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: 📥 Get workflow status
+      id: status
+      run: |
+        if [ "${{ github.event.workflow_run.conclusion }}" == "success" ]; then
+          echo "STATUS=✅ SUCCESS" >> $GITHUB_OUTPUT
+          echo "COLOR=3066993" >> $GITHUB_OUTPUT  # Green
+          echo "MESSAGE=Photo2Profit deployed successfully! 💎" >> $GITHUB_OUTPUT
+        else
+          echo "STATUS=🚨 BLOCKED" >> $GITHUB_OUTPUT  
+          echo "COLOR=15158332" >> $GITHUB_OUTPUT  # Red
+          echo "MESSAGE=Deployment blocked by gatekeeper! Backend health check failed." >> $GITHUB_OUTPUT
+        fi
+
+    - name: 🔔 Discord Notification
+      if: secrets.DISCORD_WEBHOOK != ''
+      uses: Ilshidur/action-discord@master
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        DISCORD_EMBEDS: |
+          [
+            {
+              "title": "Photo2Profit Deployment",
+              "description": "${{ steps.status.outputs.MESSAGE }}",
+              "color": ${{ steps.status.outputs.COLOR }},
+              "fields": [
+                {
+                  "name": "Status",
+                  "value": "${{ steps.status.outputs.STATUS }}",
+                  "inline": true
+                },
+                {
+                  "name": "Branch",
+                  "value": "${{ github.event.workflow_run.head_branch }}",
+                  "inline": true
+                },
+                {
+                  "name": "Commit",
+                  "value": "${{ github.event.workflow_run.head_sha }}",
+                  "inline": true
+                }
+              ],
+              "timestamp": "${{ github.event.workflow_run.updated_at }}"
+            }
+          ]
+
+    - name: 📧 Email Notification (Success)
+      if: github.event.workflow_run.conclusion == 'success'
+      run: |
+        echo "🎉 SUCCESS: Photo2Profit deployment completed!"
+        echo "✅ All backend endpoints healthy"
+        echo "🚀 Frontend deployed to production"
+        echo "💎 Photo2Payday Baddie Mode is LIVE!"
+
+    - name: 🚨 Email Notification (Blocked)  
+      if: github.event.workflow_run.conclusion != 'success'
+      run: |
+        echo "🚨 ALERT: Photo2Profit deployment BLOCKED!"
+        echo "❌ Backend health check failed"
+        echo "🛡️ Gatekeeper prevented broken code from going live"
+        echo ""
+        echo "🔍 Next steps:"
+        echo "1. Check Cloud Run logs: gcloud logs read --service=photo2profit-api"
+        echo "2. Test endpoints: npm run verify:prod"
+        echo "3. Fix issues and push again"
+        echo ""
+        echo "⚠️ Production site remains on last known good build"
+
+    # Optional: Slack notification
+    - name: 📱 Slack Notification
+      if: secrets.SLACK_WEBHOOK != ''
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ steps.status.outputs.STATUS }}
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+        text: |
+          Photo2Profit Deployment: ${{ steps.status.outputs.STATUS }}
+          ${{ steps.status.outputs.MESSAGE }}

@@ -1,0 +1,211 @@
+/* Mobile-First PWA Styles for Photo2Profit */
+
+/* Touch-friendly button sizing */
+.mobile-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.mobile-btn:active {
+  transform: scale(0.98);
+}
+
+/* Safe area handling for devices with notches */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Mobile navigation */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(248, 224, 231, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(183, 110, 121, 0.2);
+  padding: env(safe-area-inset-bottom) 0 0 0;
+  z-index: 1000;
+}
+
+/* Full-screen camera view */
+.camera-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  z-index: 9999;
+}
+
+/* Mobile-optimized card layouts */
+.mobile-card {
+  margin: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(183, 110, 121, 0.15);
+}
+
+/* Swipe indicators */
+.swipe-indicator {
+  width: 4px;
+  height: 30px;
+  background: linear-gradient(to bottom, transparent, rgba(183, 110, 121, 0.5), transparent);
+  border-radius: 2px;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Mobile typography scaling */
+@media (max-width: 768px) {
+  .mobile-hero-title {
+    font-size: 2.5rem !important;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  
+  .mobile-hero-subtitle {
+    font-size: 1.25rem !important;
+    margin-bottom: 24px;
+  }
+  
+  .mobile-section-padding {
+    padding: 60px 20px;
+  }
+}
+
+/* PWA install prompt */
+.pwa-install-prompt {
+  position: fixed;
+  bottom: 80px;
+  left: 16px;
+  right: 16px;
+  background: linear-gradient(135deg, #B76E79, #E9CBA7);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(183, 110, 121, 0.3);
+  z-index: 1001;
+  transform: translateY(100px);
+  transition: transform 0.3s ease;
+}
+
+.pwa-install-prompt.show {
+  transform: translateY(0);
+}
+
+/* Loading states for mobile */
+.mobile-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 40px 20px;
+}
+
+.mobile-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(183, 110, 121, 0.2);
+  border-top: 3px solid #B76E79;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Haptic feedback classes */
+.haptic-light:active {
+  opacity: 0.8;
+}
+
+.haptic-medium:active {
+  opacity: 0.7;
+}
+
+.haptic-heavy:active {
+  opacity: 0.6;
+}
+
+/* Mobile photo upload area */
+.mobile-upload-area {
+  min-height: 200px;
+  border: 2px dashed rgba(183, 110, 121, 0.3);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  margin: 20px;
+  background: linear-gradient(135deg, rgba(248, 224, 231, 0.5), rgba(233, 203, 167, 0.3));
+  transition: all 0.2s ease;
+}
+
+.mobile-upload-area:active {
+  transform: scale(0.98);
+  border-color: #B76E79;
+  background: linear-gradient(135deg, rgba(248, 224, 231, 0.8), rgba(233, 203, 167, 0.5));
+}
+
+/* Bottom sheet for mobile actions */
+.mobile-bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  z-index: 1002;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.mobile-bottom-sheet.open {
+  transform: translateY(0);
+}
+
+.mobile-bottom-sheet-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.mobile-bottom-sheet-backdrop.open {
+  opacity: 1;
+  pointer-events: all;
+}

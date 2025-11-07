@@ -1,100 +1,96 @@
+/** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
+      fontFamily: {
+        diamond: ['"Cinzel Decorative"', 'serif'], // Diamond-style font
+        sans: ['Poppins', 'Inter', 'sans-serif'],
+      },
       colors: {
-        // Photo2Profit Brand Colors
-        blush: '#FAF6F2',
+        // ✨ Core Luxe Palette
+        rosegold: {
+          DEFAULT: '#B76E79', // Metallic Rose Gold
+          light: '#E9CBA7',   // Champagne highlight
+          dark: '#8C4F58',    // Deep rose tone
+        },
+        blush: {
+          DEFAULT: '#F8E0E7', // Soft blush pink
+          light: '#FFF5F8',
+        },
+        diamond: '#E0E0E0',     // Silver sparkle accent
+        money: '#8DD3B1',       // Profit highlight green
+        softwhite: '#FFF9F9',   // Background white
+        
+        // Enhanced brand colors for compatibility
         rose: {
-          50: '#FDF4F4',
-          100: '#FCE9E9',
-          200: '#F8D1D1',
-          300: '#F4B8B8',
-          400: '#ED9090',
-          500: '#E6A4A4', // Main brand rose
-          600: '#D67979',
-          700: '#B76E79', // Dark rose
-          800: '#8A5259',
-          900: '#5D383C',
-          light: '#FCE9E9',
-          DEFAULT: '#E6A4A4',
-          dark: '#B76E79',
+          50: '#FFF1F2',
+          100: '#FFE4E6',
+          200: '#FECDD3',
+          300: '#FDA4AF',
+          400: '#FB7185',
+          500: '#F43F5E',
+          600: '#E11D48',
+          700: '#BE123C',
+          800: '#9F1239',
+          900: '#881337',
         },
         gold: {
-          50: '#FEFCF3',
-          100: '#FEF7E0',
-          200: '#FCEFC0',
-          300: '#FBE8C4', // Soft gold
-          400: '#F8D882',
-          500: '#F5C26B', // Main brand gold
-          600: '#E8A93D',
-          700: '#D18F1A',
-          800: '#A16F0F',
-          900: '#6B4A0A',
-          soft: '#FBE8C4',
-          DEFAULT: '#F5C26B',
-          dark: '#D18F1A',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
         },
-        dark: '#3D2B2B',
-        // Additional brand variations
-        cream: '#F9F5F1',
-        bronze: '#CD7F32',
-        champagne: '#F7E7CE',
-        // Status colors that match brand
-        success: '#4ADE80',
-        warning: '#F5C26B', // Using brand gold
-        error: '#EF4444',
-        info: '#E6A4A4', // Using brand rose
-      },
-      fontFamily: {
-        diamond: ["'Cinzel Decorative'", 'serif'],
-        sans: ["'Montserrat'", 'sans-serif'],
-        display: ["'Cinzel Decorative'", 'serif'],
-        body: ["'Montserrat'", 'sans-serif'],
-      },
-      fontSize: {
-        'brand-xs': ['0.75rem', { lineHeight: '1rem' }],
-        'brand-sm': ['0.875rem', { lineHeight: '1.25rem' }],
-        'brand-base': ['1rem', { lineHeight: '1.5rem' }],
-        'brand-lg': ['1.125rem', { lineHeight: '1.75rem' }],
-        'brand-xl': ['1.25rem', { lineHeight: '1.75rem' }],
-        'brand-2xl': ['1.5rem', { lineHeight: '2rem' }],
-        'brand-3xl': ['1.875rem', { lineHeight: '2.25rem' }],
-        'brand-4xl': ['2.25rem', { lineHeight: '2.5rem' }],
-        'brand-5xl': ['3rem', { lineHeight: '1' }],
-        'brand-6xl': ['3.75rem', { lineHeight: '1' }],
-      },
-      spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '128': '32rem',
-      },
-      boxShadow: {
-        'brand': '0 4px 15px rgba(183, 110, 121, 0.4)',
-        'brand-lg': '0 6px 20px rgba(183, 110, 121, 0.5)',
-        'brand-xl': '0 10px 30px rgba(183, 110, 121, 0.3)',
-        'gold': '0 4px 15px rgba(245, 194, 107, 0.4)',
-        'gold-lg': '0 6px 20px rgba(245, 194, 107, 0.5)',
+        cream: '#FEF7CD',
+        dark: '#1F2937',
       },
       backgroundImage: {
-        'brand-gradient': 'linear-gradient(90deg, #E6A4A4, #F5C26B)',
-        'brand-gradient-r': 'linear-gradient(270deg, #E6A4A4, #F5C26B)',
-        'brand-gradient-vertical': 'linear-gradient(180deg, #E6A4A4, #F5C26B)',
-        'rose-gradient': 'linear-gradient(90deg, #FCE9E9, #E6A4A4)',
-        'gold-gradient': 'linear-gradient(90deg, #FBE8C4, #F5C26B)',
-        'luxury-gradient': 'linear-gradient(135deg, #FCE9E9 0%, #E6A4A4 25%, #F5C26B 75%, #FBE8C4 100%)',
+        // 💎 Metallic gradient backgrounds
+        'luxe-gradient': 'linear-gradient(135deg, #F8E0E7 0%, #B76E79 45%, #E9CBA7 100%)',
+        'diamond-glow': 'radial-gradient(circle at 30% 30%, #FFF5F8 0%, #F8E0E7 50%, #B76E79 100%)',
+        // Additional gradients for compatibility
+        'brand-gradient': 'linear-gradient(135deg, #E11D48 0%, #F59E0B 100%)',
+        'luxury-gradient': 'linear-gradient(135deg, #FDF2F4 0%, #FCE7EA 25%, #F9D1D8 50%, #F4A5B3 75%, #ED7287 100%)',
+        'gold-gradient': 'linear-gradient(135deg, #FEF3C7 0%, #F59E0B 100%)',
+      },
+      boxShadow: {
+        'soft-glow': '0 4px 10px rgba(183, 110, 121, 0.3)',
+        'inner-glow': 'inset 0 0 8px rgba(233, 203, 167, 0.4)',
+        // Additional shadows for compatibility
+        'brand': '0 4px 14px 0 rgba(225, 29, 72, 0.25)',
+        'brand-lg': '0 10px 25px -3px rgba(225, 29, 72, 0.3)',
+        'brand-xl': '0 25px 50px -12px rgba(225, 29, 72, 0.4)',
+        'gold': '0 4px 14px 0 rgba(245, 158, 11, 0.25)',
+        'gold-lg': '0 10px 25px -3px rgba(245, 158, 11, 0.3)',
       },
       animation: {
-        'brand-pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'brand-bounce': 'bounce 1s infinite',
-        'brand-float': 'float 3s ease-in-out infinite',
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.6s ease-out',
+        'shimmer': 'shimmer 2s linear infinite',
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        }
-      }
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(30px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+      },
     },
   },
   plugins: [],

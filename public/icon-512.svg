@@ -1,0 +1,55 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Background -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8E0E7"/>
+      <stop offset="50%" style="stop-color:#B76E79"/>
+      <stop offset="100%" style="stop-color:#E9CBA7"/>
+    </linearGradient>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E9CBA7"/>
+      <stop offset="100%" style="stop-color:#B76E79"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E9CBA7"/>
+      <stop offset="50%" style="stop-color:#B76E79"/>
+      <stop offset="100%" style="stop-color:#E9CBA7"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <rect width="512" height="512" rx="80" fill="url(#bgGradient)"/>
+  
+  <!-- Main Camera Icon -->
+  <g transform="translate(128, 128)">
+    <!-- Camera Body -->
+    <rect x="32" y="64" width="192" height="128" rx="20" fill="url(#iconGradient)" stroke="#FFF" stroke-width="4"/>
+    <!-- Camera Lens -->
+    <circle cx="128" cy="128" r="40" fill="#FFF" stroke="url(#iconGradient)" stroke-width="6"/>
+    <circle cx="128" cy="128" r="26" fill="url(#iconGradient)"/>
+    <circle cx="128" cy="128" r="16" fill="#FFF" opacity="0.3"/>
+    <!-- Camera Flash -->
+    <rect x="56" y="40" width="20" height="20" rx="4" fill="#FFF"/>
+    <!-- Viewfinder -->
+    <rect x="88" y="40" width="40" height="20" rx="10" fill="url(#iconGradient)"/>
+  </g>
+  
+  <!-- Dollar Sign Overlay -->
+  <g transform="translate(320, 320)">
+    <circle cx="64" cy="64" r="52" fill="#8DD3B1" stroke="#FFF" stroke-width="4"/>
+    <text x="64" y="78" text-anchor="middle" fill="#FFF" font-family="Arial, sans-serif" font-size="48" font-weight="bold">$</text>
+  </g>
+  
+  <!-- Brand Text -->
+  <g transform="translate(256, 420)">
+    <text x="0" y="0" text-anchor="middle" fill="url(#textGradient)" font-family="serif" font-size="32" font-weight="bold">P2P</text>
+  </g>
+  
+  <!-- Sparkle Effects -->
+  <g fill="#FFF" opacity="0.9">
+    <polygon points="80,80 86,68 92,80 104,74 92,86 86,98 80,86 68,92" />
+    <polygon points="400,120 406,108 412,120 424,114 412,126 406,138 400,126 388,132" />
+    <polygon points="440,340 446,328 452,340 464,334 452,346 446,358 440,346 428,352" />
+    <polygon points="120,380 126,368 132,380 144,374 132,386 126,398 120,386 108,392" />
+  </g>
+</svg>

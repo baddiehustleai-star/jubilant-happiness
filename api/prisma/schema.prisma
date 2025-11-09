@@ -1,0 +1,76 @@
+// Prisma schema for Photo2Profit API
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String               @id @default(cuid())
+  email               String               @unique
+  name                String?
+  listings            Listing[]
+  marketplaceAccounts MarketplaceAccount[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+}
+
+model Listing {
+  id              String           @id @default(cuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  title           String
+  description     String
+  price           Decimal          @db.Decimal(10, 2)
+  imageUrl        String?
+  condition       String?
+  category        String?
+  sold            Boolean          @default(false)
+  status          String           @default("active")
+  archivedAt      DateTime?
+  channelListings ChannelListing[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model MarketplaceAccount {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  platform     String   // 'facebook' | 'ebay' | 'poshmark'
+  accessToken  String?
+  refreshToken String?
+  meta         Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, platform], name: "userId_platform")
+}
+
+model ChannelListing {
+  id         String   @id @default(cuid())
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  platform   String   // 'facebook' | 'ebay' | 'poshmark'
+  externalId String?  // fb_product_id, ebay_offer_id, poshmark id/url
+  status     String   @default("active")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([listingId, platform], name: "listing_platform")
+}
+
+model AuditEvent {
+  id          String   @id @default(cuid())
+  listingId   String?
+  channelId   String?
+  platform    String?
+  type        String   // 'publish' | 'sold' | 'price_change' | 'delist'
+  detail      String?
+  payload     Json?
+  createdAt   DateTime @default(now())
+}

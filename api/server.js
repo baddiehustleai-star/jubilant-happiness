@@ -8,6 +8,10 @@ import admin from 'firebase-admin';
 import multer from 'multer';
 import sharp from 'sharp';
 import Stripe from 'stripe';
+// New imports for webhook routing
+import webhooksRouter from './routes/webhooks.routes.js';
+import listingsV2Router from './routes/listings.prisma.routes.js';
+import integrationsV2Router from './routes/integrations.prisma.routes.js';
 
 // Load environment variables
 dotenv.config();
@@ -90,6 +94,287 @@ const upload = multer({
     fileSize: 10 * 1024 * 1024 // 10MB limit
   }
 });
+
+// ------------------------------------------------------------
+// INTEGRATIONS ROUTES (OAuth placeholders / token storage)
+// ------------------------------------------------------------
+
+// Helper: map platform -> secret names/fields
+const PLATFORM_CONFIG = {
+  facebook: {
+    display: 'Facebook',
+    tokenField: 'facebookAccessToken',
+    secrets: ['facebook-access-token', 'facebook-catalog-id'],
+    authUrl: 'https://www.facebook.com/v19.0/dialog/oauth?client_id=YOUR_FB_APP_ID&redirect_uri=YOUR_REDIRECT_URI&scope=catalog_management'
+  },
+  ebay: {
+    display: 'eBay',
+    tokenField: 'ebayAccessToken',
+    secrets: ['ebay-access-token', 'ebay-client-id', 'ebay-client-secret'],
+    authUrl: 'https://auth.ebay.com/oauth2/authorize?client_id=YOUR_EBAY_APP_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=https://api.ebay.com/oauth/api_scope/sell.inventory'
+  },
+  poshmark: {
+    display: 'Poshmark',
+    tokenField: 'poshmarkSession',
+    secrets: [],
+    authUrl: null // typically cookie/session-based automation
+  }
+};
+
+// List connected integrations for a user
+app.get('/api/integrations', async (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.query.userId;
+    if (!userId) return res.status(400).json({ error: 'Missing userId' });
+    const doc = await db.collection('users').doc(userId).get();
+    const data = doc.exists ? doc.data() : {};
+    const status = Object.fromEntries(Object.keys(PLATFORM_CONFIG).map(p => [p, !!data?.[PLATFORM_CONFIG[p].tokenField]]));
+    res.json({ userId, integrations: status });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Get auth URL for a platform (placeholder)
+app.get('/api/integrations/:platform/auth-url', async (req, res) => {
+  const { platform } = req.params;
+  const cfg = PLATFORM_CONFIG[platform?.toLowerCase()];
+  if (!cfg) return res.status(404).json({ error: 'Unknown platform' });
+  res.json({ platform, authUrl: cfg.authUrl, note: 'Use this URL to initiate OAuth. This is a placeholder for demo.' });
+});
+
+// Handle OAuth callback (store token placeholder)
+app.post('/api/integrations/:platform/callback', async (req, res) => {
+  try {
+    const { platform } = req.params;
+    const { userId, token } = req.body; // in real flow: exchange code->token
+    const cfg = PLATFORM_CONFIG[platform?.toLowerCase()];
+    if (!cfg) return res.status(404).json({ error: 'Unknown platform' });
+    if (!userId || !token) return res.status(400).json({ error: 'Missing userId or token' });
+    await db.collection('users').doc(userId).set({ [cfg.tokenField]: token }, { merge: true });
+    res.json({ success: true, platform, stored: cfg.tokenField });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Disconnect integration
+app.delete('/api/integrations/:platform', async (req, res) => {
+  try {
+    const { platform } = req.params;
+    const userId = req.headers['x-user-id'] || req.query.userId || req.body?.userId;
+    const cfg = PLATFORM_CONFIG[platform?.toLowerCase()];
+    if (!cfg) return res.status(404).json({ error: 'Unknown platform' });
+    if (!userId) return res.status(400).json({ error: 'Missing userId' });
+    await db.collection('users').doc(userId).set({ [cfg.tokenField]: admin.firestore.FieldValue.delete() }, { merge: true });
+    res.json({ success: true, platform });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ------------------------------------------------------------
+// LISTINGS CRUD + AI GENERATION
+// ------------------------------------------------------------
+
+// AI generation from image URL and metadata
+app.post('/api/listings/generate', async (req, res) => {
+  try {
+    const { image_url, category, condition } = req.body || {};
+    // Reuse Vertex AI for analysis
+    const ai = await analyzeWithVertex({
+      title: 'Generated Listing',
+      description: `Image: ${image_url || 'n/a'}`,
+      category: category || 'general'
+    });
+    // Shape a friendly response
+    const result = {
+      title: ai?.optimizedTitle || `Stylish ${category || 'item'} – Great Condition`,
+      description: ai?.competitorAnalysis || 'AI-generated description coming soon.',
+      suggested_price: ai?.suggestedPrice || 49.99,
+      tags: ai?.tags || []
+    };
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Create listing
+app.post('/api/listings', async (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.body?.userId;
+    const listing = {
+      ...req.body,
+      userId,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      status: req.body?.status || 'draft'
+    };
+    const ref = await db.collection('listings').add(listing);
+    res.status(201).json({ id: ref.id, ...listing });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Get all listings for user
+app.get('/api/listings', async (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.query.userId;
+    if (!userId) return res.status(400).json({ error: 'Missing userId' });
+    const snap = await db.collection('listings').where('userId', '==', userId).orderBy('createdAt', 'desc').get();
+    const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    res.json(items);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Get one listing
+app.get('/api/listings/:id', async (req, res) => {
+  try {
+    const docRef = await db.collection('listings').doc(req.params.id).get();
+    if (!docRef.exists) return res.status(404).json({ error: 'Listing not found' });
+    res.json({ id: docRef.id, ...docRef.data() });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Update listing
+app.patch('/api/listings/:id', async (req, res) => {
+  try {
+    await db.collection('listings').doc(req.params.id).set({ ...req.body, updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    const docRef = await db.collection('listings').doc(req.params.id).get();
+    res.json({ id: docRef.id, ...docRef.data() });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Delete listing
+app.delete('/api/listings/:id', async (req, res) => {
+  try {
+    const ref = db.collection('listings').doc(req.params.id);
+    const doc = await ref.get();
+    if (!doc.exists) return res.status(404).json({ error: 'Listing not found' });
+    await ref.set({ status: 'archived', archivedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    res.json({ success: true, archived: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ------------------------------------------------------------
+// PUBLISH / UNPUBLISH / STATUS
+// ------------------------------------------------------------
+
+// helper: poshmark simulation
+async function simulatePoshmarkPost({ title, description, price }) {
+  await new Promise(r => setTimeout(r, 900));
+  return {
+    success: true,
+    platform: 'Poshmark',
+    listingId: `posh_${Date.now()}`,
+    url: `https://poshmark.com/listing/${Date.now()}`,
+    fees: (parseFloat(price) * 0.20).toFixed(2),
+    estimatedViews: Math.floor(Math.random() * 250) + 25
+  };
+}
+
+app.post('/api/listings/:id/publish', async (req, res) => {
+  try {
+    const { platforms = [] } = req.body || {};
+    const id = req.params.id;
+    const docRef = db.collection('listings').doc(id);
+    const doc = await docRef.get();
+    if (!doc.exists) return res.status(404).json({ error: 'Listing not found' });
+    const listing = doc.data();
+
+    const results = {};
+    for (const p of platforms) {
+      const name = String(p).toLowerCase();
+      switch (name) {
+        case 'facebook':
+          results.facebook = await crossPostToFacebook({
+            title: listing.title,
+            description: listing.description,
+            price: listing.price || listing.suggestedPrice,
+            images: listing.images || []
+          });
+          break;
+        case 'ebay':
+          results.ebay = await crossPostToEbay({
+            title: listing.title,
+            description: listing.description,
+            price: listing.price || listing.suggestedPrice,
+            images: listing.images || []
+          });
+          break;
+        case 'poshmark':
+          results.poshmark = await simulatePoshmarkPost({
+            title: listing.title,
+            description: listing.description,
+            price: listing.price || listing.suggestedPrice
+          });
+          break;
+        default:
+          results[name] = { success: false, error: 'Platform not supported' };
+      }
+    }
+
+    await docRef.set({
+      crossPostResults: { ...(listing.crossPostResults || {}), ...results },
+      status: 'published',
+      updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    res.json({ success: true, results });
+  } catch (e) {
+    console.error('Publish error:', e);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get('/api/listings/:id/status', async (req, res) => {
+  try {
+    const doc = await db.collection('listings').doc(req.params.id).get();
+    if (!doc.exists) return res.status(404).json({ error: 'Listing not found' });
+    const data = doc.data();
+    res.json({ status: data.status || 'unknown', crossPostResults: data.crossPostResults || {} });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.delete('/api/listings/:id/unpublish/:platform', async (req, res) => {
+  try {
+    const { id, platform } = { id: req.params.id, platform: req.params.platform };
+    const docRef = db.collection('listings').doc(id);
+    const doc = await docRef.get();
+    if (!doc.exists) return res.status(404).json({ error: 'Listing not found' });
+    const data = doc.data();
+    const results = { ...(data.crossPostResults || {}) };
+    if (results?.[platform]) delete results[platform];
+    await docRef.set({ crossPostResults: results, updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ------------------------------------------------------------
+// INVENTORY SYNC WEBHOOKS (replaces placeholders)
+// ------------------------------------------------------------
+app.use('/api/webhooks', webhooksRouter);
+
+// ------------------------------------------------------------
+// PRISMA-POWERED V2 ROUTES (opt-in, require DATABASE_URL)
+// ------------------------------------------------------------
+if (process.env.DATABASE_URL) {
+  app.use('/api/v2/listings', listingsV2Router);
+  app.use('/api/v2/integrations', integrationsV2Router);
+}
 
 // Health check endpoint
 app.get('/health', (req, res) => {

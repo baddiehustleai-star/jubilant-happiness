@@ -9,6 +9,8 @@ import {
 } from '../services';
 import PaymentService from '../services/paymentService';
 import EnhancedPhotoUpload from '../components/EnhancedPhotoUpload';
+import ApiHealth from '../components/ApiHealth';
+import ProductionReadiness from '../components/ProductionReadiness';
 import {
   BrandContainer,
   BrandSection,
@@ -96,7 +98,7 @@ const Dashboard = () => {
   const handleCrossPost = async (listing) => {
     try {
       setIsLoading(true);
-      await crossPostingService.crossPost(listing, selectedPlatforms);
+      await crossPostingService.crossPost(listing, selectedPlatforms, user?.uid);
     } catch (error) {
       console.error('Cross-posting error:', error);
     } finally {
@@ -322,6 +324,18 @@ const Dashboard = () => {
             </BrandContainer>
           </BrandSection>
         )}
+
+        {/* System Health */}
+        <BrandSection background="white" padding="lg">
+          <BrandContainer>
+            <div className="max-w-3xl mx-auto">
+              <ApiHealth />
+              <div className="mt-6">
+                <ProductionReadiness />
+              </div>
+            </div>
+          </BrandContainer>
+        </BrandSection>
       </div>
     </div>
   );

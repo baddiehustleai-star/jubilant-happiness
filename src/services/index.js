@@ -1,6 +1,8 @@
 // src/services/index.js
 // Service exports for Photo2Profit
 
+import { apiFetch } from './apiClient';
+
 // Placeholder services - these will be implemented as features are built
 export const uploadService = {
   uploadFiles: async (files) => {
@@ -33,15 +35,37 @@ export const aiListingService = {
 };
 
 export const crossPostingService = {
-  crossPost: async (listing, platforms) => {
-    // TODO: Implement cross-posting to multiple platforms
-    console.log('Cross-posting listing to:', platforms);
-    console.log('Listing:', listing);
-    return {
-      success: true,
-      platforms,
-      listingId: listing.id
+  /**
+   * Cross-post a listing using backend API
+   * @param {object} listing - listing object with id, title, description, suggestedPrice, photo
+   * @param {string[]} platforms - target platforms
+   * @param {string} [userId] - optional user id for backend validation
+   */
+  crossPost: async (listing, platforms, userId) => {
+    const payload = {
+      listingId: listing.id,
+      title: listing.title,
+      description: listing.description,
+      price: listing.suggestedPrice,
+      images: listing.photo?.url ? [listing.photo.url] : [],
+      platforms: platforms || [],
+      userId: userId || listing.userId || 'demo-user'
     };
+
+    try {
+      const res = await apiFetch('/api/cross-post', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+      return res;
+    } catch (error) {
+      console.error('Cross-post API error:', error);
+      return {
+        success: false,
+        error: error.body?.error || error.message,
+        listingId: listing.id
+      };
+    }
   }
 };
 

@@ -1,5 +1,6 @@
 // src/services/paymentService.js
 import { loadStripe } from '@stripe/stripe-js';
+import { apiFetch, getApiBase } from './apiClient.js';
 
 // ✅ Initialize Stripe
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
@@ -30,11 +31,8 @@ const paymentService = {
       }
 
       // Real Stripe implementation
-      const response = await fetch('/api/create-checkout-session', {
+      const { sessionId } = await apiFetch('/api/create-checkout-session', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           priceId,
           userId,
@@ -42,8 +40,6 @@ const paymentService = {
           cancelUrl: `${window.location.origin}/dashboard`,
         }),
       });
-
-      const { sessionId } = await response.json();
       
       const stripe = await stripePromise;
       const { error } = await stripe.redirectToCheckout({ sessionId });
@@ -76,18 +72,13 @@ const paymentService = {
       }
 
       // Real implementation
-      const response = await fetch('/api/create-portal-session', {
+      const { url } = await apiFetch('/api/create-portal-session', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           customerId,
           returnUrl: `${window.location.origin}/dashboard`,
         }),
       });
-
-      const { url } = await response.json();
       window.location.href = url;
 
     } catch (error) {

@@ -78,7 +78,9 @@ export default function UploadDemo() {
                 if (json.url) {
                   window.location.href = json.url;
                 } else {
-                  setMessage('Could not start checkout. Deploy and set STRIPE_SECRET_KEY on the server.');
+                  setMessage(
+                    'Could not start checkout. Deploy and set STRIPE_SECRET_KEY on the server.'
+                  );
                 }
               } catch (err) {
                 // Fallback to direct fetch (in case helper not available)
@@ -94,7 +96,9 @@ export default function UploadDemo() {
               }
             } catch (err) {
               console.error(err);
-              setMessage('Checkout failed. Ensure your serverless function and STRIPE_SECRET_KEY are configured.');
+              setMessage(
+                'Checkout failed. Ensure your serverless function and STRIPE_SECRET_KEY are configured.'
+              );
             }
           }}
         >

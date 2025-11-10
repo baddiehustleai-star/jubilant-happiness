@@ -9,9 +9,9 @@ fetch('https://photo2profit-api-758851214311.us-west2.run.app/api', {
   method: 'GET',
   headers: { 'Content-Type': 'application/json' },
 })
-  .then(res => res.text())
-  .then(data => console.log('✅ Success:', data))
-  .catch(err => console.error('❌ Error:', err));
+  .then((res) => res.text())
+  .then((data) => console.log('✅ Success:', data))
+  .catch((err) => console.error('❌ Error:', err));
 ```
 
 **Success:** `✅ Success: {"message":"Photo2Profit API is alive!",...}`  

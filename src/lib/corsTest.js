@@ -2,7 +2,7 @@
 
 /**
  * CORS Testing Utilities for Photo2Profit
- * 
+ *
  * These utilities help test CORS configuration between the Firebase frontend
  * and Cloud Run backend API.
  */
@@ -16,7 +16,7 @@ const API_URL = 'https://photo2profit-api-758851214311.us-west2.run.app';
 export async function testCorsConnection() {
   try {
     console.log('🧪 Testing CORS connection to:', API_URL);
-    
+
     const response = await fetch(`${API_URL}/api`, {
       method: 'GET',
       headers: {
@@ -45,7 +45,7 @@ export async function testCorsConnection() {
 export async function testCorsPost(payload = { test: 'data' }) {
   try {
     console.log('🧪 Testing CORS POST request to:', API_URL);
-    
+
     const response = await fetch(`${API_URL}/api`, {
       method: 'POST',
       headers: {
@@ -70,7 +70,7 @@ export async function testCorsPost(payload = { test: 'data' }) {
 export async function testApiHealth() {
   try {
     console.log('🏥 Testing API health endpoint');
-    
+
     const response = await fetch(`${API_URL}/api/health`, {
       method: 'GET',
       headers: {
@@ -97,7 +97,7 @@ export async function testApiHealth() {
  */
 export async function runAllCorsTests() {
   console.log('🚀 Running all CORS tests...\n');
-  
+
   const results = {
     basicConnection: await testCorsConnection(),
     healthCheck: await testApiHealth(),
@@ -109,7 +109,7 @@ export async function runAllCorsTests() {
   console.log('Health Check:', results.healthCheck.success ? '✅' : '❌');
   console.log('POST Request:', results.postRequest.success ? '✅' : '❌');
 
-  const allPassed = Object.values(results).every(r => r.success);
+  const allPassed = Object.values(results).every((r) => r.success);
   console.log(allPassed ? '\n🎉 All tests passed!' : '\n⚠️  Some tests failed');
 
   return results;
@@ -123,7 +123,7 @@ if (typeof window !== 'undefined') {
     testHealth: testApiHealth,
     runAll: runAllCorsTests,
   };
-  
+
   console.log('💡 CORS testing utilities loaded!');
   console.log('Usage:');
   console.log('  corsTest.test()      - Test basic GET request');

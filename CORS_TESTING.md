@@ -25,9 +25,9 @@ fetch('https://photo2profit-api-758851214311.us-west2.run.app/api', {
   method: 'GET',
   headers: { 'Content-Type': 'application/json' },
 })
-  .then(res => res.text())
-  .then(data => console.log('✅ Success:', data))
-  .catch(err => console.error('❌ Error:', err));
+  .then((res) => res.text())
+  .then((data) => console.log('✅ Success:', data))
+  .catch((err) => console.error('❌ Error:', err));
 ```
 
 ### What to expect:
@@ -49,9 +49,10 @@ fetch('https://photo2profit-api-758851214311.us-west2.run.app/api', {
 ```
 
 Plus a red CORS error banner like:
+
 ```
-Access to fetch at 'https://photo2profit-api-758851214311.us-west2.run.app/api' 
-from origin 'https://photo2profitbaddie.web.app' has been blocked by CORS policy: 
+Access to fetch at 'https://photo2profit-api-758851214311.us-west2.run.app/api'
+from origin 'https://photo2profitbaddie.web.app' has been blocked by CORS policy:
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
 
@@ -84,6 +85,7 @@ access-control-allow-headers: Content-Type,Authorization
 ```
 
 The key header is:
+
 ```
 access-control-allow-origin: https://photo2profitbaddie.web.app
 ```
@@ -107,6 +109,7 @@ curl -I -X OPTIONS \
 ```
 
 Should return:
+
 ```
 HTTP/2 204
 access-control-allow-origin: https://photo2profitbaddie.web.app
@@ -163,16 +166,16 @@ The utilities are available globally as `window.corsTest`:
 
 ```javascript
 // Test basic GET request
-corsTest.test()
+corsTest.test();
 
-// Test POST request  
-corsTest.testPost()
+// Test POST request
+corsTest.testPost();
 
 // Test health endpoint
-corsTest.testHealth()
+corsTest.testHealth();
 
 // Run all tests
-corsTest.runAll()
+corsTest.runAll();
 ```
 
 ---
@@ -184,6 +187,7 @@ corsTest.runAll()
 **Error:** `Access to fetch blocked by CORS policy`
 
 **Solutions:**
+
 1. Verify your frontend domain is in `backend/server.js` `allowedOrigins` array
 2. Redeploy the backend after updating origins
 3. Clear browser cache and hard refresh (Ctrl+Shift+R)
@@ -192,6 +196,7 @@ corsTest.runAll()
 ### Problem: 404 Not Found
 
 **Solutions:**
+
 1. Verify the API endpoint URL includes `/api`
 2. Check the Cloud Run service is deployed and running
 3. Verify the service URL matches your configuration
@@ -199,6 +204,7 @@ corsTest.runAll()
 ### Problem: 500 Internal Server Error
 
 **Solutions:**
+
 1. Check Cloud Run logs: `gcloud run services logs read photo2profit-api --region us-west2`
 2. Verify environment variables are set correctly
 3. Check for errors in the server startup
@@ -208,6 +214,7 @@ corsTest.runAll()
 Cloud Run services "sleep" when not used and take 5-15 seconds to wake up.
 
 **Solutions:**
+
 1. Wait and retry after a few seconds
 2. For production, set minimum instances: `--min-instances=1`
 3. First request may be slow; subsequent requests are fast
@@ -221,7 +228,7 @@ Once both tests pass, your stack is properly configured:
 ✅ Firebase frontend can send authenticated requests to your API  
 ✅ Cloud Run backend responds without CORS errors  
 ✅ The whole system can now scale and integrate with Stripe, Firestore, etc.  
-✅ You can proceed to implement payment webhooks and other features  
+✅ You can proceed to implement payment webhooks and other features
 
 ---
 

@@ -14,6 +14,8 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 - ⚛️ **React 18** - Modern React with hooks
 - 🎯 **TailwindCSS** - Utility-first styling with custom configuration
 - 📱 **Responsive** - Mobile-first design approach
+- 💳 **Stripe Integration** - Secure payment processing with webhooks
+- 📧 **Email Confirmations** - Automatic branded emails via SendGrid after payment
 
 ## 🚀 Quick Start
 
@@ -76,7 +78,36 @@ firebase functions:config:set sendgrid.key="your_sendgrid_api_key"
 firebase deploy --only functions:weeklyExport
 ```
 
-### 4️⃣ Local Development
+### 4️⃣ Stripe Webhook Setup (for payment confirmations)
+
+To enable automatic email confirmations after payments:
+
+1. **Set up SendGrid:**
+   - Create a SendGrid account at [https://sendgrid.com](https://sendgrid.com)
+   - Get your API key from Settings → API Keys → Create API Key
+   - Optionally verify your sender domain
+
+2. **Configure environment variables:**
+   ```bash
+   STRIPE_SECRET_KEY=sk_live_...
+   STRIPE_WEBHOOK_SECRET=whsec_...  # Get from Stripe dashboard
+   SENDGRID_API_KEY=SG.xxxxxxxxxxxxx
+   SENDGRID_FROM_EMAIL=no-reply@yourdomain.com
+   FRONTEND_URL=https://your-app.com
+   ```
+
+3. **Deploy webhook endpoint:**
+   - Deploy `api/webhook.js` to your serverless platform (Vercel, Netlify, Cloud Run)
+   - The webhook handler listens for `checkout.session.completed` events
+   - Sends branded confirmation emails to customers automatically
+
+4. **Configure Stripe webhook:**
+   - Go to Stripe Dashboard → Developers → Webhooks
+   - Add endpoint: `https://your-api.com/api/webhook`
+   - Select event: `checkout.session.completed`
+   - Copy the webhook signing secret to `STRIPE_WEBHOOK_SECRET`
+
+### 5️⃣ Local Development
 
 ```bash
 npm run dev

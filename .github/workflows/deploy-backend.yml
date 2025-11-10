@@ -1,0 +1,50 @@
+name: Deploy Backend to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy photo2profit-api \
+            --source ./backend \
+            --region us-west2 \
+            --platform managed \
+            --allow-unauthenticated \
+            --project photo2profit
+
+      - name: Get service URL
+        run: |
+          URL=$(gcloud run services describe photo2profit-api --region us-west2 --format 'value(status.url)')
+          echo "Service deployed to: $URL"
+          echo "SERVICE_URL=$URL" >> $GITHUB_ENV
+
+      - name: Test deployment
+        run: |
+          sleep 10
+          curl -f $SERVICE_URL/api || exit 1

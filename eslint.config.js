@@ -14,6 +14,7 @@ export default [
         window: 'readonly',
         document: 'readonly',
         console: 'readonly',
+        fetch: 'readonly',
       },
     },
     plugins: { react: reactPlugin },
@@ -29,6 +30,14 @@ export default [
     },
   },
   {
-    ignores: ['dist/**'],
+    files: ['tests/**/*.{js,jsx}', '**/*.test.{js,jsx}', '**/*.spec.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        global: 'readonly',
+      },
+    },
+  },
+  {
+    ignores: ['dist/**', 'node_modules/**'],
   },
 ];

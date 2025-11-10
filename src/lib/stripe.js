@@ -1,5 +1,4 @@
 /* eslint-env browser */
-/* global fetch */
 // Client helper for creating a Stripe Checkout session.
 // Requires a serverless endpoint at /api/create-checkout-session.
 

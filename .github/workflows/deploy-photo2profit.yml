@@ -1,0 +1,57 @@
+name: Deploy Photo2Profit (API + Frontend)
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Build & Deploy Full Stack
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # -------------------------
+      # Backend (Cloud Run)
+      # -------------------------
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: photo2profitbaddie
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Deploy API to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: photo2profit-api
+          region: us-west2
+          source: ./api
+          allow-unauthenticated: true
+          env_vars: |
+            JWT_SECRET=dev-jwt-secret,
+            SHARED_WEBHOOK_SECRET=dev-shared-secret,
+            STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+
+      # -------------------------
+      # Frontend (Firebase Hosting)
+      # -------------------------
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install and Build Frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to Firebase Hosting
+        uses: w9jds/firebase-action@v2
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: photo2profitbaddie

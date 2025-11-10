@@ -1,0 +1,8 @@
+/* eslint-env node */
+import express from 'express';
+import { getUser } from '../controllers/users.prisma.controller.js';
+
+const router = express.Router();
+router.get('/users', getUser);
+
+export default router;

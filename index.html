@@ -3,51 +3,172 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Photo2Profit 💎</title>
+    <title>Photo 2 Profit</title>
 
-    <!-- Google Analytics 4 (replace G-XXXXXXX) -->
-    <!-- Paste your GA4 measurement ID into the src below -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #fbd3e9 0%, #f8b6d2 100%);
+        font-family: 'Poppins', sans-serif;
+        color: #4b2e2e;
+        overflow-x: hidden;
       }
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX'); // <-- REPLACE with your GA4 ID
-    </script>
 
-    <!-- Sentry (client side) - replace SENTRY_DSN -->
-    <script>
-      // Optional: Sentry for crash reporting. Replace SENTRY_DSN with your key.
-      (function () {
-        const SENTRY_DSN = 'REPLACE_WITH_SENTRY_DSN';
-        if (SENTRY_DSN && SENTRY_DSN !== 'REPLACE_WITH_SENTRY_DSN') {
-          (function (c, o, n, s, e, r) {
-            c.Sentry = e;
-            c[e] =
-              c[e] ||
-              function () {
-                (c[e].q = c[e].q || []).push(arguments);
-              };
-            r = o.createElement(n);
-            r.async = 1;
-            r.src = s;
-            o.getElementsByTagName(n)[0].parentNode.appendChild(r);
-          })(
-            window,
-            document,
-            'script',
-            'https://browser.sentry-cdn.com/7.0.0/bundle.min.js',
-            'Sentry'
-          );
-          Sentry.init({ dsn: SENTRY_DSN, tracesSampleRate: 0.1 });
-        }
-      })();
-    </script>
+      header {
+        text-align: center;
+        padding: 3rem 1rem 1rem;
+      }
+
+      header img {
+        width: 350px;
+        max-width: 90%;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 2rem 1rem 4rem;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+        color: #b46a7b;
+        margin-bottom: 0.5rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        color: #5b3b40;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+      }
+
+      .cta-btn {
+        background-color: #d89ca3;
+        border: none;
+        color: #fff;
+        font-size: 1.1rem;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition:
+          background 0.3s ease,
+          transform 0.2s ease;
+      }
+
+      .cta-btn:hover {
+        background-color: #b47b88;
+        transform: scale(1.05);
+      }
+
+      .testimonials {
+        background-color: rgba(255, 255, 255, 0.6);
+        padding: 3rem 1rem;
+        text-align: center;
+      }
+
+      .testimonials h2 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+        color: #b46a7b;
+      }
+
+      .testimonial {
+        max-width: 500px;
+        margin: 0 auto 2rem;
+        font-style: italic;
+      }
+
+      .signup {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: linear-gradient(180deg, #f8b8cc 0%, #f5a5c4 100%);
+      }
+
+      .signup h2 {
+        font-size: 1.8rem;
+        color: #b46a7b;
+        margin-bottom: 1rem;
+      }
+
+      .signup form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      input[type='email'] {
+        padding: 0.8rem;
+        border-radius: 30px;
+        border: none;
+        width: 100%;
+        font-size: 1rem;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      button[type='submit'] {
+        background-color: #d89ca3;
+        color: #fff;
+        padding: 0.9rem 2rem;
+        border: none;
+        border-radius: 40px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      button[type='submit']:hover {
+        background-color: #b47b88;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem;
+        font-size: 0.9rem;
+        color: #774a4a;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <header>
+      <img src="logo.svg" alt="Photo 2 Profit Logo" />
+    </header>
+
+    <section class="hero">
+      <h1>Turn Your Passion Into Profit</h1>
+      <p>
+        Join the movement of creators transforming their photography skills into income streams that
+        shine as bright as your creativity.
+      </p>
+      <button class="cta-btn">Start Now</button>
+    </section>
+
+    <section class="testimonials">
+      <h2>What Our Members Say</h2>
+      <div class="testimonial">
+        "Photo2Profit gave me the clarity and confidence to finally sell my work online. Best
+        decision ever!"
+      </div>
+      <div class="testimonial">
+        "I went from weekend hobbyist to full-time photographer — and it actually feels achievable
+        now."
+      </div>
+    </section>
+
+    <section class="signup">
+      <h2>Join the Waitlist</h2>
+      <form>
+        <input type="email" placeholder="Enter your email" required />
+        <button type="submit">Join Now</button>
+      </form>
+    </section>
+
+    <footer>© 2025 Photo2Profit. All rights reserved.</footer>
   </body>
 </html>

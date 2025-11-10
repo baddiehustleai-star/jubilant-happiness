@@ -16,7 +16,7 @@ export default function Landing() {
       </p>
       <div className="flex gap-4">
         <button className="cta" onClick={() => navigate('/demo')}>Start Now</button>
-        <button className="cta bg-rose-dark" onClick={() => navigate('/dashboard')}>Dashboard</button>
+        <button className="cta bg-rose-dark" onClick={() => navigate('/dashboard-demo')}>Dashboard Demo</button>
       </div>
     </main>
   );

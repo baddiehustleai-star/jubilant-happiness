@@ -1,3 +1,4 @@
+/* eslint-env node */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { spawn } from 'child_process';
 import { setTimeout } from 'timers/promises';

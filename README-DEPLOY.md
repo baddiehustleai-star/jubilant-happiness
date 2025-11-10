@@ -28,8 +28,34 @@ npm run dev
 
 5. Deploy
 
-- Recommended: Vercel (link your GitHub repo; Vercel will run the CI and create previews).
-- Make sure environment variables are set in Vercel dashboard (STRIPE_SECRET_KEY, SENTRY_DSN).
+## Automated Full-Stack Deployment (Cloud Run + Firebase Hosting)
+
+The repository includes a GitHub Actions workflow (`.github/workflows/deploy-photo2profit.yml`) that automatically deploys both backend and frontend on every push to `main`.
+
+### Required GitHub Secrets
+
+Add these secrets in **GitHub → Settings → Secrets and variables → Actions → New repository secret**:
+
+1. **`GCP_SA_KEY`** - JSON key for your Google Cloud service account
+   - Create a service account in Google Cloud Console with Cloud Run Admin and Service Account User roles
+   - Generate and download a JSON key
+2. **`STRIPE_SECRET_KEY`** - Your Stripe API secret key (use test key for development)
+3. **`FIREBASE_TOKEN`** - Firebase CI token
+   - Run `firebase login:ci` locally to generate this token
+   - Paste the resulting token string as the secret value
+
+### What the Workflow Does
+
+- ✅ Deploys backend API (`/api`) to **Google Cloud Run** (service: `photo2profit-api`, region: `us-west2`)
+- ✅ Builds the React frontend with Vite
+- ✅ Deploys frontend to **Firebase Hosting**
+- ✅ Runs automatically on push to `main`
+- ✅ Posts deployment logs in commit view
+
+### Manual Deployment (Alternative)
+
+- **Vercel**: Link your GitHub repo; Vercel will run the CI and create previews
+- Make sure environment variables are set in Vercel dashboard (STRIPE_SECRET_KEY, SENTRY_DSN)
 
 6. Stripe testing
 

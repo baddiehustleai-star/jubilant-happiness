@@ -14,18 +14,26 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { priceId, successUrl, cancelUrl } = req.body;
+    const { email, priceId, successUrl, cancelUrl } = req.body;
 
     if (!priceId || !successUrl || !cancelUrl) {
       return res.status(400).json({ error: 'Missing parameters' });
     }
 
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription', // or 'payment' for one-time
+    const sessionConfig = {
+      payment_method_types: ['card'],
+      mode: 'payment', // one-time payment
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: successUrl,
       cancel_url: cancelUrl,
-    });
+    };
+
+    // Add customer email if provided
+    if (email) {
+      sessionConfig.customer_email = email;
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     return res.status(200).json({ sessionId: session.id, url: session.url });
   } catch (err) {

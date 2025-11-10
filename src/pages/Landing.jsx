@@ -1,9 +1,11 @@
 import logo from '../assets/photo2profit-logo.svg';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UploadDemo from './UploadDemo.jsx';
 
 export default function Landing() {
   const [showDemo, setShowDemo] = useState(false);
+  const navigate = useNavigate();
 
   if (showDemo) return <UploadDemo />;
 
@@ -17,7 +19,15 @@ export default function Landing() {
         Turn your photos into profit — AI-powered listings, background removal, and instant
         cross-posting 💎
       </p>
-      <button className="cta" onClick={() => setShowDemo(true)}>Start Now</button>
+      <div className="flex gap-4">
+        <button className="cta" onClick={() => setShowDemo(true)}>Start Now</button>
+        <button 
+          className="cta bg-indigo-600 hover:bg-indigo-700" 
+          onClick={() => navigate('/dashboard')}
+        >
+          Dashboard
+        </button>
+      </div>
     </main>
   );
 }

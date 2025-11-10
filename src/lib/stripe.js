@@ -4,7 +4,8 @@
 // Requires a serverless endpoint at /api/create-checkout-session.
 
 export async function createCheckout({ priceId, successUrl, cancelUrl }) {
-  const res = await fetch('/api/create-checkout-session', {
+  const apiUrl = import.meta.env.VITE_API_URL || '';
+  const res = await fetch(`${apiUrl}/api/create-checkout-session`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ priceId, successUrl, cancelUrl }),

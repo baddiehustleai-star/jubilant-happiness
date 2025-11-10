@@ -83,7 +83,8 @@ export default function UploadDemo() {
               } catch (err) {
                 // Fallback to direct fetch (in case helper not available)
                 console.warn('createCheckout helper failed, falling back to fetch:', err);
-                const res = await fetch('/api/create-checkout-session', {
+                const apiUrl = import.meta.env.VITE_API_URL || '';
+                const res = await fetch(`${apiUrl}/api/create-checkout-session`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ priceId, successUrl, cancelUrl }),

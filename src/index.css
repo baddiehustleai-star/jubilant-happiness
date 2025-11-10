@@ -25,7 +25,8 @@ h1,
   letter-spacing: 1px;
 }
 button,
-.cta {
+.cta,
+.cta-btn {
   background: linear-gradient(90deg, var(--rose), var(--gold));
   color: white;
   border-radius: 9999px;
@@ -34,7 +35,11 @@ button,
   box-shadow: 0 4px 15px rgba(183, 110, 121, 0.4);
   transition: all 0.3s ease;
 }
-button:hover {
+button:hover,
+.cta-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(183, 110, 121, 0.5);
+}
+.landing {
+  min-height: 100vh;
 }

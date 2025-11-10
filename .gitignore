@@ -143,3 +143,4 @@ vite.config.ts.timestamp-*
 # Database files
 *.db
 *.db-journal
+dev-server.js

@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+/* eslint-env node */
+/* eslint-disable no-undef */
+
 describe('webhook', () => {
   beforeEach(() => {
     // Reset environment variables

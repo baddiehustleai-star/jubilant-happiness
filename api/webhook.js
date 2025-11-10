@@ -5,10 +5,9 @@
 
 import Stripe from 'stripe';
 import sgMail from '@sendgrid/mail';
-import { PrismaClient } from '@prisma/client';
+import prisma from './lib/prisma.js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
-const prisma = new PrismaClient();
 
 // Initialize SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

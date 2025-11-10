@@ -1,11 +1,14 @@
 import logo from '../assets/photo2profit-logo.svg';
 import { useState } from 'react';
 import UploadDemo from './UploadDemo.jsx';
+import Analytics from './Analytics.jsx';
 
 export default function Landing() {
   const [showDemo, setShowDemo] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   if (showDemo) return <UploadDemo />;
+  if (showAnalytics) return <Analytics />;
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-blush text-dark text-center px-6">
@@ -17,7 +20,14 @@ export default function Landing() {
         Turn your photos into profit — AI-powered listings, background removal, and instant
         cross-posting 💎
       </p>
-      <button className="cta" onClick={() => setShowDemo(true)}>Start Now</button>
+      <div className="flex gap-4">
+        <button className="cta" onClick={() => setShowDemo(true)}>
+          Start Now
+        </button>
+        <button className="cta" onClick={() => setShowAnalytics(true)}>
+          Analytics
+        </button>
+      </div>
     </main>
   );
 }

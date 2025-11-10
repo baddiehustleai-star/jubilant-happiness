@@ -3,11 +3,11 @@
 // Client helper for creating a Stripe Checkout session.
 // Requires a serverless endpoint at /api/create-checkout-session.
 
-export async function createCheckout({ priceId, successUrl, cancelUrl }) {
+export async function createCheckout({ email, priceId, successUrl, cancelUrl }) {
   const res = await fetch('/api/create-checkout-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ priceId, successUrl, cancelUrl }),
+    body: JSON.stringify({ email, priceId, successUrl, cancelUrl }),
   });
 
   const json = await res.json();

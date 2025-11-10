@@ -1,10 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import Landing from './pages/Landing.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import Success from './pages/Success.jsx';
+import Cancel from './pages/Cancel.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Landing />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );

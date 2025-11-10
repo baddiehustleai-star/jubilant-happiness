@@ -1,5 +1,6 @@
 import logo from '../assets/photo2profit-logo.svg';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import UploadDemo from './UploadDemo.jsx';
 
 export default function Landing() {
@@ -18,6 +19,11 @@ export default function Landing() {
         cross-posting 💎
       </p>
       <button className="cta" onClick={() => setShowDemo(true)}>Start Now</button>
+      <div className="mt-4">
+        <Link to="/analytics" className="text-rose-dark hover:underline">
+          View Analytics →
+        </Link>
+      </div>
     </main>
   );
 }

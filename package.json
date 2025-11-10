@@ -11,12 +11,22 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "server": "node api/server.js",
+    "prisma:generate": "prisma generate --schema=./api/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=./api/prisma/schema.prisma"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
     "firebase": "^12.5.0",
+    "nodemailer": "^7.0.10",
+    "prisma": "^6.19.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.9.5",
     "stripe": "^19.2.1"
   },
   "devDependencies": {

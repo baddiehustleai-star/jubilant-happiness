@@ -8,6 +8,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Build & Deploy Full Stack
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code

@@ -1,0 +1,88 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      SERVICE: ${{ secrets.CLOUD_RUN_SERVICE }}
+      REGION: ${{ secrets.CLOUD_RUN_REGION }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify build
+        run: npm run build --if-present
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          source: .
+
+      - name: Trigger SEO Refresh (optional)
+        if: success()
+        run: |
+          curl -s -X POST \
+          -H "x-cron-secret: photo2profit-cron-secret" \
+          "https://${{ env.SERVICE }}-${{ secrets.GCP_PROJECT_ID }}.${{ env.REGION }}.run.app/api/seo/refresh" || true
+
+      - name: Notify Slack on Success
+        if: success() && secrets.SLACK_WEBHOOK_URL != ''
+        run: |
+          curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "text": "✅ Cloud Run Deploy Successful",
+            "attachments": [{
+              "color": "good",
+              "fields": [
+                {"title": "Service", "value": "${{ env.SERVICE }}", "short": true},
+                {"title": "Region", "value": "${{ env.REGION }}", "short": true},
+                {"title": "Branch", "value": "${{ github.ref_name }}", "short": true},
+                {"title": "Commit", "value": "${{ github.sha }}", "short": true}
+              ]
+            }]
+          }'
+
+      - name: Notify Slack on Failure
+        if: failure() && secrets.SLACK_WEBHOOK_URL != ''
+        run: |
+          curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "text": "❌ Cloud Run Deploy Failed",
+            "attachments": [{
+              "color": "danger",
+              "fields": [
+                {"title": "Service", "value": "${{ env.SERVICE }}", "short": true},
+                {"title": "Region", "value": "${{ env.REGION }}", "short": true},
+                {"title": "Branch", "value": "${{ github.ref_name }}", "short": true},
+                {"title": "Commit", "value": "${{ github.sha }}", "short": true}
+              ]
+            }]
+          }'
+
+      - name: Summary
+        run: echo "✅ Deployment complete for $SERVICE in $REGION"

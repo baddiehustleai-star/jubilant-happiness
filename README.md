@@ -108,6 +108,22 @@ VITE_GEMINI_API_KEY=your_gemini_key
 VITE_REMOVEBG_API_KEY=your_removebg_key
 ```
 
+### 🔒 Fix Hardcoded Secrets (FixEnvSecrets Tool)
+
+Automatically scan and fix hardcoded API keys, secrets, and passwords in your codebase:
+
+```bash
+npm run fix:secrets
+```
+
+This tool will:
+- 🔍 Scan all JavaScript, TypeScript, JSON, and YAML files
+- 🔄 Replace hardcoded values with proper `process.env` references
+- ✅ Skip files that already use environment variables correctly
+- 📝 Print a summary of all files modified
+
+For detailed documentation, see [FIX_ENV_SECRETS_DOCS.md](./FIX_ENV_SECRETS_DOCS.md).
+
 ### 3️⃣ Firebase Cloud Functions (Optional)
 
 ```bash

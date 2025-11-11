@@ -16,7 +16,8 @@
     "verify:api": "node scripts/verify-endpoints.js",
     "verify:prod": "CLOUD_RUN_URL=https://photo2profit-api-uc.a.run.app node scripts/verify-endpoints.js",
     "deploy:checklist": "node scripts/final-deployment-checklist.js",
-    "deploy:full": "./scripts/deploy-and-verify.sh"
+    "deploy:full": "./scripts/deploy-and-verify.sh",
+    "fix:secrets": "node FixEnvSecrets.js"
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.2.0",

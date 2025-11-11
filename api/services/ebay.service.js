@@ -6,7 +6,7 @@ async function simulate(delay = 600) {
   await new Promise(r => setTimeout(r, delay));
 }
 
-export async function publish(listing) {
+export async function publish(_listing) {
   await simulate();
   const id = `ebay_${Date.now()}`;
   logger.info('Simulated eBay publish', id);

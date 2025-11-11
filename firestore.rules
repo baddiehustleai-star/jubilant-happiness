@@ -3,9 +3,54 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Users can read and write their own user document
+    // Users collection - allow reading by email for premium status
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Allow users to read their own document (by UID or email match)
+      allow read: if request.auth != null && 
+        (request.auth.uid == userId || 
+         request.auth.token.email == resource.data.email);
+      // Allow users to write their own document
+      allow write: if request.auth != null && request.auth.uid == userId;
+      // Allow server to create user records (for webhook premium activation)
+      allow create: if true;
+      
+      // Per-user products subcollection
+      match /products/{productId} {
+        allow read: if true; // Public read for share links
+        allow create: if request.auth != null && request.auth.uid == userId;
+        allow update, delete: if request.auth != null && 
+          (request.auth.uid == userId || 
+           request.auth.token.email == resource.data.userEmail);
+      }
+    }
+    
+    // Global products collection (for easier querying)
+    match /products/{productId} {
+      allow read: if true; // Public read for share links
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && 
+        request.auth.token.email == resource.data.userEmail;
+    }
+    
+    // Stripe products (synced from Stripe)
+    match /stripe_products/{productId} {
+      allow read: if true; // Anyone can read pricing
+      allow write: if false; // Only server can write
+    }
+    
+    // Purchases (receipts)
+    match /purchases/{purchaseId} {
+      allow read: if request.auth != null && 
+        request.auth.token.email == resource.data.email;
+      allow write: if false; // Only server via webhooks
+    }
+    
+    // Orders (from Stripe checkouts)
+    match /orders/{orderId} {
+      allow read: if request.auth != null && 
+        (request.auth.token.email == resource.data.buyerEmail ||
+         request.auth.token.email == resource.data.sellerEmail);
+      allow write: if false; // Only server via webhooks
     }
     
     // Users can read and write their own photos

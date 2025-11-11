@@ -17,7 +17,7 @@ export function auth(req, res, next) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
     req.user = { id: decoded.sub || decoded.userId || decoded.id };
     next();
-  } catch (err) {
+  } catch {
     return res.status(401).json({ error: 'Invalid token' });
   }
 }

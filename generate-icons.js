@@ -1,5 +1,4 @@
 import sharp from 'sharp';
-import fs from 'fs';
 
 // Convert SVG icons to PNG for PWA
 async function convertIcons() {

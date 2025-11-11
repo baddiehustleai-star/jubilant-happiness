@@ -96,7 +96,6 @@ export const PhotoUploadExample = () => {
 // Example 2: Listing Management Component
 export const ListingManagementExample = () => {
   const [listings, setListings] = useState([]);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
   
   const generateListing = async (photo) => {
     try {

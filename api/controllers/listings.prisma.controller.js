@@ -1,15 +1,12 @@
 import prisma from '../config/prisma.js';
 import { analyzeWithVertex } from '../vertex/analyze.js';
-import facebook from '../services/facebook.service.js';
-import ebay from '../services/ebay.service.js';
-import poshmark from '../services/poshmark.service.js';
 import { enqueuePublish } from '../queue/publish.queue.js';
 import logger from '../utils/logger.js';
 
 // AI generation leveraging existing Vertex helper (wrapped for v2)
 export async function generateListingAI(req, res) {
   try {
-    const { image_url, category, condition } = req.body;
+    const { image_url, category } = req.body;
     const ai = await analyzeWithVertex({
       title: 'Generated Listing',
       description: `Image: ${image_url || 'n/a'}`,
@@ -90,4 +87,17 @@ export async function publishListing(req, res) {
   }
 }
 
-export default { generateListingAI, createListing, getListings, getListing, publishListing };
+export async function archiveListing(req, res) {
+  try {
+    const { id } = req.params;
+    const exists = await prisma.listing.findUnique({ where: { id } });
+    if (!exists) return res.status(404).json({ error: 'Listing not found' });
+    await prisma.listing.update({ where: { id }, data: { status: 'archived' } });
+    await prisma.auditEvent.create({ data: { listingId: id, type: 'delist', detail: 'Listing archived (soft delete)' } });
+    res.json({ success: true, archived: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+}
+
+export default { generateListingAI, createListing, getListings, getListing, publishListing, archiveListing };

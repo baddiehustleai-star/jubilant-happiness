@@ -30,11 +30,12 @@ const Dashboard = () => {
   const [subscription, setSubscription] = useState(null);
   const [usage, setUsage] = useState({ photos: 0, listings: 0 });
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
 
   // Navigation items
   const navigationItems = [
     { name: 'Dashboard', href: '/dashboard' },
+    { name: 'Products', href: '/products' },
+    { name: 'Upgrades', href: '/upgrades' },
     { name: 'Listings', href: '/listings' },
     { name: 'Analytics', href: '/analytics' },
     { name: 'Settings', href: '/settings' }
@@ -42,9 +43,9 @@ const Dashboard = () => {
 
   const navigationActions = [
     {
-      label: 'Upgrade',
-      variant: 'gold',
-      onClick: () => handleUpgrade()
+      label: user?.premium ? '⭐ Premium' : 'Upgrade',
+      variant: user?.premium ? 'outline' : 'gold',
+      onClick: () => window.location.href = '/upgrades'
     },
     {
       label: 'Sign Out',
@@ -98,7 +99,7 @@ const Dashboard = () => {
   const handleCrossPost = async (listing) => {
     try {
       setIsLoading(true);
-      await crossPostingService.crossPost(listing, selectedPlatforms, user?.uid);
+      await crossPostingService.crossPost(listing, ['ebay', 'poshmark'], user?.uid);
     } catch (error) {
       console.error('Cross-posting error:', error);
     } finally {

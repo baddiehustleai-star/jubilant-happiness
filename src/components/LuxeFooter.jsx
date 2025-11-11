@@ -1,5 +1,5 @@
 import React from "react";
-import { FaInstagram, FaTiktok, FaFacebookF } from "react-icons/fa";
+import { FaInstagram, FaTiktok } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 
 export default function LuxeFooter() {

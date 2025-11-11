@@ -1,6 +1,6 @@
 // src/services/paymentService.js
 import { loadStripe } from '@stripe/stripe-js';
-import { apiFetch, getApiBase } from './apiClient.js';
+import { apiFetch } from './apiClient.js';
 
 // ✅ Initialize Stripe
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);

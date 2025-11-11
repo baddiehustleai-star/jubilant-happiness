@@ -15,7 +15,7 @@ async function waitForHealth(url, timeoutMs = 15000) {
         const json = await res.json();
         if (json && json.status === 'healthy') return json;
       }
-    } catch (e) {
+    } catch {
       // ignore until timeout
     }
     await new Promise(r => setTimeout(r, 300));

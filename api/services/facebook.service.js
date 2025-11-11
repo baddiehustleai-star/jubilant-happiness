@@ -6,7 +6,7 @@ async function simulate(delay = 500) {
   await new Promise(r => setTimeout(r, delay));
 }
 
-export async function publish(listing) {
+export async function publish(_listing) {
   await simulate();
   const id = `fb_${Date.now()}`;
   logger.info('Simulated Facebook publish', id);

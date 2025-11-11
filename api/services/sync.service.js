@@ -14,7 +14,7 @@ function getDb() {
       admin.initializeApp({ projectId: process.env.GCLOUD_PROJECT || 'test-project' });
     }
     return admin.firestore();
-  } catch (e) {
+  } catch {
     return null;
   }
 }

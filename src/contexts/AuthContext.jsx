@@ -1,14 +1,8 @@
 // src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { 
-  onAuthStateChanged, 
-  signOut, 
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider
-} from 'firebase/auth';
-import { auth } from '../firebase';
+import { jwtDecode } from 'jwt-decode';
+import { db } from '../firebase.js';
+import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 
 const AuthContext = createContext();
 
@@ -24,53 +18,156 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Fetch user's premium status from Firestore
+  async function fetchUserData(email) {
+    try {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('email', '==', email));
+      const snapshot = await getDocs(q);
+      
+      if (!snapshot.empty) {
+        const userData = snapshot.docs[0].data();
+        return {
+          premium: userData.premium || false,
+          premiumActivatedAt: userData.premiumActivatedAt,
+          lastPurchase: userData.lastPurchase
+        };
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+    return { premium: false };
+  }
+
+  // Set up real-time listener for premium status
+  function setupPremiumListener(email) {
+    try {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('email', '==', email));
+      
+      return onSnapshot(q, (snapshot) => {
+        if (!snapshot.empty) {
+          const userData = snapshot.docs[0].data();
+          setUser(prev => ({
+            ...prev,
+            premium: userData.premium || false,
+            premiumActivatedAt: userData.premiumActivatedAt,
+            lastPurchase: userData.lastPurchase
+          }));
+          console.log('⭐ Premium status updated:', userData.premium);
+        }
+      });
+    } catch (error) {
+      console.error('Error setting up premium listener:', error);
+      return () => {}; // Return empty cleanup function
+    }
+  }
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    async function checkToken() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        await tryRefresh();
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const decoded = jwtDecode(token);
+        const exp = decoded.exp * 1000;
+        const timeLeft = exp - Date.now();
+
+        if (timeLeft < 5 * 60 * 1000) {
+          // Less than 5 minutes left, refresh
+          await tryRefresh();
+        } else {
+          // Fetch premium status from Firestore
+          const userData = await fetchUserData(decoded.email);
+          setUser({ ...decoded, ...userData });
+        }
+      } catch (error) {
+        console.error('Invalid token:', error);
+        await tryRefresh();
+      }
+      
       setLoading(false);
-    });
+    }
 
-    return unsubscribe;
-  }, []);
+    async function tryRefresh() {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/refresh`, {
+          method: 'POST',
+          credentials: 'include', // Send the httpOnly cookie
+        });
 
-  // Sign up with email and password
+        if (res.ok) {
+          const { token } = await res.json();
+          localStorage.setItem('token', token);
+          const decoded = jwtDecode(token);
+          
+          // Fetch premium status from Firestore
+          const userData = await fetchUserData(decoded.email);
+          setUser({ ...decoded, ...userData });
+        } else {
+          // Refresh failed, clear everything
+          logout();
+        }
+      } catch (error) {
+        console.error('Refresh failed:', error);
+        logout();
+      }
+    }
+
+    checkToken();
+    
+    // Set up interval to check token every 5 minutes
+    const interval = setInterval(checkToken, 5 * 60 * 1000);
+    
+    // Set up real-time premium status listener
+    let unsubscribe = () => {};
+    if (user?.email) {
+      unsubscribe = setupPremiumListener(user.email);
+    }
+    
+    return () => {
+      clearInterval(interval);
+      unsubscribe();
+    };
+  }, [user?.email]);
+
+  function logout() {
+    localStorage.removeItem('token');
+    setUser(null);
+    window.location.href = '/login';
+  }
+
+  // Sign up with email (simple JWT login)
   const signup = async (email, password) => {
-    try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+      credentials: 'include',
+    });
+    const { token } = await res.json();
+    localStorage.setItem('token', token);
+    const decoded = jwtDecode(token);
+    
+    // Fetch premium status from Firestore
+    const userData = await fetchUserData(decoded.email);
+    setUser({ ...decoded, ...userData });
+    
+    return { user: { ...decoded, ...userData } };
   };
 
-  // Sign in with email and password
+  // Sign in with email (simple JWT login)
   const signin = async (email, password) => {
-    try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    return signup(email, password); // Same implementation
   };
 
-  // Sign in with Google
+  // Sign in with Google (redirect to OAuth)
   const signInWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  // Sign out
-  const logout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      throw error;
-    }
+    window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/auth/google`;
   };
 
   const value = {
@@ -79,7 +176,8 @@ export const AuthProvider = ({ children }) => {
     signup,
     signin,
     signInWithGoogle,
-    logout
+    logout,
+    isAuthenticated: !!user
   };
 
   return (

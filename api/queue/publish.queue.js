@@ -53,3 +53,4 @@ export async function enqueuePublish(listingId, platform) {
 }
 
 export default { enqueuePublish };
+export { queue as publishQueue };

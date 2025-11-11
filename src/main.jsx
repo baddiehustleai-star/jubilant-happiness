@@ -1,11 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Landing from './pages/Landing.jsx';
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import ProductsDashboard from './pages/ProductsDashboard.jsx';
+import ProductEditor from './pages/ProductEditor.jsx';
+import PublicProduct from './pages/PublicProduct.jsx';
+import Upgrades from './pages/Upgrades.jsx';
+import Listings from './pages/Listings.jsx';
+import ListingAudit from './pages/ListingAudit.jsx';
 import FirebaseTest from './pages/FirebaseTest.jsx';
+import Orders from './pages/Orders.jsx';
+import Success from './pages/Success.jsx';
+import Cancel from './pages/Cancel.jsx';
 import './index.css';
 import './styles/branding.css';
 import './styles/mobile.css';
@@ -69,6 +79,13 @@ function App() {
             } 
           />
           
+          {/* Payment Result Pages */}
+          <Route path="/success" element={<Success />} />
+          <Route path="/cancel" element={<Cancel />} />
+          
+          {/* Public Product Page (no auth required) */}
+          <Route path="/p/:id" element={<PublicProduct />} />
+          
           {/* Firebase Test Route (public for testing) */}
           <Route 
             path="/firebase-test" 
@@ -84,6 +101,54 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/products" 
+            element={
+              <ProtectedRoute>
+                <ProductsDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/product/:id" 
+            element={
+              <ProtectedRoute>
+                <ProductEditor />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/upgrades" 
+            element={
+              <ProtectedRoute>
+                <Upgrades />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/listings" 
+            element={
+              <ProtectedRoute>
+                <Listings />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/listings/:id/audit" 
+            element={
+              <ProtectedRoute>
+                <ListingAudit />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/orders" 
+            element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            } 
+          />
           
           {/* Catch all - redirect to landing */}
           <Route path="*" element={<Navigate to="/" />} />
@@ -95,6 +160,8 @@ function App() {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || 'demo-client-id'}>
+      <App />
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );

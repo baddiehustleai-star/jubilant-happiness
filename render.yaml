@@ -1,0 +1,73 @@
+# =====================================================
+# Render Blueprint: Photo2Profit Full Stack Deployment
+# Repo layout adapted to this project (frontend at repo root, API in /api)
+# =====================================================
+services:
+  # 1) PostgreSQL Database
+  - type: postgres
+    name: photo2profit-db
+    plan: free
+    region: oregon
+
+  # 2) API Service (Express + Prisma)
+  - type: web
+    name: photo2profit-api
+    env: node
+    plan: free
+    region: oregon
+    rootDir: api
+    buildCommand: |
+      npm ci
+      npx prisma generate
+      npx prisma db push
+    startCommand: node server.js
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: photo2profit-db
+          property: connectionString
+      - key: REDIS_URL
+        sync: false # set from Upstash (optional but recommended)
+      - key: SHARED_WEBHOOK_SECRET
+        value: dev-shared-secret
+      - key: JWT_SECRET
+        value: dev-jwt-secret
+      - key: NODE_ENV
+        value: production
+
+  # 3) Frontend (Vite static site at repo root)
+  - type: static
+    name: photo2profit-dashboard
+    plan: free
+    region: oregon
+    rootDir: .
+    buildCommand: |
+      npm ci
+      npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_BASE
+        fromService:
+          name: photo2profit-api
+          type: web
+          property: url
+
+  # 4) (Optional) Dedicated Queue Worker for BullMQ
+  #    If you want background jobs separate from the API, uncomment below.
+  # - type: worker
+  #   name: photo2profit-worker
+  #   env: node
+  #   plan: free
+  #   region: oregon
+  #   rootDir: api
+  #   buildCommand: npm ci
+  #   startCommand: node queue/worker.js
+  #   envVars:
+  #     - key: DATABASE_URL
+  #       fromDatabase:
+  #         name: photo2profit-db
+  #         property: connectionString
+  #     - key: REDIS_URL
+  #       sync: false
+  #     - key: NODE_ENV
+  #       value: production

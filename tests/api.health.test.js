@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 const BASE = process.env.VITE_API_BASE || process.env.API_BASE || 'http://localhost:8080';
 
 async function getHealth(url, timeoutMs = 2000) {
-  const controller = new AbortController();
+  const controller = new globalThis.AbortController();
   const t = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(`${url.replace(/\/$/, '')}/health`, { signal: controller.signal });
@@ -11,7 +11,7 @@ async function getHealth(url, timeoutMs = 2000) {
     if (!res.ok) return null;
     const json = await res.json();
     return json;
-  } catch (e) {
+  } catch {
     clearTimeout(t);
     return null;
   }

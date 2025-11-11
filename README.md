@@ -168,9 +168,220 @@ See tutorial section "Deploy API to Cloud Run" for commands.
 
 ---
 
+## 🪄 AI Magic Endpoints
+
+Photo2Profit now includes powerful AI endpoints for automated product analysis, background removal, and price intelligence:
+
+### Quick Start
+```bash
+# Set your API keys in api/.env
+GEMINI_API_KEY="your-gemini-api-key"
+REMOVE_BG_KEY="your-remove-bg-api-key"
+SERPAPI_KEY="your-serpapi-key"
+```
+
+### Available Endpoints
+
+#### 1. `/analyze` - Product Recognition
+Identifies products using Gemini 1.5 Pro Vision:
+```bash
+curl -X POST http://localhost:8080/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"imageUrl":"https://example.com/product.jpg"}'
+```
+
+#### 2. `/background` - Background Removal
+Removes backgrounds using remove.bg API:
+```bash
+curl -X POST http://localhost:8080/background \
+  -H "Content-Type: application/json" \
+  -d '{"imageUrl":"https://example.com/product.jpg"}'
+```
+
+#### 3. `/price-lookup` - Market Price Intelligence
+Searches eBay, Amazon, and Google Shopping via SerpAPI:
+```bash
+curl -X POST http://localhost:8080/price-lookup \
+  -H "Content-Type: application/json" \
+  -d '{"query":"vintage watch"}'
+```
+
+#### 4. `/magic` - Complete AI Pipeline 🪄
+Combines all three services in one call:
+```bash
+curl -X POST http://localhost:8080/magic \
+  -H "Content-Type: application/json" \
+  -d '{"imageUrl":"https://example.com/product.jpg"}'
+```
+
+Returns:
+- Background-removed image (base64)
+- AI-generated product description
+- Average market price + comparable listings
+
+### Getting API Keys
+- **Gemini API**: https://aistudio.google.com/app/apikey
+- **remove.bg**: https://www.remove.bg/users/sign_up
+- **SerpAPI**: https://serpapi.com/users/sign_up
+
+---
+
+## 🛒 E-Commerce Features
+
+Photo2Profit is a complete AI-powered commerce platform with authentication, payments, order management, and **automated marketplace publishing**.
+
+### 🔐 Authentication
+- **Google OAuth 2.0** - One-click sign-in
+- **Email/JWT Login** - Simple authentication
+- **Silent Token Refresh** - 15min access tokens, 30-day refresh tokens
+- **Secure Sessions** - HttpOnly cookies
+
+### 💳 Stripe Payments
+- **Shareable Product Pages** - Public URLs: `/p/{user}/{id}`
+- **One-Click Checkout** - Stripe Checkout integration
+- **Order Tracking** - Automatic Firestore logging
+- **Email Receipts** - Beautiful HTML receipts via Nodemailer
+
+### 📦 Order Management
+- **Dashboard** - View all sales at `/orders`
+- **Product CRUD** - Upload, edit, delete products
+- **Product Management** - Full Firestore-backed product catalog
+- **Products Dashboard** - View all products at `/products`
+- **Product Editor** - Edit titles, descriptions, prices at `/product/:id`
+- **Revenue Tracking** - Real-time sales totals
+- **Multi-user** - Per-user product collections
+- **Persistent Storage** - All products auto-saved to Firestore
+
+**Learn more:** See [`PRODUCT_MANAGEMENT_GUIDE.md`](./PRODUCT_MANAGEMENT_GUIDE.md)
+
+### 🚀 Automated Publishing
+- **Batch Publishing** - Auto-publish to eBay & Facebook Marketplace
+- **Threshold Triggers** - Publish after N products (e.g., every 5)
+- **Time-Based** - Schedule hourly/daily via Cloud Scheduler
+- **Smart Rate Limiting** - Avoid marketplace API throttling
+- **Manual Control** - Trigger publishing on-demand
+
+**Learn more:**
+- [`AUTO_PUBLISH_GUIDE.md`](./AUTO_PUBLISH_GUIDE.md) - Complete feature guide
+- [`CLOUD_SCHEDULER_SETUP.md`](./CLOUD_SCHEDULER_SETUP.md) - Time-based scheduling setup
+
+### Setup Guide
+
+1. **Configure Google OAuth:**
+   ```bash
+   GOOGLE_CLIENT_ID=your_id.apps.googleusercontent.com
+   GOOGLE_CLIENT_SECRET=your_secret
+   ```
+   Get credentials: https://console.cloud.google.com/apis/credentials
+
+2. **Configure Stripe:**
+   ```bash
+   STRIPE_SECRET_KEY=sk_test_...
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   ```
+   Dashboard: https://dashboard.stripe.com/test/apikeys
+   Webhook URL: `https://your-api.com/api/stripe-webhook`
+   Event: `checkout.session.completed`
+
+3. **Configure Email (Optional):**
+   ```bash
+   SMTP_USER=your-email@gmail.com
+   SMTP_PASS=your-16-char-app-password
+   ```
+   Gmail App Password: https://myaccount.google.com/apppasswords
+
+### API Endpoints
+
+```bash
+# Authentication
+POST /login                    # Email login → JWT
+POST /refresh                  # Silent token refresh
+GET  /auth/google              # Google OAuth redirect
+GET  /logout                   # Clear session
+
+# Products (requires auth)
+GET    /api/products           # List user's products
+POST   /api/upload             # Upload with AI analysis
+PATCH  /api/products/:id       # Update product
+DELETE /api/products/:id       # Delete product
+
+# Commerce
+GET  /p/:user/:id              # Public product page
+POST /api/checkout/:user/:id   # Create Stripe session
+POST /api/stripe-webhook       # Stripe webhook handler
+GET  /api/orders               # User's sales history
+
+# Pages
+GET  /success                  # Payment success page
+GET  /cancel                   # Payment cancelled page
+GET  /orders                   # Orders dashboard
+```
+
+### Complete Example
+
+```bash
+# 1. Login
+curl -X POST http://localhost:8080/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com"}' \
+  --cookie-jar cookies.txt
+
+TOKEN=$(jq -r '.token' response.json)
+
+# 2. Upload product with AI analysis
+curl -X POST http://localhost:8080/api/upload \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "image=@product.jpg" \
+  --cookie cookies.txt
+
+# 3. View product page (public, no auth)
+open http://localhost:8080/p/user@example.com/product_id
+
+# 4. Test checkout with Stripe test card: 4242 4242 4242 4242
+
+# 5. View orders
+curl http://localhost:8080/api/orders \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+📚 **Full Commerce Guide:** See [`COMMERCE_GUIDE.md`](./COMMERCE_GUIDE.md) for detailed setup, testing, and deployment instructions.
+
+---
+
 ## 🌐 Deployment
 
-Deploy your frontend with **Vercel** or **Firebase Hosting**:
+### Deploy to Render (API + Dashboard, free tier)
+
+We included a `render.yaml` blueprint at the repo root so you can deploy the whole stack from one click or commit.
+
+1) Create a free Postgres on Render; the blueprint will wire `DATABASE_URL` automatically.
+2) (Optional) Create a free Redis on Upstash and copy its URL into the API’s `REDIS_URL` env.
+3) Deploy the blueprint:
+
+- Option A (UI): open https://render.com/deploy, select this repo. Render will read `render.yaml` and create:
+  - `photo2profit-db` (Postgres)
+  - `photo2profit-api` (Express + Prisma)
+  - `photo2profit-dashboard` (Vite static site)
+- Option B (CI): push to `main` after adding `RENDER_API_KEY` in GitHub secrets; the workflow at `.github/workflows/deploy.yaml` runs `render deploy --yaml ./render.yaml`.
+
+API env vars set by the blueprint:
+- `DATABASE_URL` (from Render Postgres)
+- `REDIS_URL` (manual; paste Upstash if you want queues)
+- `SHARED_WEBHOOK_SECRET`, `JWT_SECRET`, `NODE_ENV`
+
+Frontend env var:
+- `VITE_API_BASE` is auto-populated from the API service URL so the dashboard calls the right backend.
+
+Verify after deploy:
+- API health: `curl https://<your-api>.onrender.com/health` → JSON with `{ "status": "healthy" }`
+- Dashboard: open `https://<your-dashboard>.onrender.com` → visit `/listings`
+- Queue dashboard: `https://<your-api>.onrender.com/admin/queues` (if `REDIS_URL` is set)
+
+**Optional: Slack Notifications**
+Get instant alerts for every deployment (success or failure) in your Slack channel. See [SLACK_NOTIFICATIONS_SETUP.md](./SLACK_NOTIFICATIONS_SETUP.md) for the 5-minute setup guide.
+
+### Other options
+You can also deploy the frontend on **Vercel** or **Firebase Hosting**:
 
 - Connect your GitHub repo
 - Add your `.env` variables
@@ -239,7 +450,9 @@ Mounted only if `process.env.DATABASE_URL` is set:
 - GET  /api/v2/listings
 - GET  /api/v2/listings/:id
 - POST /api/v2/listings/:id/publish
+- PATCH /api/v2/listings/:id/archive
 - POST /api/v2/integrations/ebay/auth
+- GET  /api/v2/audit-events (filters: listingId, platform, type, limit, cursor)
 
 Auth: Provide `Authorization: Bearer <jwt>` or legacy `x-user-id` header (development). JWT must include `sub` field.
 
@@ -261,6 +474,29 @@ Security: set `SHARED_WEBHOOK_SECRET` and send `X-Signature: <hex hmac>` where
 1. Keep Firestore listings while rolling out Postgres.
 2. Dual-resolution in sync service permits gradual switchover.
 3. Once confident, backfill ChannelListing rows then remove Firestore crossPostResults.
+
+#### Seeding Demo Data (Postgres)
+If you want sample data to exercise the v2 API (e.g., `/api/v2/audit-events`):
+
+```bash
+# 1) Set DATABASE_URL in api/.env and apply schema
+cd api
+npx prisma db push
+
+# 2) Seed demo data (users, listings, channel listings, audit events)
+npm run prisma:seed
+```
+
+What it creates:
+- 1 demo user: seed+demo@photo2profit.com
+- 5 listings (4 active, 1 archived) with categories/conditions
+- Channel listings for ebay/facebook
+- Audit events: publish, price_change, delist
+
+Then query:
+```bash
+curl -s "http://localhost:3000/api/v2/audit-events?limit=20" | jq
+```
 
 #### Next DB Enhancements
 - Unique constraint on ChannelListing (listingId+platform) — added

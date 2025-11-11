@@ -11,6 +11,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       PROJECT_ID: photo2profitbaddie
       REGION: us-west2

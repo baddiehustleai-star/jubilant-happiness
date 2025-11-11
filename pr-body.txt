@@ -1,0 +1,7 @@
+This PR adds two automated deployment workflows: backend → Cloud Run and frontend → Firebase Hosting. Frontend fetches Cloud Run URL and verifies backend health before build; both have optional Slack notifications. Required secrets are below.
+
+Required secrets (Settings → Secrets → Actions):
+- GOOGLE_APPLICATION_CREDENTIALS_JSON (Cloud Run / gcloud auth)
+- FIREBASE_SERVICE_ACCOUNT (Firebase Hosting)
+- SLACK_WEBHOOK_URL (optional)
+- CRON_SECRET (optional)

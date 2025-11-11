@@ -1,0 +1,86 @@
+name: Auto Deploy Frontend to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'vite.config.js'
+      - '.github/workflows/frontend-deploy.yml'
+
+env:
+  PROJECT_ID: photo2profitbaddie
+  REGION: us-west2
+  SERVICE_NAME: photo2profit-api
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Google Cloud SDK (for fetching Cloud Run URL)
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get Cloud Run API URL
+        id: get-url
+        run: |
+          API_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} \
+            --format='value(status.url)')
+          echo "API_URL=$API_URL" >> $GITHUB_ENV
+          echo "✅ Found API URL: $API_URL"
+
+      - name: Create production .env
+        run: |
+          echo "VITE_API_BASE_URL=${{ env.API_URL }}" > .env.production
+          echo "NODE_ENV=production" >> .env.production
+          cat .env.production
+
+      - name: Verify backend health
+        run: |
+          echo "⏳ Checking backend health..."
+          for i in {1..10}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.API_URL }}/api/health")
+            if [ "$STATUS" = "200" ]; then
+              echo "✅ Backend is healthy."
+              exit 0
+            fi
+            echo "Attempt $i/10 failed (status $STATUS). Retrying in 5s..."
+            sleep 5
+          done
+          echo "❌ Backend did not respond with 200 OK. Exiting."
+          exit 1
+
+      - name: Build production site
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
+          projectId: photo2profitbaddie
+
+      - name: Notify Slack (optional)
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\":\"✅ *Frontend deployed successfully!* \n🌐 <${{ env.API_URL }}|View API> • 🔥 Project: photo2profitbaddie\"}" \
+          "${{ secrets.SLACK_WEBHOOK_URL }}"

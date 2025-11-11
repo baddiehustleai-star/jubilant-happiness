@@ -1,0 +1,60 @@
+name: Auto Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'api/**'
+      - '.github/workflows/deploy.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_ID: photo2profitbaddie
+      REGION: us-west2
+      SERVICE_NAME: photo2profit-api
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+
+      - name: Build and Deploy to Cloud Run
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --source . \
+            --region $REGION \
+            --platform managed \
+            --allow-unauthenticated
+
+      - name: Get Cloud Run URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region $REGION --format='value(status.url)')
+          echo "SERVICE_URL=$SERVICE_URL" >> $GITHUB_ENV
+          echo "✅ Cloud Run URL: $SERVICE_URL"
+
+      - name: Trigger SEO Refresh (optional)
+        if: success()
+        run: |
+          if [ -n "${{ secrets.CRON_SECRET }}" ]; then
+            curl -X POST -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" "${SERVICE_URL}/api/seo/refresh" || true
+          else
+            curl -X POST "${SERVICE_URL}/api/seo/refresh" || true
+          fi
+
+      - name: Notify Slack (optional)
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        run: |
+          DEPLOY_URL=$(gcloud run services describe photo2profit-api \
+            --region us-west2 \
+            --format='value(status.url)')
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\":\"🚀 *Backend deployed successfully!* \n🌐 <${DEPLOY_URL}|View Cloud Run Service> • 🧩 photo2profit-api in project photo2profitbaddie\"}" \
+          "${{ secrets.SLACK_WEBHOOK_URL }}"

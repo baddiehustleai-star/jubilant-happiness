@@ -17,7 +17,9 @@ export default function Landing() {
         Turn your photos into profit — AI-powered listings, background removal, and instant
         cross-posting 💎
       </p>
-      <button className="cta" onClick={() => setShowDemo(true)}>Start Now</button>
+      <button className="cta" onClick={() => setShowDemo(true)}>
+        Start Now
+      </button>
     </main>
   );
 }

@@ -43,10 +43,25 @@ jobs:
       - name: Trigger SEO Refresh (optional)
         if: success()
         run: |
+          echo "🔁 Triggering SEO refresh..."
           if [ -n "${{ secrets.CRON_SECRET }}" ]; then
             curl -X POST -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" "${SERVICE_URL}/api/seo/refresh" || true
           else
             curl -X POST "${SERVICE_URL}/api/seo/refresh" || true
+          fi
+
+      - name: Verify SEO refresh succeeded
+        if: success()
+        run: |
+          echo "🔍 Verifying SEO refresh..."
+          RESPONSE=$(curl -s -X POST \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            "${{ env.SERVICE_URL }}/api/seo/refresh")
+          echo "Response: $RESPONSE"
+          if echo "$RESPONSE" | grep -q '"success":true'; then
+            echo "✅ SEO refresh verified successfully."
+          else
+            echo "⚠️ SEO refresh returned unexpected response."
           fi
 
       - name: Notify Slack (optional)
@@ -56,5 +71,5 @@ jobs:
             --region us-west2 \
             --format='value(status.url)')
           curl -X POST -H 'Content-type: application/json' \
-          --data "{\"text\":\"🚀 *Backend deployed successfully!* \n🌐 <${DEPLOY_URL}|View Cloud Run Service> • 🧩 photo2profit-api in project photo2profitbaddie\"}" \
+          --data "{\"text\":\"🚀 *Backend deployed successfully!* \n🌐 <${DEPLOY_URL}|View Cloud Run Service> • ✅ SEO refresh verified • 🔥 Project: photo2profitbaddie\"}" \
           "${{ secrets.SLACK_WEBHOOK_URL }}"

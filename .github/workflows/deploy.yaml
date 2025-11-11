@@ -1,0 +1,65 @@
+# ============================================
+# GitHub Actions CI/CD for Render Deployment
+# ============================================
+name: Deploy to Render (Render optional / Slack optional)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    steps:
+      - name: 🧾 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧰 Install Render CLI
+        run: |
+          curl -fsSL https://render.com/static/cli/install.sh | bash
+          echo "$HOME/.render" >> $GITHUB_PATH
+
+      - name: 🔐 Authenticate with Render (optional)
+        if: env.RENDER_API_KEY != ''
+        run: |
+          echo "Render API key detected; logging in"
+          render login --api-key $RENDER_API_KEY
+      - name: ⏭️ Skip Render auth (no key configured)
+        if: env.RENDER_API_KEY == ''
+        run: echo "RENDER_API_KEY not set; skipping Render login step"
+
+      - name: 🚀 Deploy all services from blueprint (optional)
+        if: env.RENDER_API_KEY != ''
+        run: |
+          echo "Deploying via render.yaml blueprint"
+          render deploy --yaml ./render.yaml --confirm
+      - name: ⏭️ Skip Render deploy (no key configured)
+        if: env.RENDER_API_KEY == ''
+        run: echo "Skipping Render deploy because RENDER_API_KEY absent"
+
+      - name: 📢 Notify Slack on deployment result (optional)
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "Slack webhook not set; skipping notification"
+            exit 0
+          fi
+          STATUS="${{ job.status }}"
+          COLOR="#36a64f"
+          if [ "$STATUS" != "success" ]; then COLOR="#ff0000"; fi
+          PAYLOAD=$(jq -n --arg color "$COLOR" --arg status "$STATUS" --arg repo "${{ github.repository }}" --arg branch "${{ github.ref_name }}" --arg sha "${{ github.sha }}" --arg actor "${{ github.actor }}" '{attachments:[{color:$color,title:"🚀 Render Deployment: " + $status,text:"*Repository:* " + $repo + "\n*Branch:* " + $branch + "\n*Commit:* `" + $sha + "`\n*Actor:* " + $actor,footer:"GitHub Actions • Render CI/CD",ts:(now|floor)}]}' )
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK_URL"
+
+      # Optional: selective deploy (commented)
+      # - name: 🚀 Deploy API + Worker only
+      #   run: |
+      #     render deploy photo2profit-api --confirm
+      #     render deploy photo2profit-worker --confirm

@@ -65,7 +65,7 @@ jobs:
           fi
 
       - name: Notify Slack (optional)
-        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        if: secrets.SLACK_WEBHOOK_URL != ''
         run: |
           DEPLOY_URL=$(gcloud run services describe photo2profit-api \
             --region us-west2 \

@@ -1,5 +1,7 @@
 # 🚀 Deployment Pipeline Summary
 
+> **Note**: This document describes Render deployment. For **Google Cloud Run** automated CI/CD deployment, see [`CICD_SETUP_GUIDE.md`](./CICD_SETUP_GUIDE.md).
+
 Complete CI/CD setup for Photo2Profit with automated deployments and notifications.
 
 ## ✅ What's Configured

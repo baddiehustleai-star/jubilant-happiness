@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -35,22 +36,48 @@ jobs:
           credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
 
       - name: Deploy to Cloud Run
+        id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
-          source: .
+          source: ./api
+          env_vars: |
+            NODE_ENV=production
+            PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Verify Deployment
+        if: success()
+        run: |
+          echo "🔍 Verifying deployment..."
+          SERVICE_URL="${{ steps.deploy.outputs.url }}"
+          echo "Service URL: $SERVICE_URL"
+          
+          # Wait for service to be ready
+          sleep 10
+          
+          # Check health endpoint
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL/health" || echo "000")
+          
+          if [ "$HEALTH_STATUS" = "200" ]; then
+            echo "✅ Health check passed!"
+          else
+            echo "⚠️ Health check returned status: $HEALTH_STATUS"
+            echo "Service may still be initializing..."
+          fi
 
       - name: Trigger SEO Refresh (optional)
         if: success()
         run: |
+          SERVICE_URL="${{ steps.deploy.outputs.url }}"
           curl -s -X POST \
           -H "x-cron-secret: photo2profit-cron-secret" \
-          "https://${{ env.SERVICE }}-${{ secrets.GCP_PROJECT_ID }}.${{ env.REGION }}.run.app/api/seo/refresh" || true
+          "$SERVICE_URL/api/seo/refresh" || true
 
       - name: Notify Slack on Success
         if: success() && secrets.SLACK_WEBHOOK_URL != ''
         run: |
+          SERVICE_URL="${{ steps.deploy.outputs.url }}"
           curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
           -H "Content-Type: application/json" \
           -d '{
@@ -61,7 +88,8 @@ jobs:
                 {"title": "Service", "value": "${{ env.SERVICE }}", "short": true},
                 {"title": "Region", "value": "${{ env.REGION }}", "short": true},
                 {"title": "Branch", "value": "${{ github.ref_name }}", "short": true},
-                {"title": "Commit", "value": "${{ github.sha }}", "short": true}
+                {"title": "Commit", "value": "${{ github.sha }}", "short": true},
+                {"title": "URL", "value": "'"$SERVICE_URL"'", "short": false}
               ]
             }]
           }'

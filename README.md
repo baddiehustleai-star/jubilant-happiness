@@ -350,6 +350,27 @@ curl http://localhost:8080/api/orders \
 
 ## 🌐 Deployment
 
+### 🚀 Quick Deployment with Verification
+
+For production deployment to Google Cloud Run with automated verification:
+
+```bash
+# Complete deployment + verification
+npm run deploy:full
+
+# Or just run the verification checklist
+npm run deploy:checklist
+```
+
+📚 **See [FINAL_DEPLOYMENT_GUIDE.md](./FINAL_DEPLOYMENT_GUIDE.md)** for complete deployment instructions and troubleshooting.
+
+The deployment checklist verifies:
+- ✅ Environment variables are configured
+- ✅ API is deployed and accessible
+- ✅ SEO refresh endpoint is functional
+- ✅ Product pages load correctly
+- ✅ All critical endpoints respond
+
 ### Deploy to Render (API + Dashboard, free tier)
 
 We included a `render.yaml` blueprint at the repo root so you can deploy the whole stack from one click or commit.

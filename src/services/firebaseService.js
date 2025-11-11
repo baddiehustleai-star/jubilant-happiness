@@ -1,24 +1,19 @@
 // src/services/firebaseService.js
-import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  doc, 
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
   getDoc,
-  updateDoc, 
+  updateDoc,
   deleteDoc,
   query,
   where,
   orderBy,
   limit,
-  serverTimestamp
+  serverTimestamp,
 } from 'firebase/firestore';
-import { 
-  ref, 
-  uploadBytes, 
-  getDownloadURL, 
-  deleteObject 
-} from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage, auth } from '../firebase';
 
 /**
@@ -42,7 +37,7 @@ export const addDocument = async (collectionName, data) => {
       ...data,
       userId: auth.currentUser?.uid,
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
     });
     return docRef.id;
   } catch (error) {
@@ -60,20 +55,20 @@ export const addDocument = async (collectionName, data) => {
 export const getUserDocuments = async (collectionName, limitCount = 50) => {
   try {
     if (!auth.currentUser) throw new Error('User not authenticated');
-    
+
     const q = query(
       collection(db, collectionName),
       where('userId', '==', auth.currentUser.uid),
       orderBy('createdAt', 'desc'),
       limit(limitCount)
     );
-    
+
     const querySnapshot = await getDocs(q);
     const documents = [];
     querySnapshot.forEach((doc) => {
       documents.push({ id: doc.id, ...doc.data() });
     });
-    
+
     return documents;
   } catch (error) {
     console.error('Error getting documents:', error);
@@ -91,7 +86,7 @@ export const getDocument = async (collectionName, docId) => {
   try {
     const docRef = doc(db, collectionName, docId);
     const docSnap = await getDoc(docRef);
-    
+
     if (docSnap.exists()) {
       return { id: docSnap.id, ...docSnap.data() };
     } else {
@@ -115,7 +110,7 @@ export const updateDocument = async (collectionName, docId, data) => {
     const docRef = doc(db, collectionName, docId);
     await updateDoc(docRef, {
       ...data,
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
     });
   } catch (error) {
     console.error('Error updating document:', error);
@@ -152,20 +147,20 @@ export const deleteDocument = async (collectionName, docId) => {
 export const uploadFile = async (file, folderPath = 'uploads') => {
   try {
     if (!auth.currentUser) throw new Error('User not authenticated');
-    
+
     const fileName = `${Date.now()}_${file.name}`;
     const filePath = `${folderPath}/${auth.currentUser.uid}/${fileName}`;
     const storageRef = ref(storage, filePath);
-    
+
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
-    
+
     return {
       downloadURL,
       path: filePath,
       fileName,
       size: file.size,
-      type: file.type
+      type: file.type,
     };
   } catch (error) {
     console.error('Error uploading file:', error);
@@ -205,7 +200,7 @@ export const savePhoto = async (photoData) => {
     size: photoData.size,
     type: photoData.type,
     status: 'uploaded',
-    processed: false
+    processed: false,
   });
 };
 
@@ -231,7 +226,7 @@ export const saveListing = async (listingData) => {
     category: listingData.category,
     tags: listingData.tags || [],
     platforms: listingData.platforms || [],
-    status: 'draft'
+    status: 'draft',
   });
 };
 
@@ -250,7 +245,7 @@ export const getUserListings = async () => {
  */
 export const updateUserProfile = async (profileData) => {
   if (!auth.currentUser) throw new Error('User not authenticated');
-  
+
   const userId = auth.currentUser.uid;
   try {
     // Try to update existing profile
@@ -261,7 +256,7 @@ export const updateUserProfile = async (profileData) => {
       await addDocument('users', {
         ...profileData,
         email: auth.currentUser.email,
-        uid: userId
+        uid: userId,
       });
     } else {
       throw error;
@@ -275,7 +270,7 @@ export const updateUserProfile = async (profileData) => {
  */
 export const getUserProfile = async () => {
   if (!auth.currentUser) return null;
-  
+
   try {
     return await getDocument('users', auth.currentUser.uid);
   } catch (error) {
@@ -296,12 +291,12 @@ export const getUserProfile = async () => {
  */
 export const trackUsage = async (action, metadata = {}) => {
   if (!auth.currentUser) return;
-  
+
   try {
     await addDocument('usage', {
       action,
       metadata,
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
     });
   } catch (error) {
     console.error('Error tracking usage:', error);

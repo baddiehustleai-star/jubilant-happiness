@@ -37,11 +37,14 @@ export default [
       'react/jsx-uses-react': 'warn',
       'react/jsx-uses-vars': 'warn',
       // Allow unused parameters (common in React)
-      'no-unused-vars': ['warn', { 
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        args: 'after-used' 
-      }],
+      'no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+        },
+      ],
       // Allow case declarations
       'no-case-declarations': 'off',
       // Allow unnecessary try/catch for now
@@ -54,10 +57,6 @@ export default [
     },
   },
   {
-    ignores: [
-      'dist/**',
-      'node_modules/**',
-      '.git/**'
-    ],
+    ignores: ['dist/**', 'node_modules/**', '.git/**'],
   },
 ];

@@ -11,6 +11,7 @@
 **Symptom:** Dashboard is empty or only shows other projects.
 
 **Fix:**
+
 ```bash
 # Login to Vercel (if not already)
 vercel login
@@ -35,18 +36,21 @@ After linking, `.vercel/` directory will be created with `project.json` containi
 **Symptom:** Logged into personal account but project was created under a team.
 
 **Check active account:**
+
 ```bash
 vercel whoami
 # Should show: baddiehustle
 ```
 
 **Switch teams:**
+
 ```bash
 vercel switch
 # Select the correct team/scope
 ```
 
 **Check in dashboard:**
+
 - Go to https://vercel.com/baddiehustle
 - Top-left dropdown: ensure "baddiehustle" team is selected
 - If you see "Personal Account" instead, switch to your team
@@ -58,6 +62,7 @@ vercel switch
 **Symptom:** Manual CLI deployments work, but GitHub pushes don't trigger deploys.
 
 **Fix:**
+
 1. Go to https://vercel.com/dashboard
 2. Click your avatar → **Settings**
 3. Go to **Git Integrations** → **GitHub**
@@ -72,6 +77,7 @@ vercel switch
 ### 4️⃣ Project Exists But Hidden by Filters
 
 **Check:**
+
 - In dashboard, clear any search/filter boxes
 - Check "Archived" tab (projects can be accidentally archived)
 - Check all team scopes (personal vs team accounts)
@@ -88,6 +94,7 @@ Your repo already has `.github/workflows/deploy-vercel.yml`, but it needs secret
 Go to: https://github.com/baddiehustleai-star/jubilant-happiness/settings/secrets/actions
 
 Add these:
+
 - `VERCEL_TOKEN` — Get from https://vercel.com/account/tokens
 - `ORG_ID` — Found in team settings or `.vercel/project.json`
 - `PROJECT_ID` — Found in `.vercel/project.json` after linking
@@ -96,6 +103,7 @@ Add these:
 - `VITE_FIREBASE_PROJECT_ID`
 
 **Get ORG_ID and PROJECT_ID:**
+
 ```bash
 # After running `vercel link`:
 cat .vercel/project.json
@@ -107,6 +115,7 @@ cat .vercel/project.json
 ### 6️⃣ First Deployment Never Triggered
 
 **Quick deploy to make project visible:**
+
 ```bash
 # Deploy immediately (preview)
 vercel
@@ -124,6 +133,7 @@ This creates the project in your dashboard and makes it visible.
 If starting from scratch:
 
 ### Step 1: Login & Link
+
 ```bash
 vercel login
 cd /workspaces/jubilant-happiness
@@ -131,6 +141,7 @@ vercel link
 ```
 
 ### Step 2: Set Environment Variables
+
 ```bash
 # Add all required vars (Vercel will prompt for value and scope)
 vercel env add VITE_FIREBASE_API_KEY
@@ -146,12 +157,14 @@ vercel env add VITE_STRIPE_PRICE_ID_PRO
 ```
 
 Or bulk-add via dashboard:
+
 1. Go to https://vercel.com/baddiehustle/photo2profit/settings/environment-variables
 2. Click **Add New**
 3. Paste key-value pairs from your `.env` file
 4. Select environments: Production, Preview, Development
 
 ### Step 3: Deploy
+
 ```bash
 # Preview deployment
 vercel
@@ -161,10 +174,12 @@ vercel --prod
 ```
 
 ### Step 4: Connect GitHub (for auto-deploy)
+
 1. Dashboard → Import Project → Select `jubilant-happiness`
 2. Or go to project settings → Git → Connect Repository
 
 ### Step 5: Add GitHub Secrets (for Actions)
+
 ```bash
 # Get project details
 cat .vercel/project.json
@@ -181,30 +196,35 @@ cat .vercel/project.json
 ## 🛠️ Diagnostic Commands
 
 ### Check Login Status
+
 ```bash
 vercel whoami
 # Should output: baddiehustle
 ```
 
 ### List Projects
+
 ```bash
 vercel list
 # Shows all projects in current scope
 ```
 
 ### Check Project Link
+
 ```bash
 cat .vercel/project.json
 # Should show orgId and projectId
 ```
 
 ### View Deployments
+
 ```bash
 vercel ls
 # Lists all deployments for this project
 ```
 
 ### Get Project URL
+
 ```bash
 vercel inspect
 # Shows production URL and project details
@@ -245,11 +265,13 @@ https://vercel.com/baddiehustle/photo2profit/deployments
 ## 🚨 Still Not Showing?
 
 ### Check Team Membership
+
 - Verify you're a member of `baddiehustle` team
 - Go to https://vercel.com/teams/baddiehustle/settings/members
 - Ensure your account has proper permissions
 
 ### Try Alternative Import
+
 1. Go to https://vercel.com/new
 2. Select **Import Git Repository**
 3. Choose GitHub
@@ -262,7 +284,9 @@ https://vercel.com/baddiehustle/photo2profit/deployments
    - Install Command: `npm install`
 
 ### Manual Project Creation
+
 If Git import fails:
+
 1. Dashboard → **Add New... → Project**
 2. Select **Import Third-Party Git Repository**
 3. Enter: `https://github.com/baddiehustleai-star/jubilant-happiness`
@@ -281,6 +305,7 @@ If Git import fails:
 ## ✅ Success Checklist
 
 After setup, verify:
+
 - [ ] Project visible at https://vercel.com/baddiehustle
 - [ ] `.vercel/project.json` exists locally
 - [ ] Environment variables set in dashboard

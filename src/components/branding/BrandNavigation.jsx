@@ -4,26 +4,26 @@ import { BrandButton } from './BrandElements';
 import { Logo, LogoMark } from './Logo';
 
 // Brand Navigation Header
-export const BrandNavigation = ({ 
+export const BrandNavigation = ({
   logo = true,
   navigation = [],
   actions = [],
   variant = 'default',
   fixed = false,
-  className = ''
+  className = '',
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  const baseClasses = "w-full transition-all duration-300";
+
+  const baseClasses = 'w-full transition-all duration-300';
   const variantClasses = {
     default: 'bg-white/95 backdrop-blur-lg border-b border-rose-100 shadow-sm',
     transparent: 'bg-transparent',
     solid: 'bg-white border-b border-rose-100 shadow-sm',
-    dark: 'bg-dark/95 backdrop-blur-lg border-b border-rose-800'
+    dark: 'bg-dark/95 backdrop-blur-lg border-b border-rose-800',
   };
-  
+
   const fixedClasses = fixed ? 'fixed top-0 left-0 right-0 z-50' : '';
-  
+
   return (
     <nav className={`${baseClasses} ${variantClasses[variant]} ${fixedClasses} ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,7 +39,7 @@ export const BrandNavigation = ({
               </div>
             </div>
           )}
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
@@ -54,7 +54,7 @@ export const BrandNavigation = ({
               ))}
             </div>
           </div>
-          
+
           {/* Actions */}
           <div className="hidden md:flex md:items-center md:space-x-4">
             {actions.map((action, index) => (
@@ -68,7 +68,7 @@ export const BrandNavigation = ({
               </BrandButton>
             ))}
           </div>
-          
+
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
@@ -77,18 +77,38 @@ export const BrandNavigation = ({
             >
               <span className="sr-only">Open main menu</span>
               {!isMenuOpen ? (
-                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="block h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               ) : (
-                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="block h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               )}
             </button>
           </div>
         </div>
-        
+
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden">
@@ -124,12 +144,12 @@ export const BrandNavigation = ({
 };
 
 // Brand Footer
-export const BrandFooter = ({ 
+export const BrandFooter = ({
   logo = true,
   links = [],
   social = [],
   copyright,
-  className = ''
+  className = '',
 }) => {
   return (
     <footer className={`bg-dark text-white ${className}`}>
@@ -140,11 +160,12 @@ export const BrandFooter = ({
             <div className="md:col-span-2">
               <Logo variant="white" size="sm" className="mb-4" />
               <p className="text-gray-300 max-w-md">
-                Transform your photos into profitable listings with AI-powered optimization and cross-platform posting.
+                Transform your photos into profitable listings with AI-powered optimization and
+                cross-platform posting.
               </p>
             </div>
           )}
-          
+
           {/* Links */}
           <div className="grid grid-cols-2 gap-8 md:col-span-2">
             {links.map((section, index) => (
@@ -166,13 +187,13 @@ export const BrandFooter = ({
             ))}
           </div>
         </div>
-        
+
         {/* Bottom Section */}
         <div className="mt-8 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
           <div className="text-gray-300 text-sm">
             {copyright || `© ${new Date().getFullYear()} Photo2Profit. All rights reserved.`}
           </div>
-          
+
           {/* Social Links */}
           {social.length > 0 && (
             <div className="flex space-x-4 mt-4 md:mt-0">
@@ -197,10 +218,7 @@ export const BrandFooter = ({
 };
 
 // Brand Breadcrumb
-export const BrandBreadcrumb = ({ 
-  items = [],
-  className = ''
-}) => {
+export const BrandBreadcrumb = ({ items = [], className = '' }) => {
   return (
     <nav className={`flex ${className}`} aria-label="Breadcrumb">
       <ol className="flex items-center space-x-2">
@@ -227,9 +245,7 @@ export const BrandBreadcrumb = ({
                 {item.name}
               </a>
             ) : (
-              <span className="text-rose-600 text-sm font-medium">
-                {item.name}
-              </span>
+              <span className="text-rose-600 text-sm font-medium">{item.name}</span>
             )}
           </li>
         ))}

@@ -24,13 +24,13 @@ export const AuthProvider = ({ children }) => {
       const usersRef = collection(db, 'users');
       const q = query(usersRef, where('email', '==', email));
       const snapshot = await getDocs(q);
-      
+
       if (!snapshot.empty) {
         const userData = snapshot.docs[0].data();
         return {
           premium: userData.premium || false,
           premiumActivatedAt: userData.premiumActivatedAt,
-          lastPurchase: userData.lastPurchase
+          lastPurchase: userData.lastPurchase,
         };
       }
     } catch (error) {
@@ -44,15 +44,15 @@ export const AuthProvider = ({ children }) => {
     try {
       const usersRef = collection(db, 'users');
       const q = query(usersRef, where('email', '==', email));
-      
+
       return onSnapshot(q, (snapshot) => {
         if (!snapshot.empty) {
           const userData = snapshot.docs[0].data();
-          setUser(prev => ({
+          setUser((prev) => ({
             ...prev,
             premium: userData.premium || false,
             premiumActivatedAt: userData.premiumActivatedAt,
-            lastPurchase: userData.lastPurchase
+            lastPurchase: userData.lastPurchase,
           }));
           console.log('⭐ Premium status updated:', userData.premium);
         }
@@ -89,22 +89,25 @@ export const AuthProvider = ({ children }) => {
         console.error('Invalid token:', error);
         await tryRefresh();
       }
-      
+
       setLoading(false);
     }
 
     async function tryRefresh() {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/refresh`, {
-          method: 'POST',
-          credentials: 'include', // Send the httpOnly cookie
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/refresh`,
+          {
+            method: 'POST',
+            credentials: 'include', // Send the httpOnly cookie
+          }
+        );
 
         if (res.ok) {
           const { token } = await res.json();
           localStorage.setItem('token', token);
           const decoded = jwtDecode(token);
-          
+
           // Fetch premium status from Firestore
           const userData = await fetchUserData(decoded.email);
           setUser({ ...decoded, ...userData });
@@ -119,16 +122,16 @@ export const AuthProvider = ({ children }) => {
     }
 
     checkToken();
-    
+
     // Set up interval to check token every 5 minutes
     const interval = setInterval(checkToken, 5 * 60 * 1000);
-    
+
     // Set up real-time premium status listener
     let unsubscribe = () => {};
     if (user?.email) {
       unsubscribe = setupPremiumListener(user.email);
     }
-    
+
     return () => {
       clearInterval(interval);
       unsubscribe();
@@ -152,11 +155,11 @@ export const AuthProvider = ({ children }) => {
     const { token } = await res.json();
     localStorage.setItem('token', token);
     const decoded = jwtDecode(token);
-    
+
     // Fetch premium status from Firestore
     const userData = await fetchUserData(decoded.email);
     setUser({ ...decoded, ...userData });
-    
+
     return { user: { ...decoded, ...userData } };
   };
 
@@ -177,12 +180,8 @@ export const AuthProvider = ({ children }) => {
     signin,
     signInWithGoogle,
     logout,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };

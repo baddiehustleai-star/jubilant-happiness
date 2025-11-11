@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaCameraRetro, FaDollarSign } from "react-icons/fa";
-import { HiSparkles } from "react-icons/hi";
+import { FaCameraRetro, FaDollarSign } from 'react-icons/fa';
+import { HiSparkles } from 'react-icons/hi';
 
 export default function Hero() {
   const navigate = useNavigate();
-  
+
   return (
     <section className="hero-gradient flex flex-col items-center justify-center min-h-screen text-center relative safe-area-top">
       {/* Background shimmer overlay */}
@@ -27,31 +27,33 @@ export default function Hero() {
         <h1
           className="text-6xl md:text-7xl mobile-hero-title font-diamond tracking-wide mb-4
                      bg-gradient-to-r from-[#E9CBA7] via-[#B76E79] to-[#E9CBA7]
-                     bg-clip-text text-transparent drop-shadow-[0_2px_6px_rgba(183,110,121,0.35)]">
+                     bg-clip-text text-transparent drop-shadow-[0_2px_6px_rgba(183,110,121,0.35)]"
+        >
           PHOTO2PROFIT
         </h1>
 
         <h2
           className="text-2xl md:text-3xl mobile-hero-subtitle font-diamond tracking-normal mb-6
                      bg-gradient-to-r from-[#B76E79] to-[#E9CBA7]
-                     bg-clip-text text-transparent italic">
+                     bg-clip-text text-transparent italic"
+        >
           Photo2Payday Baddie Mode 💎
         </h2>
 
         <p className="text-lg text-rosegold-dark font-sans mb-8 animate-slide-up">
-          Turn your photos into paydays with AI-powered resale magic.  
+          Turn your photos into paydays with AI-powered resale magic.
           <br />
           Manifest your hustle. Multiply your profit. ✨
         </p>
 
         <div className="flex flex-col gap-4 animate-slide-up">
-          <button 
+          <button
             className="mobile-btn haptic-heavy bg-gradient-to-r from-rosegold to-rosegold-light text-white shadow-soft-glow hover:scale-105 transform transition-all"
             onClick={() => navigate('/login')}
           >
             Start Now 💎
           </button>
-          <button 
+          <button
             className="mobile-btn haptic-medium bg-blush text-rosegold hover:bg-rosegold hover:text-softwhite border-2 border-rosegold"
             onClick={() => navigate('/dashboard-test')}
           >
@@ -81,7 +83,7 @@ export default function Hero() {
 
       {/* Subtle shimmer line */}
       <div className="absolute bottom-0 w-full h-1 bg-gradient-to-r from-blush to-rosegold animate-shimmer"></div>
-      
+
       {/* Floating sparkles */}
       <div className="absolute top-20 left-10 animate-pulse">
         <HiSparkles className="text-diamond text-2xl opacity-70" />

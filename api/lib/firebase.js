@@ -1,11 +1,11 @@
 // api/lib/firebase.js
-import admin from "firebase-admin";
+import admin from 'firebase-admin';
 
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.applicationDefault(),
   });
-  console.log("🔥 Firebase initialized with app:", admin.apps[0].name);
+  console.log('🔥 Firebase initialized with app:', admin.apps[0].name);
 }
 
 export const db = admin.firestore();

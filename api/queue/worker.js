@@ -37,15 +37,24 @@ const worker = new Worker(
     switch (platform) {
       case 'facebook':
         result = await facebook.publish(listing);
-        if (result.success) await prisma.channelListing.create({ data: { listingId, platform, externalId: result.fb_product_id } });
+        if (result.success)
+          await prisma.channelListing.create({
+            data: { listingId, platform, externalId: result.fb_product_id },
+          });
         break;
       case 'ebay':
         result = await ebay.publish(listing);
-        if (result.success) await prisma.channelListing.create({ data: { listingId, platform, externalId: result.ebay_offer_id } });
+        if (result.success)
+          await prisma.channelListing.create({
+            data: { listingId, platform, externalId: result.ebay_offer_id },
+          });
         break;
       case 'poshmark':
         result = await poshmark.publish(listing);
-        if (result.success) await prisma.channelListing.create({ data: { listingId, platform, externalId: result.poshmark_id } });
+        if (result.success)
+          await prisma.channelListing.create({
+            data: { listingId, platform, externalId: result.poshmark_id },
+          });
         break;
       default:
         result = { success: false, error: 'Unsupported platform' };

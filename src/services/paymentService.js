@@ -24,9 +24,11 @@ const paymentService = {
 
       // Demo mode - show checkout info
       const isDemoMode = !import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-      
+
       if (isDemoMode) {
-        alert(`🔧 Demo Mode: Would create checkout for Price ID: ${priceId}\n\nTo enable real payments:\n1. Add VITE_STRIPE_PUBLISHABLE_KEY to .env\n2. Set up Firebase Cloud Functions\n3. Configure Stripe webhooks`);
+        alert(
+          `🔧 Demo Mode: Would create checkout for Price ID: ${priceId}\n\nTo enable real payments:\n1. Add VITE_STRIPE_PUBLISHABLE_KEY to .env\n2. Set up Firebase Cloud Functions\n3. Configure Stripe webhooks`
+        );
         return;
       }
 
@@ -40,7 +42,7 @@ const paymentService = {
           cancelUrl: `${window.location.origin}/dashboard`,
         }),
       });
-      
+
       const stripe = await stripePromise;
       const { error } = await stripe.redirectToCheckout({ sessionId });
 
@@ -48,7 +50,6 @@ const paymentService = {
         console.error('❌ Stripe checkout error:', error);
         alert('Failed to redirect to checkout. Please try again.');
       }
-
     } catch (error) {
       console.error('❌ Checkout session creation failed:', error);
       alert('Failed to start checkout. Please try again.');
@@ -65,9 +66,11 @@ const paymentService = {
 
       // Demo mode check
       const isDemoMode = !import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-      
+
       if (isDemoMode) {
-        alert(`🔧 Demo Mode: Would open billing portal for Customer: ${customerId}\n\nTo enable real billing management:\n1. Add VITE_STRIPE_PUBLISHABLE_KEY to .env\n2. Set up Firebase Cloud Functions\n3. Configure Stripe customer portal`);
+        alert(
+          `🔧 Demo Mode: Would open billing portal for Customer: ${customerId}\n\nTo enable real billing management:\n1. Add VITE_STRIPE_PUBLISHABLE_KEY to .env\n2. Set up Firebase Cloud Functions\n3. Configure Stripe customer portal`
+        );
         return;
       }
 
@@ -80,7 +83,6 @@ const paymentService = {
         }),
       });
       window.location.href = url;
-
     } catch (error) {
       console.error('❌ Portal session creation failed:', error);
       alert('Failed to open billing portal. Please try again.');
@@ -94,7 +96,7 @@ const paymentService = {
   async getSubscriptionStatus(userId) {
     try {
       console.log('🔄 Getting subscription status...', { userId });
-      
+
       // Demo data - in production, this would fetch from Firestore
       return {
         status: 'trialing',
@@ -103,7 +105,6 @@ const paymentService = {
         customerId: 'demo_customer_id',
         trialEnd: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60,
       };
-
     } catch (error) {
       console.error('❌ Failed to get subscription status:', error);
       return {
@@ -122,7 +123,7 @@ const paymentService = {
   async getCurrentUsage(userId) {
     try {
       console.log('🔄 Getting current usage...', { userId });
-      
+
       // Demo data - in production, this would fetch from Firestore
       return {
         uploads: 3,
@@ -130,7 +131,6 @@ const paymentService = {
         aiAnalysis: 4,
         apiCalls: 15,
       };
-
     } catch (error) {
       console.error('❌ Failed to get usage data:', error);
       return {
@@ -149,7 +149,7 @@ const paymentService = {
   async getUsageLimits(userId) {
     try {
       console.log('🔄 Getting usage limits...', { userId });
-      
+
       // Demo data - in production, this would be based on subscription plan
       return {
         uploadsPerMonth: 20,
@@ -157,7 +157,6 @@ const paymentService = {
         aiAnalysis: 50,
         apiCallsPerDay: 100,
       };
-
     } catch (error) {
       console.error('❌ Failed to get usage limits:', error);
       return {
@@ -203,18 +202,17 @@ const paymentService = {
   async incrementUsage(userId, action) {
     try {
       console.log('🔄 Incrementing usage...', { userId, action });
-      
+
       // Demo mode - just log
       console.log(`✅ Usage incremented: ${action} for user ${userId}`);
-      
+
       // In production, this would update Firestore
       return true;
-
     } catch (error) {
       console.error('❌ Failed to increment usage:', error);
       return false;
     }
-  }
+  },
 };
 
 export default paymentService;

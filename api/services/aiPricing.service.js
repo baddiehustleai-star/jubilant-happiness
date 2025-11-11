@@ -21,7 +21,6 @@ export async function getSmartPricing(title, description, category = null) {
 
     // Fallback to AI-based estimation
     return await getAIPriceSuggestion(title, description, category);
-    
   } catch (error) {
     console.warn('⚠️ AI pricing API unavailable, using fallback:', error.message);
     return getFallbackPricing(title, description);
@@ -33,19 +32,22 @@ export async function getSmartPricing(title, description, category = null) {
  */
 async function getEbayPriceSuggestion(title, description) {
   try {
-    const response = await fetch('https://api.ebay.com/sell/market_insights/v1/item_price_suggestions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.EBAY_OAUTH_TOKEN}`,
-        'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US'
-      },
-      body: JSON.stringify({
-        title,
-        description: description?.substring(0, 500), // Limit description length
-        category_id: null // Auto-detect category
-      })
-    });
+    const response = await fetch(
+      'https://api.ebay.com/sell/market_insights/v1/item_price_suggestions',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.EBAY_OAUTH_TOKEN}`,
+          'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US',
+        },
+        body: JSON.stringify({
+          title,
+          description: description?.substring(0, 500), // Limit description length
+          category_id: null, // Auto-detect category
+        }),
+      }
+    );
 
     if (!response.ok) {
       console.warn('eBay API returned non-200:', response.status);
@@ -53,11 +55,11 @@ async function getEbayPriceSuggestion(title, description) {
     }
 
     const data = await response.json();
-    
+
     return {
       used: data.used_price || data.low_price || 20,
       marketplace: data.avg_price || data.median_price || 25,
-      new: data.new_price || data.high_price || 30
+      new: data.new_price || data.high_price || 30,
     };
   } catch (error) {
     console.error('eBay pricing error:', error);
@@ -71,59 +73,63 @@ async function getEbayPriceSuggestion(title, description) {
 async function getAIPriceSuggestion(title, description, category) {
   // Simple ML-based pricing logic
   // You can replace this with Gemini AI or Vertex AI later
-  
+
   const titleLower = title.toLowerCase();
   const descLower = (description || '').toLowerCase();
-  
+
   // Base price calculation
   let basePrice = 20;
-  
+
   // Category-based adjustments
   const categoryMultipliers = {
-    'electronics': 1.5,
-    'jewelry': 2.0,
-    'clothing': 0.8,
-    'books': 0.5,
-    'toys': 0.7,
-    'furniture': 1.3,
-    'collectibles': 1.8
+    electronics: 1.5,
+    jewelry: 2.0,
+    clothing: 0.8,
+    books: 0.5,
+    toys: 0.7,
+    furniture: 1.3,
+    collectibles: 1.8,
   };
-  
+
   if (category && categoryMultipliers[category.toLowerCase()]) {
     basePrice *= categoryMultipliers[category.toLowerCase()];
   }
-  
+
   // Condition keywords
   if (titleLower.includes('new') || titleLower.includes('sealed') || titleLower.includes('mint')) {
     basePrice *= 1.4;
   }
-  if (titleLower.includes('vintage') || titleLower.includes('rare') || titleLower.includes('limited')) {
+  if (
+    titleLower.includes('vintage') ||
+    titleLower.includes('rare') ||
+    titleLower.includes('limited')
+  ) {
     basePrice *= 1.6;
   }
   if (titleLower.includes('used') || titleLower.includes('pre-owned')) {
     basePrice *= 0.7;
   }
-  
+
   // Brand detection (simplified)
   const premiumBrands = ['apple', 'samsung', 'sony', 'nike', 'gucci', 'rolex', 'canon', 'nikon'];
-  if (premiumBrands.some(brand => titleLower.includes(brand))) {
+  if (premiumBrands.some((brand) => titleLower.includes(brand))) {
     basePrice *= 1.5;
   }
-  
+
   // Length and quality indicators
   if (description && description.length > 200) {
     basePrice *= 1.1; // Detailed descriptions = higher value
   }
-  
+
   // Generate pricing tiers
   const usedPrice = Math.round(basePrice * 0.85 * 100) / 100;
   const marketplacePrice = Math.round(basePrice * 100) / 100;
   const newPrice = Math.round(basePrice * 1.3 * 100) / 100;
-  
+
   return {
     used: usedPrice,
     marketplace: marketplacePrice,
-    new: newPrice
+    new: newPrice,
   };
 }
 
@@ -133,12 +139,12 @@ async function getAIPriceSuggestion(title, description, category) {
 function getFallbackPricing(title, description) {
   // Ultra-simple fallback
   const wordCount = title.split(' ').length;
-  const base = 15 + (wordCount * 2);
-  
+  const base = 15 + wordCount * 2;
+
   return {
     used: Math.round(base * 0.75 * 100) / 100,
     marketplace: Math.round(base * 100) / 100,
-    new: Math.round(base * 1.25 * 100) / 100
+    new: Math.round(base * 1.25 * 100) / 100,
   };
 }
 
@@ -147,22 +153,22 @@ function getFallbackPricing(title, description) {
  */
 export function validatePricing(pricing) {
   const { used, marketplace, new: newPrice } = pricing;
-  
+
   // Ensure used < marketplace < new
   if (used >= marketplace || marketplace >= newPrice) {
     const base = marketplace || 25;
     return {
       used: Math.round(base * 0.8 * 100) / 100,
       marketplace: base,
-      new: Math.round(base * 1.3 * 100) / 100
+      new: Math.round(base * 1.3 * 100) / 100,
     };
   }
-  
+
   // Ensure minimum prices
   return {
     used: Math.max(5, used),
     marketplace: Math.max(10, marketplace),
-    new: Math.max(15, newPrice)
+    new: Math.max(15, newPrice),
   };
 }
 
@@ -172,7 +178,7 @@ export function validatePricing(pricing) {
 export function formatPrice(price) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'USD',
   }).format(price);
 }
 
@@ -180,5 +186,5 @@ export function formatPrice(price) {
 export const testExports = {
   getAIPriceSuggestion,
   getFallbackPricing,
-  validatePricing
+  validatePricing,
 };

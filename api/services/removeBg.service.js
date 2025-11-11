@@ -18,7 +18,7 @@ export async function removeBackgroundFromImage(imageUrl) {
   const res = await fetch('https://api.remove.bg/v1.0/removebg', {
     method: 'POST',
     headers: { 'X-Api-Key': REMOVE_BG_KEY },
-    body: formData
+    body: formData,
   });
 
   if (!res.ok) {

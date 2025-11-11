@@ -24,11 +24,11 @@ export async function removeBackground(imageUrl, options = {}) {
     const formData = new URLSearchParams();
     formData.append('image_url', imageUrl);
     formData.append('size', options.size || 'auto');
-    
+
     if (options.bg_color) {
       formData.append('bg_color', options.bg_color); // e.g., 'ffffff' for white
     }
-    
+
     if (options.format) {
       formData.append('format', options.format); // 'png' or 'jpg'
     }
@@ -75,21 +75,21 @@ export async function removeBackground(imageUrl, options = {}) {
 export async function replaceBackground(transparentImageDataUri, bgColor = 'ffffff') {
   try {
     const sharp = (await import('sharp')).default;
-    
+
     // Decode base64
     const base64Data = transparentImageDataUri.split(',')[1];
     const imageBuffer = Buffer.from(base64Data, 'base64');
-    
+
     // Get image dimensions
     const metadata = await sharp(imageBuffer).metadata();
     const { width, height } = metadata;
-    
+
     // Create solid color background
     const hexColor = bgColor.replace('#', '');
     const r = parseInt(hexColor.substring(0, 2), 16);
     const g = parseInt(hexColor.substring(2, 4), 16);
     const b = parseInt(hexColor.substring(4, 6), 16);
-    
+
     const background = await sharp({
       create: {
         width,
@@ -100,16 +100,16 @@ export async function replaceBackground(transparentImageDataUri, bgColor = 'ffff
     })
       .png()
       .toBuffer();
-    
+
     // Composite transparent image over background
     const result = await sharp(background)
       .composite([{ input: imageBuffer }])
       .png()
       .toBuffer();
-    
+
     const resultBase64 = result.toString('base64');
     const resultUri = `data:image/png;base64,${resultBase64}`;
-    
+
     logger.info('Background replaced', { bgColor });
     return {
       success: true,

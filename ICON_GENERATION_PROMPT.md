@@ -37,6 +37,7 @@ The icon should convey: wealth, automation, photography, profit, hustle, eleganc
 ### Option 1: AI Image Tools (Recommended)
 
 **Best Tools:**
+
 - [DALL-E 3](https://chat.openai.com/) - Most accurate with prompts
 - [Midjourney](https://www.midjourney.com/) - Highest quality output
 - [Leonardo.ai](https://leonardo.ai/) - Free tier available
@@ -44,6 +45,7 @@ The icon should convey: wealth, automation, photography, profit, hustle, eleganc
 - [NanoBanana AI](https://nanobanana.ai/) - Fast generation
 
 **Steps:**
+
 1. Paste the prompt above into your AI tool
 2. Generate 3-4 variations
 3. Download the best one at highest resolution
@@ -53,6 +55,7 @@ The icon should convey: wealth, automation, photography, profit, hustle, eleganc
 ### Option 2: Figma/Canva Design
 
 **Manual Design Steps:**
+
 1. Create 1024×1024 canvas
 2. Add rose-gold gradient background:
    - Top: `#FADADD`
@@ -66,6 +69,7 @@ The icon should convey: wealth, automation, photography, profit, hustle, eleganc
 ### Option 3: Hire on Fiverr
 
 Search: "app icon design luxury minimal"
+
 - Price: $10-30 for professional icon
 - Turnaround: 24-48 hours
 - Provide the AI prompt above as reference
@@ -128,12 +132,14 @@ npm run dev
 ## 📱 Platform-Specific Exports
 
 ### For Google Play Store
+
 - File: `store-icon-1024.png`
 - Size: 1024×1024
 - Format: PNG with transparency
 - Upload to: Play Console → Store Listing → App icon
 
 ### For Apple App Store
+
 - File: `store-icon-1024.png` (flatten background)
 - Size: 1024×1024
 - Format: PNG **no transparency**
@@ -145,6 +151,7 @@ convert store-icon-1024.png -background white -alpha remove -alpha off ios-store
 ```
 
 ### For Feature Graphic (Android)
+
 - Size: 1024×500
 - Create a banner version with your icon + tagline
 - Text: "Turn Photos into Profit with AI"
@@ -157,11 +164,11 @@ Use these exact colors in your design:
 
 ```css
 /* Photo2Profit Brand Colors */
---rose-gold: #B76E79;
---champagne-gold: #E9CBA7;
---soft-blush: #F8E0E7;
---gradient-light: #FADADD;
---gradient-dark: #E6A8C2;
+--rose-gold: #b76e79;
+--champagne-gold: #e9cba7;
+--soft-blush: #f8e0e7;
+--gradient-light: #fadadd;
+--gradient-dark: #e6a8c2;
 ```
 
 ---
@@ -186,6 +193,7 @@ Before uploading to app stores:
 ## 💡 Design Inspiration
 
 Your icon should evoke:
+
 - 💎 **Luxury** - Like Tiffany & Co. or Cartier apps
 - 📸 **Photography** - Camera lens/aperture element
 - 💰 **Profit** - Dollar sign or upward trend
@@ -193,6 +201,7 @@ Your icon should evoke:
 - 🌹 **Femininity** - Rose-gold, soft, empowering
 
 **Reference Apps:**
+
 - Stripe (clean, minimal, professional)
 - Notion (modern, friendly, productive)
 - Figma (creative, bold, recognizable)
@@ -218,7 +227,7 @@ npm run dev
 
 ---
 
-> ✨ *Your icon is your first impression. Make it diamond-worthy.*  
+> ✨ _Your icon is your first impression. Make it diamond-worthy._  
 > — **Photo2Profit™ by Baddie Hustle & Heal** 💎
 
 ---
@@ -226,6 +235,7 @@ npm run dev
 ## 📞 Need Help?
 
 If you want custom icon design:
+
 - 📧 Email: support@photo2profit.app
 - 💬 Fiverr: Search "luxury app icon design"
 - 🎨 Upwork: Hire icon designer ($20-50)

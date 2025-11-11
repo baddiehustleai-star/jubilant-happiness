@@ -12,7 +12,7 @@ export function getApiBase() {
   if (typeof window !== 'undefined' && window.location && window.location.port.startsWith('517')) {
     return DEFAULT_LOCAL_API;
   }
-  return '';// same-origin (production) fallback
+  return ''; // same-origin (production) fallback
 }
 
 export async function apiFetch(path, options = {}) {
@@ -22,12 +22,16 @@ export async function apiFetch(path, options = {}) {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      ...(options.headers || {})
-    }
+      ...(options.headers || {}),
+    },
   });
   if (!res.ok) {
     let body;
-    try { body = await res.json(); } catch { body = await res.text(); }
+    try {
+      body = await res.json();
+    } catch {
+      body = await res.text();
+    }
     const error = new Error(`Request failed ${res.status} ${res.statusText}`);
     error.status = res.status;
     error.body = body;

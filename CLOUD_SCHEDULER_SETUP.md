@@ -14,6 +14,7 @@ This guide shows you how to set up Google Cloud Scheduler to automatically publi
 ### 1. Set Your API URL
 
 Add to `api/.env`:
+
 ```bash
 API_URL=https://photo2profit-api-758851214311.us-west2.run.app
 ```
@@ -32,6 +33,7 @@ gcloud scheduler jobs create http autopublish-photo2profit \
 ```
 
 **What this does:**
+
 - Creates a job called `autopublish-photo2profit`
 - Runs every hour (at the top of the hour)
 - Hits your `/api/publish/pending` endpoint
@@ -45,19 +47,20 @@ gcloud scheduler jobs create http autopublish-photo2profit \
 
 The `--schedule` flag uses cron syntax. Here are common patterns:
 
-| Schedule | Cron Expression | Description |
-|----------|----------------|-------------|
-| Every hour | `0 * * * *` | At minute 0 of every hour |
-| Every 30 minutes | `*/30 * * * *` | Twice per hour |
-| Every 2 hours | `0 */2 * * *` | Every even hour |
-| Daily at 9 AM | `0 9 * * *` | Once per day at 9:00 AM |
-| Twice daily | `0 9,17 * * *` | At 9 AM and 5 PM |
-| Weekdays only | `0 9 * * 1-5` | Monday-Friday at 9 AM |
-| Every 15 minutes | `*/15 * * * *` | Four times per hour |
+| Schedule         | Cron Expression | Description               |
+| ---------------- | --------------- | ------------------------- |
+| Every hour       | `0 * * * *`     | At minute 0 of every hour |
+| Every 30 minutes | `*/30 * * * *`  | Twice per hour            |
+| Every 2 hours    | `0 */2 * * *`   | Every even hour           |
+| Daily at 9 AM    | `0 9 * * *`     | Once per day at 9:00 AM   |
+| Twice daily      | `0 9,17 * * *`  | At 9 AM and 5 PM          |
+| Weekdays only    | `0 9 * * 1-5`   | Monday-Friday at 9 AM     |
+| Every 15 minutes | `*/15 * * * *`  | Four times per hour       |
 
 ### Examples:
 
 **Publish every 30 minutes:**
+
 ```bash
 gcloud scheduler jobs create http autopublish-photo2profit \
   --schedule="*/30 * * * *" \
@@ -68,6 +71,7 @@ gcloud scheduler jobs create http autopublish-photo2profit \
 ```
 
 **Publish twice daily (9 AM and 5 PM):**
+
 ```bash
 gcloud scheduler jobs create http autopublish-photo2profit \
   --schedule="0 9,17 * * *" \
@@ -82,36 +86,43 @@ gcloud scheduler jobs create http autopublish-photo2profit \
 ## 🔍 Managing Your Scheduler Job
 
 ### List all scheduler jobs:
+
 ```bash
 gcloud scheduler jobs list --location=us-west2
 ```
 
 ### View job details:
+
 ```bash
 gcloud scheduler jobs describe autopublish-photo2profit --location=us-west2
 ```
 
 ### Test the job manually (without waiting for schedule):
+
 ```bash
 gcloud scheduler jobs run autopublish-photo2profit --location=us-west2
 ```
 
 ### Pause the job (without deleting):
+
 ```bash
 gcloud scheduler jobs pause autopublish-photo2profit --location=us-west2
 ```
 
 ### Resume a paused job:
+
 ```bash
 gcloud scheduler jobs resume autopublish-photo2profit --location=us-west2
 ```
 
 ### Delete the job:
+
 ```bash
 gcloud scheduler jobs delete autopublish-photo2profit --location=us-west2
 ```
 
 ### Update the schedule:
+
 ```bash
 gcloud scheduler jobs update http autopublish-photo2profit \
   --schedule="0 */2 * * *" \
@@ -123,6 +134,7 @@ gcloud scheduler jobs update http autopublish-photo2profit \
 ## 📊 Monitoring
 
 ### View recent runs:
+
 ```bash
 gcloud scheduler jobs describe autopublish-photo2profit \
   --location=us-west2 \
@@ -130,6 +142,7 @@ gcloud scheduler jobs describe autopublish-photo2profit \
 ```
 
 ### Check logs:
+
 ```bash
 gcloud logging read "resource.type=cloud_scheduler_job AND resource.labels.job_id=autopublish-photo2profit" \
   --limit=10 \
@@ -137,12 +150,14 @@ gcloud logging read "resource.type=cloud_scheduler_job AND resource.labels.job_i
 ```
 
 ### Watch your API logs for scheduler triggers:
+
 ```bash
 gcloud logging read "resource.type=cloud_run_revision AND textPayload=~'Cloud Scheduler triggered'" \
   --limit=10
 ```
 
 You'll see messages like:
+
 ```
 ⏰ Cloud Scheduler triggered auto-publish
 🔄 Starting batch publish for all users...
@@ -156,6 +171,7 @@ You'll see messages like:
 If you prefer publishing after N products instead of on a schedule, you can skip Cloud Scheduler entirely.
 
 Just set in `api/.env`:
+
 ```bash
 AUTO_PUBLISH_ENABLED=true
 AUTO_PUBLISH_THRESHOLD=5
@@ -164,6 +180,7 @@ AUTO_PUBLISH_THRESHOLD=5
 Then products auto-publish after every 5 uploads. No scheduler needed!
 
 **Or use both:**
+
 - Threshold for busy times (instant publishing after 5 products)
 - Scheduler for off-hours (publishes stragglers once per day)
 
@@ -172,6 +189,7 @@ Then products auto-publish after every 5 uploads. No scheduler needed!
 ## 🔐 Security Notes
 
 ### OIDC Authentication
+
 The `--oidc-service-account-email` flag uses **OIDC (OpenID Connect)** authentication, which means:
 
 - ✅ No API keys to manage
@@ -180,6 +198,7 @@ The `--oidc-service-account-email` flag uses **OIDC (OpenID Connect)** authentic
 - ✅ Only Google's infrastructure can trigger the endpoint
 
 ### If you need API key instead:
+
 ```bash
 gcloud scheduler jobs create http autopublish-photo2profit \
   --schedule="0 * * * *" \
@@ -195,12 +214,12 @@ gcloud scheduler jobs create http autopublish-photo2profit \
 
 ## 💰 Costs
 
-| Component | Free Tier | Cost After Free Tier |
-|-----------|-----------|---------------------|
-| Cloud Scheduler | 3 jobs free | $0.10/job/month |
-| Cloud Run invocations | 2M free/month | $0.40 per 1M |
-| eBay API | 5,000 calls/day | $0.001/call |
-| Facebook API | Unlimited | Free |
+| Component             | Free Tier       | Cost After Free Tier |
+| --------------------- | --------------- | -------------------- |
+| Cloud Scheduler       | 3 jobs free     | $0.10/job/month      |
+| Cloud Run invocations | 2M free/month   | $0.40 per 1M         |
+| eBay API              | 5,000 calls/day | $0.001/call          |
+| Facebook API          | Unlimited       | Free                 |
 
 **Example:** 1 scheduler job + 24 runs/day = **$0.10/month**
 
@@ -209,11 +228,13 @@ gcloud scheduler jobs create http autopublish-photo2profit \
 ## 🧪 Testing
 
 ### 1. Test the endpoint manually:
+
 ```bash
 curl -X POST https://photo2profit-api-758851214311.us-west2.run.app/api/publish/pending
 ```
 
 Expected response:
+
 ```json
 {
   "message": "Successfully published 3 products",
@@ -223,16 +244,19 @@ Expected response:
 ```
 
 ### 2. Test with Cloud Scheduler (manual trigger):
+
 ```bash
 gcloud scheduler jobs run autopublish-photo2profit --location=us-west2
 ```
 
 Check your API logs:
+
 ```bash
 gcloud logs read --limit=20
 ```
 
 ### 3. Upload test products:
+
 ```bash
 # Upload 3 products, wait for next scheduled run
 # Check they get published automatically
@@ -243,11 +267,14 @@ gcloud logs read --limit=20
 ## 🐛 Troubleshooting
 
 ### "Job not found"
+
 - Make sure you're in the correct project: `gcloud config get-value project`
 - Use the correct location: `--location=us-west2`
 
 ### "Permission denied"
+
 - Ensure service account has `roles/run.invoker` on your Cloud Run service:
+
 ```bash
 gcloud run services add-iam-policy-binding photo2profit-api \
   --region=us-west2 \
@@ -256,11 +283,13 @@ gcloud run services add-iam-policy-binding photo2profit-api \
 ```
 
 ### "No products published"
+
 - Check if products exist with `published: false`
 - Verify eBay/Facebook credentials are configured
 - Check API logs for errors
 
 ### Scheduler runs but nothing happens
+
 - Check Cloud Run logs: `gcloud logs read --limit=50`
 - Verify API URL is correct in scheduler config
 - Test endpoint manually with curl
@@ -293,6 +322,7 @@ Your Photo2Profit app now runs on autopilot:
 ---
 
 **Need help?** Check API logs with:
+
 ```bash
 gcloud logs tail
 ```

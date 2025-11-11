@@ -7,7 +7,7 @@ export {
   BrandInput,
   BrandSpinner,
   BrandContainer,
-  BrandSection
+  BrandSection,
 } from './BrandElements';
 
 // Brand Typography
@@ -17,19 +17,11 @@ export {
   BrandLink,
   BrandQuote,
   BrandList,
-  BrandListItem
+  BrandListItem,
 } from './BrandTypography';
 
 // Brand Navigation
-export {
-  BrandNavigation,
-  BrandFooter,
-  BrandBreadcrumb
-} from './BrandNavigation';
+export { BrandNavigation, BrandFooter, BrandBreadcrumb } from './BrandNavigation';
 
 // Brand Logo Components
-export {
-  Logo,
-  LogoWithIcon,
-  LogoMark
-} from './Logo';
+export { Logo, LogoWithIcon, LogoMark } from './Logo';

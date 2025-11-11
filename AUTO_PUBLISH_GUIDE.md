@@ -18,12 +18,14 @@ The Photo2Profit app includes **automated batch publishing** to eBay and Faceboo
 Products are automatically published when you hit a certain count.
 
 **How it works:**
+
 - Set `AUTO_PUBLISH_THRESHOLD=5` (default)
 - Upload products as normal via `/api/upload` or `/magic`
 - When you reach 5 unpublished products, they're **all** published automatically
 - Check console for: `✅ Auto-publish triggered`
 
 **Best for:**
+
 - Regular photo shoot sessions
 - Bulk upload workflows
 - Consistent product creation patterns
@@ -33,12 +35,14 @@ Products are automatically published when you hit a certain count.
 Products are published on a schedule (e.g., every hour).
 
 **How it works:**
+
 - Set up Google Cloud Scheduler to hit `/admin/publish-all-pending`
 - Runs hourly (or custom schedule)
 - Publishes all unpublished products across all users
 - Sends summary report
 
 **Best for:**
+
 - Multiple users uploading independently
 - Predictable marketplace posting times
 - High-volume operations
@@ -79,7 +83,7 @@ All products now include publishing metadata:
   description: "Product title and description",
   prices: { average: 45, listings: [...] },
   userEmail: "user@example.com",
-  
+
   // Publishing fields
   published: false,              // Status
   channels: ["ebay", "facebook"], // Where to publish
@@ -101,6 +105,7 @@ Authorization: Bearer <your-jwt>
 ```
 
 **Response:**
+
 ```json
 {
   "config": {
@@ -122,6 +127,7 @@ Authorization: Bearer <your-jwt>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -151,6 +157,7 @@ POST /admin/publish-all-pending?key=your-admin-api-key
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -167,6 +174,7 @@ POST /api/publish/pending
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Successfully published 12 products",
@@ -186,6 +194,7 @@ POST /api/publish/pending
    - Create an app in Production environment
 
 2. **Generate OAuth Token**
+
    ```bash
    # Use eBay OAuth flow to get user consent
    # Store the resulting access token
@@ -199,6 +208,7 @@ POST /api/publish/pending
    ```
 
 **Required eBay Permissions:**
+
 - `https://api.ebay.com/oauth/api_scope/sell.inventory`
 - `https://api.ebay.com/oauth/api_scope/sell.inventory.readonly`
 
@@ -213,6 +223,7 @@ POST /api/publish/pending
    - Note the Catalog ID
 
 3. **Generate Page Access Token**
+
    ```bash
    # Use Facebook Graph API Explorer
    # Request permissions: catalog_management, pages_manage_posts
@@ -227,6 +238,7 @@ POST /api/publish/pending
    ```
 
 **Required Facebook Permissions:**
+
 - `catalog_management`
 - `pages_manage_posts`
 - `business_management`
@@ -238,6 +250,7 @@ POST /api/publish/pending
 ### Quick Setup
 
 **Option 1: Using OIDC (Recommended)**
+
 ```bash
 gcloud scheduler jobs create http autopublish-photo2profit \
   --schedule="0 * * * *" \
@@ -248,6 +261,7 @@ gcloud scheduler jobs create http autopublish-photo2profit \
 ```
 
 **Option 2: Using API Key**
+
 ```bash
 gcloud scheduler jobs create http publish-products \
   --schedule="0 * * * *" \
@@ -353,6 +367,7 @@ Products that fail to publish remain unpublished and can be retried:
 ```
 
 Retry failed products:
+
 ```bash
 POST /admin/publish-my-products
 ```
@@ -364,6 +379,7 @@ POST /admin/publish-my-products
 **Problem:** `EBAY_OAUTH_TOKEN` not set
 
 **Solution:**
+
 ```bash
 export EBAY_OAUTH_TOKEN="v^1.1#..."
 # Restart server
@@ -374,6 +390,7 @@ export EBAY_OAUTH_TOKEN="v^1.1#..."
 **Problem:** Missing `FACEBOOK_ACCESS_TOKEN` or `FB_CATALOG_ID`
 
 **Solution:**
+
 ```bash
 export FACEBOOK_ACCESS_TOKEN="EAABsbCS..."
 export FB_CATALOG_ID="123456789"
@@ -384,6 +401,7 @@ export FB_CATALOG_ID="123456789"
 **Problem:** Too many API calls to eBay/Facebook
 
 **Solutions:**
+
 - Increase `AUTO_PUBLISH_THRESHOLD` to publish less frequently
 - Use time-based publishing with longer intervals
 - Stagger Cloud Scheduler across multiple times
@@ -391,6 +409,7 @@ export FB_CATALOG_ID="123456789"
 ### Products Not Auto-Publishing
 
 **Check:**
+
 1. Is `AUTO_PUBLISH_ENABLED="true"`?
 2. Are you reaching the threshold? Check `/admin/publish-config`
 3. Are marketplace tokens configured?
@@ -399,6 +418,7 @@ export FB_CATALOG_ID="123456789"
 ### Cloud Scheduler Not Triggering
 
 **Debug:**
+
 ```bash
 # Check job status
 gcloud scheduler jobs describe publish-products
@@ -417,11 +437,11 @@ gcloud logging read "resource.type=cloud_scheduler_job AND resource.labels.job_i
 
 ### API Costs
 
-| Service | Free Tier | Paid Tier | Notes |
-|---------|-----------|-----------|-------|
-| eBay API | 5,000 calls/day | $0.001/call | Inventory API calls |
-| Facebook Catalog | Unlimited | Free | Product uploads free |
-| Cloud Scheduler | 3 jobs free | $0.10/job/month | Time-based publishing |
+| Service          | Free Tier       | Paid Tier       | Notes                 |
+| ---------------- | --------------- | --------------- | --------------------- |
+| eBay API         | 5,000 calls/day | $0.001/call     | Inventory API calls   |
+| Facebook Catalog | Unlimited       | Free            | Product uploads free  |
+| Cloud Scheduler  | 3 jobs free     | $0.10/job/month | Time-based publishing |
 
 ### Example: 1000 Products/Month
 
@@ -433,6 +453,7 @@ gcloud logging read "resource.type=cloud_scheduler_job AND resource.labels.job_i
 ## Security Best Practices
 
 1. **Protect Admin API Key**
+
    ```bash
    # Use strong random string
    ADMIN_API_KEY=$(openssl rand -base64 32)
@@ -443,15 +464,16 @@ gcloud logging read "resource.type=cloud_scheduler_job AND resource.labels.job_i
    - Facebook tokens expire after 60 days (set calendar reminder)
 
 3. **Rate Limit Admin Endpoints**
+
    ```javascript
    // Add to server.js
    const rateLimit = require('express-rate-limit');
-   
+
    const publishLimiter = rateLimit({
      windowMs: 60 * 60 * 1000, // 1 hour
      max: 10, // 10 requests per hour
    });
-   
+
    app.post('/admin/publish-all-pending', publishLimiter, ...);
    ```
 
@@ -482,7 +504,7 @@ if (product.category === 'electronics') {
 ```javascript
 // Publish at optimal times for each marketplace
 const schedule = {
-  ebay: '9:00 AM EST',    // eBay peak traffic
+  ebay: '9:00 AM EST', // eBay peak traffic
   facebook: '7:00 PM EST', // Facebook evening engagement
 };
 ```
@@ -507,6 +529,7 @@ const facebookListing = formatForFacebook(product);
 ## Support
 
 For issues or questions:
+
 - Check server logs for detailed error messages
 - Review marketplace API documentation
 - Test individual API calls outside the app

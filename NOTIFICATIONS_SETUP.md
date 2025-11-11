@@ -7,6 +7,7 @@ Get instant alerts when your Photo2Profit app deploys successfully or encounters
 ### Option 1: Vercel Built-in Notifications (Recommended)
 
 **Via Vercel Dashboard:**
+
 1. Go to your project: https://vercel.com/dashboard
 2. Click **Settings** → **Notifications**
 3. Enable:
@@ -16,6 +17,7 @@ Get instant alerts when your Photo2Profit app deploys successfully or encounters
    - ✅ **Deployment Errored**
 
 **Notification Channels:**
+
 - 📧 **Email** (always available)
 - 💬 **Slack** (add workspace integration)
 - 📣 **Discord** (via webhook)
@@ -24,6 +26,7 @@ Get instant alerts when your Photo2Profit app deploys successfully or encounters
 ### Option 2: Custom GitHub Actions Notifications
 
 Already set up! Your workflow will:
+
 - Notify on every push to `main`
 - Alert on PR merges
 - Can be extended with Discord/Slack webhooks

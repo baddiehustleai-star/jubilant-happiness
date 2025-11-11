@@ -2,8 +2,8 @@ name: 🚀 Deploy to Vercel (with Cloud Run Gatekeeper)
 
 on:
   push:
-    branches: [ main ]
-    paths: 
+    branches: [main]
+    paths:
       - 'src/**'
       - 'public/**'
       - 'index.html'
@@ -17,52 +17,52 @@ jobs:
   verify-backend:
     name: 🛡️ Verify Backend Health
     uses: ./.github/workflows/verify-cloudrun.yml
-    
+
   # 2. Build and deploy frontend only if backend is healthy
   deploy-frontend:
     name: 🌟 Deploy Frontend to Vercel
     needs: verify-backend
     if: success()
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: 📥 Checkout
-      uses: actions/checkout@v4
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
 
-    - name: 📦 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-    - name: 📦 Install dependencies
-      run: npm install
+      - name: 📦 Install dependencies
+        run: npm install
 
-    - name: 🏗️ Build production frontend
-      run: npm run build
-      env:
-        VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
-        VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
-        VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
-        VITE_API_BASE_URL: https://photo2profit-api-uc.a.run.app
+      - name: 🏗️ Build production frontend
+        run: npm run build
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_API_BASE_URL: https://photo2profit-api-uc.a.run.app
 
-    - name: 🚀 Deploy to Vercel
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.ORG_ID }}
-        vercel-project-id: ${{ secrets.PROJECT_ID }}
-        working-directory: ./
-        vercel-args: '--prod'
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: 🚀 Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          working-directory: ./
+          vercel-args: '--prod'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-    - name: 🎉 Deployment Success
-      run: |
-        echo "🎉 Photo2Profit Frontend Successfully Deployed!"
-        echo "✅ Backend health check passed"
-        echo "🌟 Frontend build completed"
-        echo "💎 Photo2Payday Baddie Mode is LIVE! 💎"
+      - name: 🎉 Deployment Success
+        run: |
+          echo "🎉 Photo2Profit Frontend Successfully Deployed!"
+          echo "✅ Backend health check passed"
+          echo "🌟 Frontend build completed"
+          echo "💎 Photo2Payday Baddie Mode is LIVE! 💎"
 
   # 3. Notify if gatekeeper blocks deployment
   notify-blocked:
@@ -70,15 +70,15 @@ jobs:
     needs: verify-backend
     if: failure()
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: 🚨 Deployment Blocked
-      run: |
-        echo "🚨 DEPLOYMENT BLOCKED BY GATEKEEPER!"
-        echo "❌ Cloud Run endpoints failed health check"
-        echo "🛡️ Vercel deployment cancelled for safety"
-        echo ""
-        echo "💡 Fix the backend issues and push again"
-        echo "🔍 Check Cloud Run logs: gcloud logs read --service=photo2profit-api"
-        echo ""
-        echo "⚠️ No broken code will go to production!"
+      - name: 🚨 Deployment Blocked
+        run: |
+          echo "🚨 DEPLOYMENT BLOCKED BY GATEKEEPER!"
+          echo "❌ Cloud Run endpoints failed health check"
+          echo "🛡️ Vercel deployment cancelled for safety"
+          echo ""
+          echo "💡 Fix the backend issues and push again"
+          echo "🔍 Check Cloud Run logs: gcloud logs read --service=photo2profit-api"
+          echo ""
+          echo "⚠️ No broken code will go to production!"

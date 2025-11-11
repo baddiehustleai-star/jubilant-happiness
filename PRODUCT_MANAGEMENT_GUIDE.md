@@ -50,6 +50,7 @@ Every product in Firestore has this structure:
 ### Products Dashboard (`/products`)
 
 **Features:**
+
 - Grid view of all products with images
 - Filter by status: All, Published, Drafts
 - Hover animations and smooth transitions
@@ -57,6 +58,7 @@ Every product in Firestore has this structure:
 - Summary stats (Total, Published, Drafts)
 
 **Empty State:**
+
 - Shows when no products exist
 - Friendly message with upload button
 - Responsive design
@@ -64,6 +66,7 @@ Every product in Firestore has this structure:
 ### Product Editor (`/product/:id`)
 
 **Features:**
+
 - Edit title and description
 - Update pricing for used/marketplace/new
 - View publishing status badge
@@ -79,7 +82,7 @@ Every product in Firestore has this structure:
 In your AI processing code (e.g., after background removal):
 
 ```javascript
-import { saveProduct } from "./services/autopublish.service.js";
+import { saveProduct } from './services/autopublish.service.js';
 
 // After AI generates product data
 const productId = await saveProduct({
@@ -88,14 +91,14 @@ const productId = await saveProduct({
   priceOptions: {
     used: aiPriceUsed,
     marketplace: aiPriceMarketplace,
-    new: aiPriceNew
+    new: aiPriceNew,
   },
   imageUrl: uploadedImageUrl,
   published: false,
-  channels: ["ebay", "facebook"]
+  channels: ['ebay', 'facebook'],
 });
 
-console.log("✅ Product saved:", productId);
+console.log('✅ Product saved:', productId);
 ```
 
 ### Loading Products (Frontend)
@@ -104,12 +107,7 @@ The `ProductsDashboard` component automatically loads products:
 
 ```javascript
 // Loads all products, ordered by creation date
-const snapshot = await getDocs(
-  query(
-    collection(db, "products"),
-    orderBy("createdAt", "desc")
-  )
-);
+const snapshot = await getDocs(query(collection(db, 'products'), orderBy('createdAt', 'desc')));
 ```
 
 ### Updating Products (Frontend)
@@ -170,12 +168,12 @@ Products integrate seamlessly with the auto-publishing system:
 
 ## 📱 Routes
 
-| Route | Component | Purpose |
-|-------|-----------|---------|
-| `/products` | ProductsDashboard | View all products |
-| `/product/:id` | ProductEditor | Edit single product |
-| `/dashboard` | Dashboard | Upload new products |
-| `/orders` | Orders | View sales |
+| Route          | Component         | Purpose             |
+| -------------- | ----------------- | ------------------- |
+| `/products`    | ProductsDashboard | View all products   |
+| `/product/:id` | ProductEditor     | Edit single product |
+| `/dashboard`   | Dashboard         | Upload new products |
+| `/orders`      | Orders            | View sales          |
 
 ## 🧪 Testing
 
@@ -225,12 +223,12 @@ service cloud.firestore {
     match /products/{productId} {
       // Anyone can read products
       allow read: if true;
-      
+
       // Only authenticated users can create
       allow create: if request.auth != null;
-      
+
       // Only owner can update/delete (if userEmail matches)
-      allow update, delete: if request.auth != null 
+      allow update, delete: if request.auth != null
         && request.auth.token.email == resource.data.userEmail;
     }
   }
@@ -254,42 +252,46 @@ gcloud firestore indexes composite create \
 ### Change Grid Layout
 
 In `ProductsDashboard.jsx`:
+
 ```javascript
 // Current: 3 columns on large screens
-className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
 
 // Change to 4 columns:
-className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6';
 ```
 
 ### Add Delete Button
 
 In `ProductEditor.jsx`:
+
 ```javascript
-import { deleteDoc } from "firebase/firestore";
+import { deleteDoc } from 'firebase/firestore';
 
 async function handleDelete() {
-  if (confirm("Delete this product?")) {
-    await deleteDoc(doc(db, "products", product.id));
-    navigate("/products");
+  if (confirm('Delete this product?')) {
+    await deleteDoc(doc(db, 'products', product.id));
+    navigate('/products');
   }
 }
 
 // Add button in UI
 <button onClick={handleDelete} className="text-red-600">
   Delete Product
-</button>
+</button>;
 ```
 
 ### Add Search
 
 In `ProductsDashboard.jsx`:
-```javascript
-const [search, setSearch] = useState("");
 
-const filteredProducts = products.filter(p =>
-  p.title.toLowerCase().includes(search.toLowerCase()) ||
-  p.description.toLowerCase().includes(search.toLowerCase())
+```javascript
+const [search, setSearch] = useState('');
+
+const filteredProducts = products.filter(
+  (p) =>
+    p.title.toLowerCase().includes(search.toLowerCase()) ||
+    p.description.toLowerCase().includes(search.toLowerCase())
 );
 
 // Add search input in UI
@@ -299,7 +301,7 @@ const filteredProducts = products.filter(p =>
   value={search}
   onChange={(e) => setSearch(e.target.value)}
   className="border rounded-lg px-4 py-2"
-/>
+/>;
 ```
 
 ## 📚 Next Steps
@@ -318,6 +320,7 @@ const filteredProducts = products.filter(p =>
 ### Products not showing up
 
 **Check:**
+
 - Is Firebase initialized? Look for `🔥 Firebase initialized` in console
 - Are products being saved? Check server logs for `✅ Product saved`
 - Firestore rules allowing reads?
@@ -325,6 +328,7 @@ const filteredProducts = products.filter(p =>
 ### Can't edit products
 
 **Check:**
+
 - User authenticated?
 - Firestore rules allowing updates?
 - Product ID valid in URL?
@@ -332,6 +336,7 @@ const filteredProducts = products.filter(p =>
 ### Images not displaying
 
 **Check:**
+
 - Image URLs valid?
 - CORS issues? (Use Cloud Storage for production)
 - Base64 images might be too large

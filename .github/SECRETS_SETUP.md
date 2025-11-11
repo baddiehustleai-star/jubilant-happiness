@@ -16,8 +16,10 @@ Add these secrets to enable automatic Vercel deployments and notifications:
 ## 1️⃣ Vercel Deployment Secrets
 
 ### `VERCEL_TOKEN`
+
 **Purpose:** Authorizes GitHub Actions to deploy to Vercel  
 **How to get:**
+
 1. Visit: [vercel.com/account/tokens](https://vercel.com/account/tokens)
 2. Click **"Create Token"**
 3. Name: `photo2profit-deploy-token`
@@ -28,8 +30,10 @@ Add these secrets to enable automatic Vercel deployments and notifications:
 ---
 
 ### `VERCEL_PROJECT_ID`
+
 **Purpose:** Identifies your Photo2Profit project  
 **How to get:**
+
 1. Open your project in Vercel Dashboard
 2. Go to **Settings** → **General**
 3. Find **Project ID** (starts with `prj_`)
@@ -39,8 +43,10 @@ Add these secrets to enable automatic Vercel deployments and notifications:
 ---
 
 ### `VERCEL_ORG_ID`
+
 **Purpose:** Identifies your Vercel team (baddiehustle Pro)  
 **How to get:**
+
 1. Click your avatar → **Settings** → **Teams**
 2. Select your team (baddiehustle)
 3. Look in the URL bar for `teamId=team_...`
@@ -49,6 +55,7 @@ Add these secrets to enable automatic Vercel deployments and notifications:
 **Format:** `team_123abcXYZ` or just your username if personal account
 
 **Alternative:** Use the org ID from your Vercel CLI:
+
 ```bash
 vercel teams ls
 ```
@@ -58,12 +65,14 @@ vercel teams ls
 ## 2️⃣ Firebase Configuration Secrets
 
 ### `VITE_FIREBASE_API_KEY`
+
 **Purpose:** Firebase Web API key  
 **How to get:** Firebase Console → Project Settings → General → Web API Key
 
 ---
 
 ### `VITE_FIREBASE_APP_ID`
+
 **Purpose:** Firebase Web App ID  
 **How to get:** Firebase Console → Project Settings → Your Apps → App ID
 
@@ -72,6 +81,7 @@ vercel teams ls
 ---
 
 ### `VITE_FIREBASE_PROJECT_ID`
+
 **Purpose:** Firebase Project identifier  
 **Value:** `758851214311`
 
@@ -80,8 +90,10 @@ vercel teams ls
 ## 3️⃣ Optional Notification Secrets
 
 ### `DISCORD_WEBHOOK`
+
 **Purpose:** Send deployment alerts to Discord  
 **How to get:**
+
 1. Discord Server → Settings → Integrations → Webhooks
 2. Create webhook named "Photo2Profit Deploys"
 3. Copy webhook URL
@@ -91,8 +103,10 @@ vercel teams ls
 ---
 
 ### `SLACK_WEBHOOK`
+
 **Purpose:** Send deployment alerts to Slack  
 **How to get:**
+
 1. Visit: [api.slack.com/messaging/webhooks](https://api.slack.com/messaging/webhooks)
 2. Create Incoming Webhook
 3. Choose channel (e.g., #deployments)
@@ -125,6 +139,7 @@ After adding all secrets:
 4. Wait for completion ✅
 
 **Expected result:**
+
 ```
 🚀 Photo2Profit deployment triggered on branch 'main'
 ✨ Notification workflow completed successfully!
@@ -153,10 +168,11 @@ Once all secrets are configured:
 
 ---
 
-> 💎 *Your Photo2Profit empire is now fully automated and secure!*  
+> 💎 _Your Photo2Profit empire is now fully automated and secure!_  
 > — Hustle & Heal™ Team
 
 **Questions?** Check:
+
 - [VERCEL_INTEGRATIONS.md](./VERCEL_INTEGRATIONS.md)
 - [NOTIFICATIONS_SETUP.md](./NOTIFICATIONS_SETUP.md)
 - [PRODUCTION_DEPLOYMENT.md](./PRODUCTION_DEPLOYMENT.md)

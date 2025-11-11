@@ -1,14 +1,14 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase.js";
-import { 
-  BrandContainer, 
-  BrandCard, 
-  BrandHeading, 
-  BrandText, 
-  BrandButton 
-} from "../components/branding/BrandElements";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase.js';
+import {
+  BrandContainer,
+  BrandCard,
+  BrandHeading,
+  BrandText,
+  BrandButton,
+} from '../components/branding/BrandElements';
 
 export default function PublicProduct() {
   const { id } = useParams();
@@ -20,13 +20,13 @@ export default function PublicProduct() {
   useEffect(() => {
     async function load() {
       try {
-        const ref = doc(db, "products", id);
+        const ref = doc(db, 'products', id);
         const snap = await getDoc(ref);
         if (snap.exists()) {
           setProduct({ id: snap.id, ...snap.data() });
         }
       } catch (err) {
-        console.error("Error loading product:", err);
+        console.error('Error loading product:', err);
       } finally {
         setLoading(false);
       }
@@ -71,9 +71,7 @@ export default function PublicProduct() {
             <BrandText className="mb-6">
               This product may have been removed or the link is incorrect.
             </BrandText>
-            <BrandButton onClick={() => navigate("/")}>
-              Go Home
-            </BrandButton>
+            <BrandButton onClick={() => navigate('/')}>Go Home</BrandButton>
           </div>
         </BrandCard>
       </BrandContainer>
@@ -95,13 +93,13 @@ export default function PublicProduct() {
                 />
               </div>
             )}
-            
+
             {/* Share Button */}
             <button
               onClick={handleShare}
               className="w-full py-3 px-4 rounded-lg border-2 border-gray-200 text-gray-700 hover:border-rose-gold hover:text-rose-gold transition-colors font-medium"
             >
-              {copied ? "✓ Link Copied!" : "📋 Share This Product"}
+              {copied ? '✓ Link Copied!' : '📋 Share This Product'}
             </button>
           </div>
 
@@ -113,25 +111,21 @@ export default function PublicProduct() {
                 <span
                   className={`px-4 py-2 rounded-full text-sm font-medium ${
                     product.published
-                      ? "bg-green-100 text-green-800"
-                      : "bg-yellow-100 text-yellow-800"
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-yellow-100 text-yellow-800'
                   }`}
                 >
-                  {product.published ? "✓ Available" : "Coming Soon"}
+                  {product.published ? '✓ Available' : 'Coming Soon'}
                 </span>
               </div>
             )}
 
             {/* Title */}
-            <BrandHeading className="text-3xl">
-              {product.title || "Product"}
-            </BrandHeading>
+            <BrandHeading className="text-3xl">{product.title || 'Product'}</BrandHeading>
 
             {/* Description */}
             {product.description && (
-              <BrandText className="text-lg leading-relaxed">
-                {product.description}
-              </BrandText>
+              <BrandText className="text-lg leading-relaxed">{product.description}</BrandText>
             )}
 
             {/* Price Options */}
@@ -147,13 +141,11 @@ export default function PublicProduct() {
                       className="flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-gray-50 to-white border border-gray-200"
                     >
                       <span className="text-sm font-medium text-gray-700 capitalize">
-                        {key === "used" && "Pre-Owned"}
-                        {key === "marketplace" && "Marketplace"}
-                        {key === "new" && "Brand New"}
+                        {key === 'used' && 'Pre-Owned'}
+                        {key === 'marketplace' && 'Marketplace'}
+                        {key === 'new' && 'Brand New'}
                       </span>
-                      <span className="text-2xl font-bold text-rose-gold">
-                        ${value}
-                      </span>
+                      <span className="text-2xl font-bold text-rose-gold">${value}</span>
                     </div>
                   ))}
                 </div>
@@ -161,10 +153,7 @@ export default function PublicProduct() {
             )}
 
             {/* Buy Button */}
-            <BrandButton
-              onClick={handleBuyNow}
-              className="w-full py-4 text-lg"
-            >
+            <BrandButton onClick={handleBuyNow} className="w-full py-4 text-lg">
               💳 Buy Now
             </BrandButton>
 
@@ -172,18 +161,20 @@ export default function PublicProduct() {
             <div className="pt-6 border-t border-gray-200">
               <div className="text-xs text-gray-500 space-y-1">
                 <p>
-                  Listed: {new Date(product.createdAt).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric"
+                  Listed:{' '}
+                  {new Date(product.createdAt).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
                   })}
                 </p>
                 {product.publishedAt && (
                   <p>
-                    Published: {new Date(product.publishedAt).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric"
+                    Published:{' '}
+                    {new Date(product.publishedAt).toLocaleDateString('en-US', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric',
                     })}
                   </p>
                 )}

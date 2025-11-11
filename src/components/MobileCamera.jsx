@@ -15,14 +15,14 @@ export default function MobileCamera({ isOpen, onClose, onCapture }) {
     try {
       setIsLoading(true);
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { 
+        video: {
           facingMode: facingMode,
           width: { ideal: 1920 },
-          height: { ideal: 1080 }
+          height: { ideal: 1080 },
         },
-        audio: false
+        audio: false,
       });
-      
+
       setStream(mediaStream);
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
@@ -38,7 +38,7 @@ export default function MobileCamera({ isOpen, onClose, onCapture }) {
   // Stop camera stream
   const stopCamera = useCallback(() => {
     if (stream) {
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
   }, [stream]);
@@ -59,15 +59,19 @@ export default function MobileCamera({ isOpen, onClose, onCapture }) {
     context.drawImage(video, 0, 0);
 
     // Convert to blob
-    canvas.toBlob((blob) => {
-      const photoUrl = URL.createObjectURL(blob);
-      setCapturedPhoto(photoUrl);
-    }, 'image/jpeg', 0.9);
+    canvas.toBlob(
+      (blob) => {
+        const photoUrl = URL.createObjectURL(blob);
+        setCapturedPhoto(photoUrl);
+      },
+      'image/jpeg',
+      0.9
+    );
   }, []);
 
   // Switch camera
   const switchCamera = useCallback(() => {
-    setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
+    setFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'));
     stopCamera();
     setTimeout(startCamera, 100);
   }, [startCamera, stopCamera]);
@@ -112,12 +116,12 @@ export default function MobileCamera({ isOpen, onClose, onCapture }) {
         >
           <FaTimes size={20} />
         </button>
-        
+
         <div className="text-white font-diamond text-lg">
           <HiSparkles className="inline mr-2" />
           Photo2Profit
         </div>
-        
+
         {stream && (
           <button
             onClick={switchCamera}
@@ -140,19 +144,9 @@ export default function MobileCamera({ isOpen, onClose, onCapture }) {
         )}
 
         {capturedPhoto ? (
-          <img 
-            src={capturedPhoto} 
-            alt="Captured" 
-            className="w-full h-full object-cover"
-          />
+          <img src={capturedPhoto} alt="Captured" className="w-full h-full object-cover" />
         ) : (
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className="w-full h-full object-cover"
-          />
+          <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
         )}
 
         {/* Camera overlay UI */}
@@ -180,7 +174,7 @@ export default function MobileCamera({ isOpen, onClose, onCapture }) {
               <FaSync className="mr-2" />
               Retake
             </button>
-            
+
             <button
               onClick={usePhoto}
               className="mobile-btn haptic-heavy bg-gradient-to-r from-rosegold to-rosegold-light text-white px-8 py-3 rounded-full flex items-center"

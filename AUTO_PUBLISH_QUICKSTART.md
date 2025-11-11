@@ -18,27 +18,30 @@ echo 'FB_CATALOG_ID=your-catalog-id' >> api/.env
 
 ## 📡 API Endpoints
 
-| Endpoint | Method | Auth | Purpose |
-|----------|--------|------|---------|
-| `/admin/publish-config` | GET | JWT | Check settings & status |
-| `/admin/publish-my-products` | POST | JWT | Publish your products |
-| `/admin/publish-all-pending` | POST | API Key | Publish all (cron) |
+| Endpoint                     | Method | Auth    | Purpose                 |
+| ---------------------------- | ------ | ------- | ----------------------- |
+| `/admin/publish-config`      | GET    | JWT     | Check settings & status |
+| `/admin/publish-my-products` | POST   | JWT     | Publish your products   |
+| `/admin/publish-all-pending` | POST   | API Key | Publish all (cron)      |
 
 ## 🎯 Usage Examples
 
 ### Check Status
+
 ```bash
 curl http://localhost:8080/admin/publish-config \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Manual Publish
+
 ```bash
 curl -X POST http://localhost:8080/admin/publish-my-products \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Cron Job
+
 ```bash
 curl -X POST http://localhost:8080/admin/publish-all-pending \
   -H "X-API-Key: $ADMIN_API_KEY"
@@ -46,15 +49,15 @@ curl -X POST http://localhost:8080/admin/publish-all-pending \
 
 ## ⚙️ Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `AUTO_PUBLISH_ENABLED` | `false` | Enable auto-publishing |
-| `AUTO_PUBLISH_THRESHOLD` | `5` | Products before auto-publish |
-| `AUTO_PUBLISH_CHANNELS` | `ebay,facebook` | Target marketplaces |
-| `ADMIN_API_KEY` | - | Secure key for cron |
-| `EBAY_OAUTH_TOKEN` | - | eBay API credentials |
-| `FACEBOOK_ACCESS_TOKEN` | - | Facebook API token |
-| `FB_CATALOG_ID` | - | Facebook catalog ID |
+| Variable                 | Default         | Description                  |
+| ------------------------ | --------------- | ---------------------------- |
+| `AUTO_PUBLISH_ENABLED`   | `false`         | Enable auto-publishing       |
+| `AUTO_PUBLISH_THRESHOLD` | `5`             | Products before auto-publish |
+| `AUTO_PUBLISH_CHANNELS`  | `ebay,facebook` | Target marketplaces          |
+| `ADMIN_API_KEY`          | -               | Secure key for cron          |
+| `EBAY_OAUTH_TOKEN`       | -               | eBay API credentials         |
+| `FACEBOOK_ACCESS_TOKEN`  | -               | Facebook API token           |
+| `FB_CATALOG_ID`          | -               | Facebook catalog ID          |
 
 ## 🔄 How It Works
 
@@ -100,12 +103,12 @@ gcloud scheduler jobs create http publish-products \
 
 ## 🐛 Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| Not auto-publishing | Set `AUTO_PUBLISH_ENABLED=true` |
-| eBay errors | Check `EBAY_OAUTH_TOKEN` valid |
-| Facebook errors | Verify `FB_CATALOG_ID` correct |
-| Rate limits | Increase threshold or use scheduler |
+| Problem             | Solution                            |
+| ------------------- | ----------------------------------- |
+| Not auto-publishing | Set `AUTO_PUBLISH_ENABLED=true`     |
+| eBay errors         | Check `EBAY_OAUTH_TOKEN` valid      |
+| Facebook errors     | Verify `FB_CATALOG_ID` correct      |
+| Rate limits         | Increase threshold or use scheduler |
 
 ## 📚 Full Documentation
 

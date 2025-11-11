@@ -1,5 +1,9 @@
 import express from 'express';
-import { ebayWebhook, facebookWebhook, poshmarkWebhook } from '../controllers/webhooks.controller.js';
+import {
+  ebayWebhook,
+  facebookWebhook,
+  poshmarkWebhook,
+} from '../controllers/webhooks.controller.js';
 import { verifySignature } from '../middleware/signature.js';
 
 const router = express.Router();

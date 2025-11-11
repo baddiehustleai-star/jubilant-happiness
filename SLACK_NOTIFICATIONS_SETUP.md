@@ -5,6 +5,7 @@ This guide walks you through setting up automated Slack notifications for your G
 ## 🎯 What You'll Get
 
 Every time you push to `main` (or manually trigger a deployment), your Slack channel will receive a color-coded message showing:
+
 - ✅ Success (green) or ❌ Failure (red)
 - Repository name and branch
 - Commit SHA
@@ -71,7 +72,7 @@ Within 1-2 minutes, you should see a message appear in your chosen Slack channel
 The workflow uses Slack's message attachments API. If you want simpler messages, you can modify `.github/workflows/deploy.yaml` and replace the payload with:
 
 ```json
-{"text": "Render deployment $STATUS for commit $GITHUB_SHA"}
+{ "text": "Render deployment $STATUS for commit $GITHUB_SHA" }
 ```
 
 ---
@@ -85,6 +86,7 @@ Go back to your Slack app settings → Incoming Webhooks → click the webhook �
 ### Add more details
 
 Edit the `text` field in `.github/workflows/deploy.yaml` to include:
+
 - Build duration: `${{ steps.deploy.outputs.duration }}`
 - PR number: `${{ github.event.pull_request.number }}`
 - Deployment URL: Add your Render service URL
@@ -98,9 +100,9 @@ on:
   push:
     branches:
       - main
-      - staging  # add staging notifications
+      - staging # add staging notifications
   pull_request:
-    types: [opened, synchronize]  # notify on PR updates
+    types: [opened, synchronize] # notify on PR updates
 ```
 
 ---

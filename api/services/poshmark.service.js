@@ -3,7 +3,7 @@
 import logger from '../utils/logger.js';
 
 async function simulate(delay = 500) {
-  await new Promise(r => setTimeout(r, delay));
+  await new Promise((r) => setTimeout(r, delay));
 }
 
 export async function publish(_listing) {
@@ -21,7 +21,11 @@ export async function remove(listing) {
 
 export async function updatePrice(listing) {
   await simulate(300);
-  logger.info('Simulated Poshmark update price', listing.poshmark_id || listing.id, listing.new_price);
+  logger.info(
+    'Simulated Poshmark update price',
+    listing.poshmark_id || listing.id,
+    listing.new_price
+  );
   return { success: true };
 }
 

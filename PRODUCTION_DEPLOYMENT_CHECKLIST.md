@@ -194,14 +194,16 @@ echo -n "whsec_YOUR_WEBHOOK_SECRET" | \
 Update `api/server.js` CORS origins:
 
 ```javascript
-app.use(cors({
-  origin: [
-    'https://photo2profit.vercel.app',
-    'https://photo2profit-758851214311.web.app',
-    'https://photo2profit-758851214311.firebaseapp.com',
-    /^https:\/\/.*\.vercel\.app$/
-  ]
-}));
+app.use(
+  cors({
+    origin: [
+      'https://photo2profit.vercel.app',
+      'https://photo2profit-758851214311.web.app',
+      'https://photo2profit-758851214311.firebaseapp.com',
+      /^https:\/\/.*\.vercel\.app$/,
+    ],
+  })
+);
 ```
 
 Redeploy API:
@@ -336,6 +338,7 @@ npm run generate-icons
 ## Production Readiness Checklist
 
 ### Critical (Must Have)
+
 - [ ] Real Firebase credentials in `.env.production`
 - [ ] Real Stripe keys (publishable + secret)
 - [ ] API deployed to Cloud Run with health checks passing
@@ -345,6 +348,7 @@ npm run generate-icons
 - [ ] Firebase Security Rules deployed
 
 ### Important (Should Have)
+
 - [ ] PWA icons generated and manifest updated
 - [ ] Remove.bg API key for background removal
 - [ ] Error monitoring (Sentry or similar)
@@ -353,6 +357,7 @@ npm run generate-icons
 - [ ] SSL certificate validated
 
 ### Nice to Have (Can Add Later)
+
 - [ ] eBay OAuth for live cross-posting
 - [ ] Facebook OAuth for direct posting
 - [ ] Email notifications (SendGrid)

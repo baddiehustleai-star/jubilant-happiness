@@ -17,18 +17,25 @@ export async function generateImageAlt(imageUrl, title, description) {
 
     const resp = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }]
+      messages: [{ role: 'user', content: prompt }],
     });
 
     const text = resp.choices[0].message.content;
-    const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+    const lines = text
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean);
     return {
-      alt: lines.find((l) => l.toLowerCase().startsWith('alt'))?.replace(/alt[:\-]/i, '').trim() || title,
+      alt:
+        lines
+          .find((l) => l.toLowerCase().startsWith('alt'))
+          ?.replace(/alt[:\-]/i, '')
+          .trim() || title,
       caption:
         lines
           .find((l) => l.toLowerCase().startsWith('caption'))
           ?.replace(/caption[:\-]/i, '')
-          .trim() || description
+          .trim() || description,
     };
   } catch (e) {
     console.error('Image caption generation failed:', e);

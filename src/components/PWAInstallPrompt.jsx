@@ -46,7 +46,7 @@ export default function PWAInstallPrompt() {
 
     // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice;
-    
+
     if (outcome === 'accepted') {
       console.log('User accepted the install prompt');
     } else {
@@ -90,7 +90,7 @@ export default function PWAInstallPrompt() {
             </div>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-2 ml-4">
           <button
             onClick={handleDismiss}
@@ -98,7 +98,7 @@ export default function PWAInstallPrompt() {
           >
             <FaTimes size={16} />
           </button>
-          
+
           <button
             onClick={handleInstallClick}
             className="mobile-btn haptic-medium bg-white text-rosegold px-4 py-2 rounded-lg font-semibold flex items-center"

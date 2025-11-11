@@ -16,7 +16,7 @@
   "build": {
     "env": {
       "VITE_FIREBASE_API_KEY": "@firebase-api-key",
-      "VITE_FIREBASE_AUTH_DOMAIN": "photo2profit-758851214311.firebaseapp.com", 
+      "VITE_FIREBASE_AUTH_DOMAIN": "photo2profit-758851214311.firebaseapp.com",
       "VITE_FIREBASE_PROJECT_ID": "758851214311",
       "VITE_FIREBASE_STORAGE_BUCKET": "photo2profit-758851214311.appspot.com",
       "VITE_FIREBASE_MESSAGING_SENDER_ID": "758851214311",
@@ -42,7 +42,7 @@
           "value": "DENY"
         },
         {
-          "key": "X-Content-Type-Options", 
+          "key": "X-Content-Type-Options",
           "value": "nosniff"
         }
       ]

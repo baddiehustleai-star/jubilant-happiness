@@ -7,6 +7,7 @@ Complete guide to Photo2Profit's e-commerce features: authentication, payments, 
 ## 🔐 Authentication System
 
 ### Features
+
 - **Google OAuth 2.0** - One-click sign-in with Google
 - **Email/JWT Login** - Simple email-based authentication
 - **Silent Refresh** - 15-minute access tokens with 30-day refresh tokens
@@ -23,24 +24,26 @@ Complete guide to Photo2Profit's e-commerce features: authentication, payments, 
    - Authorized redirect URIs: `https://your-domain.com/auth/google/callback`
 
 2. **Configure Environment Variables:**
+
    ```bash
    # Backend (.env)
    GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com
    GOOGLE_CLIENT_SECRET=your_client_secret
    JWT_SECRET=your-secret-key-here
-   
+
    # Frontend (.env)
    VITE_GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com
    VITE_API_URL=https://your-api-domain.com
    ```
 
 3. **Test Authentication:**
+
    ```bash
    # Simple login
    curl -X POST http://localhost:8080/login \
      -H "Content-Type: application/json" \
      -d '{"email":"test@example.com"}'
-   
+
    # Use the returned token
    curl -H "Authorization: Bearer YOUR_TOKEN" \
      http://localhost:8080/api/products
@@ -51,6 +54,7 @@ Complete guide to Photo2Profit's e-commerce features: authentication, payments, 
 ## 💳 Stripe Payments
 
 ### Features
+
 - **Secure Checkout** - Stripe Checkout for PCI compliance
 - **Product Pages** - Shareable URLs with buy buttons
 - **Order Tracking** - Automatic order logging in Firestore
@@ -70,6 +74,7 @@ Complete guide to Photo2Profit's e-commerce features: authentication, payments, 
    - Copy the **Signing secret**
 
 3. **Environment Variables:**
+
    ```bash
    STRIPE_SECRET_KEY=sk_test_your_key_here
    STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
@@ -85,11 +90,13 @@ Complete guide to Photo2Profit's e-commerce features: authentication, payments, 
 ### Shareable Product Pages
 
 Every product gets a public URL:
+
 ```
 https://your-api.com/p/{userEmail}/{productId}
 ```
 
 Features:
+
 - ✅ Open Graph meta tags (preview on social media)
 - ✅ One-click "Buy Now" button
 - ✅ Responsive design
@@ -109,6 +116,7 @@ Features:
    - Generate password for "Mail" / "Other"
 
 3. **Configure Environment:**
+
    ```bash
    SMTP_USER=your-email@gmail.com
    SMTP_PASS=your-16-char-app-password
@@ -120,11 +128,13 @@ Features:
 ### Custom SMTP Providers
 
 For production, consider:
+
 - **SendGrid** - 100 emails/day free
 - **Mailgun** - First 5,000 emails free
 - **AWS SES** - $0.10 per 1,000 emails
 
 Update the transporter configuration in `server.js`:
+
 ```javascript
 const transporter = nodemailer.createTransport({
   host: 'smtp.sendgrid.net',
@@ -141,18 +151,21 @@ const transporter = nodemailer.createTransport({
 ## 🤖 AI Product Features
 
 ### Background Removal
+
 - **Service:** remove.bg API
 - **Cost:** 50 free/month, then $0.20/image
 - **Setup:** Get key from [remove.bg](https://remove.bg/api)
 - **Env:** `REMOVE_BG_KEY=your_key_here`
 
 ### Product Analysis
+
 - **Service:** Google Gemini 1.5 Pro Vision
 - **Features:** Detects product, suggests title, keywords
 - **Setup:** Get key from [AI Studio](https://aistudio.google.com/app/apikey)
 - **Env:** `GEMINI_API_KEY=your_key_here`
 
 ### Price Intelligence
+
 - **Service:** SerpAPI Google Shopping
 - **Features:** Scrapes real prices from Google Shopping
 - **Setup:** Get key from [SerpAPI](https://serpapi.com/)
@@ -163,6 +176,7 @@ const transporter = nodemailer.createTransport({
 ## 📦 Order Management
 
 ### Dashboard Features
+
 - View all sales in `/orders`
 - Filter by buyer email
 - Track total revenue
@@ -206,6 +220,7 @@ gcloud run deploy photo2profit-api \
 ### Environment Checklist
 
 **Required:**
+
 - ✅ `JWT_SECRET` - For authentication
 - ✅ `GOOGLE_CLIENT_ID` - Google OAuth
 - ✅ `GOOGLE_CLIENT_SECRET` - Google OAuth
@@ -213,6 +228,7 @@ gcloud run deploy photo2profit-api \
 - ✅ `STRIPE_WEBHOOK_SECRET` - Webhook verification
 
 **Recommended:**
+
 - ✅ `GEMINI_API_KEY` - AI product analysis
 - ✅ `REMOVE_BG_KEY` - Background removal
 - ✅ `SERPAPI_KEY` - Price intelligence
@@ -221,6 +237,7 @@ gcloud run deploy photo2profit-api \
 - ✅ `FRONTEND_URL` - CORS and redirects
 
 **Optional:**
+
 - `DATABASE_URL` - Postgres (if using Prisma)
 - `REDIS_URL` - BullMQ queue (if using workers)
 
@@ -229,6 +246,7 @@ gcloud run deploy photo2profit-api \
 ## 🧪 Testing
 
 ### Test Authentication
+
 ```bash
 # Login
 curl -X POST http://localhost:8080/login \
@@ -242,6 +260,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 ```
 
 ### Test Product Upload
+
 ```bash
 # Upload image (requires authentication)
 curl -X POST http://localhost:8080/api/upload \
@@ -250,6 +269,7 @@ curl -X POST http://localhost:8080/api/upload \
 ```
 
 ### Test Stripe Checkout
+
 1. Visit a product page: `http://localhost:8080/p/user@example.com/product123`
 2. Click "Buy Now"
 3. Use test card: `4242 4242 4242 4242`
@@ -261,23 +281,27 @@ curl -X POST http://localhost:8080/api/upload \
 ## 🔧 Troubleshooting
 
 ### Stripe Webhook Not Working
+
 - Verify webhook URL is accessible: `https://your-api.com/api/stripe-webhook`
 - Check webhook signing secret matches env var
 - View webhook attempts in Stripe Dashboard
 
 ### Email Not Sending
+
 - Verify Gmail App Password (not regular password)
 - Check 2FA is enabled on Gmail account
 - View server logs for email errors
 - Test SMTP connection with nodemailer test
 
 ### Google OAuth Failing
+
 - Check redirect URI matches exactly (including trailing slash)
 - Verify Client ID/Secret are correct
 - Ensure OAuth consent screen is configured
 - Check CORS origins include your frontend domain
 
 ### Products Not Saving
+
 - Verify Firestore is initialized correctly
 - Check PROJECT_ID matches your Firebase project
 - View server logs for Firestore errors
@@ -288,6 +312,7 @@ curl -X POST http://localhost:8080/api/upload \
 ## 📊 Analytics & Monitoring
 
 ### Key Metrics to Track
+
 - Successful logins vs failures
 - Product uploads per day
 - Checkout conversion rate
@@ -295,6 +320,7 @@ curl -X POST http://localhost:8080/api/upload \
 - Email delivery rate
 
 ### Recommended Tools
+
 - **Google Analytics 4** - Website traffic
 - **Stripe Dashboard** - Payment metrics
 - **Cloud Run Logs** - API monitoring
@@ -305,6 +331,7 @@ curl -X POST http://localhost:8080/api/upload \
 ## 💰 Cost Estimates
 
 ### Free Tier (Testing)
+
 - Firebase: Free up to 1GB storage, 50K reads/day
 - Cloud Run: 2M requests/month free
 - Stripe: No monthly fee (2.9% + $0.30 per transaction)
@@ -312,6 +339,7 @@ curl -X POST http://localhost:8080/api/upload \
 - Gmail SMTP: Free for low volume
 
 ### Production (1000 users/month)
+
 - Firebase: $25/month
 - Cloud Run: $10-30/month
 - Remove.bg: $50/month (250 images)

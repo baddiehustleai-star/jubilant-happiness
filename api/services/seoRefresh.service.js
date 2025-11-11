@@ -17,7 +17,7 @@ export async function runMonthlySEORefresh(batchSize = 10) {
   const listings = await prisma.listing.findMany({
     where: { archivedAt: null },
     take: batchSize,
-    orderBy: { updatedAt: 'desc' }
+    orderBy: { updatedAt: 'desc' },
   });
 
   const updatedTitles = [];
@@ -38,21 +38,27 @@ export async function runMonthlySEORefresh(batchSize = 10) {
           seoHashtags: seo.hashtags.join(' '),
           imageAlt: img.alt,
           imageCaption: img.caption,
-          lastOptimizedAt: new Date()
-        }
+          lastOptimizedAt: new Date(),
+        },
       });
 
       // Mirror into Firestore cache for share pages (kept from previous implementation)
-      await db.collection('seo_cache').doc(String(l.id)).set({
-        listingId: String(l.id),
-        title: seo.title,
-        description: seo.description,
-        keywords: seo.keywords,
-        hashtags: seo.hashtags,
-        imageAlt: img.alt,
-        imageCaption: img.caption,
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
+      await db
+        .collection('seo_cache')
+        .doc(String(l.id))
+        .set(
+          {
+            listingId: String(l.id),
+            title: seo.title,
+            description: seo.description,
+            keywords: seo.keywords,
+            hashtags: seo.hashtags,
+            imageAlt: img.alt,
+            imageCaption: img.caption,
+            updatedAt: new Date().toISOString(),
+          },
+          { merge: true }
+        );
 
       updatedTitles.push(l.title);
     } catch (e) {
@@ -67,14 +73,14 @@ export async function runMonthlySEORefresh(batchSize = 10) {
       service: 'gmail',
       auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
+        pass: process.env.SMTP_PASS,
+      },
     });
 
     const html = `
       <h2>Monthly SEO Refresh Summary</h2>
       <p>${updatedTitles.length} listings refreshed.</p>
-      <ul>${updatedTitles.map(t => `<li>${t}</li>`).join('')}</ul>
+      <ul>${updatedTitles.map((t) => `<li>${t}</li>`).join('')}</ul>
       <p>Project: Photo2Profit</p>
     `;
 
@@ -83,7 +89,7 @@ export async function runMonthlySEORefresh(batchSize = 10) {
         from: `"Photo2Profit Bot" <${process.env.SMTP_USER}>`,
         to: process.env.NOTIFY_EMAIL,
         subject: 'Photo2Profit Monthly SEO Report',
-        html
+        html,
       });
     } catch (e) {
       // Log but do not fail the job if email fails

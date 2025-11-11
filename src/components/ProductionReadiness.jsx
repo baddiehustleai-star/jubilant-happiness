@@ -7,7 +7,11 @@ function Row({ label, ok, hint }) {
     <div className="flex items-center justify-between py-2 border-b border-rose-100 last:border-0">
       <BrandText>{label}</BrandText>
       <div className="flex items-center space-x-3">
-        {hint && <BrandText variant="secondary" className="text-xs hidden sm:block">{hint}</BrandText>}
+        {hint && (
+          <BrandText variant="secondary" className="text-xs hidden sm:block">
+            {hint}
+          </BrandText>
+        )}
         <BrandBadge variant={ok ? 'success' : 'rose'}>{ok ? 'OK' : 'Missing'}</BrandBadge>
       </div>
     </div>
@@ -31,28 +35,44 @@ export default function ProductionReadiness() {
       try {
         const result = await apiFetch('/health');
         if (!mounted) return;
-        setApi({ loading: false, ok: result?.status === 'healthy', features: result?.features || {} });
+        setApi({
+          loading: false,
+          ok: result?.status === 'healthy',
+          features: result?.features || {},
+        });
       } catch {
         if (!mounted) return;
         setApi({ loading: false, ok: false, features: {} });
       }
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const base = getApiBase() || (typeof window !== 'undefined' ? window.location.origin : '');
 
   return (
     <BrandCard variant="default" padding="lg">
-      <BrandHeading level={3} className="mb-4">Production Readiness</BrandHeading>
+      <BrandHeading level={3} className="mb-4">
+        Production Readiness
+      </BrandHeading>
       <BrandText variant="secondary" className="mb-4">
         Quick checklist to validate environment configuration and backend availability.
       </BrandText>
 
       <div className="space-y-2">
         <Row label="Firebase API Key" ok={checks.firebaseApiKey} hint="VITE_FIREBASE_API_KEY" />
-        <Row label="Firebase Project ID" ok={checks.firebaseProject} hint="VITE_FIREBASE_PROJECT_ID" />
-        <Row label="Stripe Publishable Key" ok={checks.stripePublishable} hint="VITE_STRIPE_PUBLISHABLE_KEY" />
+        <Row
+          label="Firebase Project ID"
+          ok={checks.firebaseProject}
+          hint="VITE_FIREBASE_PROJECT_ID"
+        />
+        <Row
+          label="Stripe Publishable Key"
+          ok={checks.stripePublishable}
+          hint="VITE_STRIPE_PUBLISHABLE_KEY"
+        />
         <Row label={`API Base (${base})`} ok={checks.apiBase} hint="VITE_API_BASE or same-origin" />
         <Row label="API Health" ok={api.ok} hint="/health" />
         {!api.loading && (

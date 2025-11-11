@@ -1,5 +1,5 @@
 // api/services/email.service.js
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
 
 const user = process.env.SMTP_USER;
 const pass = process.env.SMTP_PASS;
@@ -7,12 +7,12 @@ const pass = process.env.SMTP_PASS;
 let transporter;
 if (user && pass) {
   transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: { user, pass },
   });
-  console.log("📧 Email service initialized with:", user);
+  console.log('📧 Email service initialized with:', user);
 } else {
-  console.warn("⚠️  SMTP_USER or SMTP_PASS missing - email disabled");
+  console.warn('⚠️  SMTP_USER or SMTP_PASS missing - email disabled');
 }
 
 /**
@@ -20,7 +20,7 @@ if (user && pass) {
  */
 export async function sendReceiptEmail(to, productTitle, price, orderId) {
   if (!transporter) {
-    console.warn("Email disabled, skipping receipt");
+    console.warn('Email disabled, skipping receipt');
     return false;
   }
 
@@ -136,7 +136,7 @@ export async function sendReceiptEmail(to, productTitle, price, orderId) {
               day: 'numeric',
               year: 'numeric',
               hour: '2-digit',
-              minute: '2-digit'
+              minute: '2-digit',
             })}</span>
           </div>
         </div>
@@ -173,7 +173,7 @@ export async function sendReceiptEmail(to, productTitle, price, orderId) {
     console.log(`✅ Sent receipt email to ${to}`);
     return true;
   } catch (error) {
-    console.error("❌ Failed to send email:", error.message);
+    console.error('❌ Failed to send email:', error.message);
     return false;
   }
 }
@@ -238,13 +238,13 @@ export async function sendWelcomeEmail(to, userName) {
     await transporter.sendMail({
       from: `"Photo2Profit" <${user}>`,
       to,
-      subject: "🎉 Welcome to Photo2Profit!",
+      subject: '🎉 Welcome to Photo2Profit!',
       html,
     });
     console.log(`✅ Sent welcome email to ${to}`);
     return true;
   } catch (error) {
-    console.error("❌ Failed to send welcome email:", error.message);
+    console.error('❌ Failed to send welcome email:', error.message);
     return false;
   }
 }

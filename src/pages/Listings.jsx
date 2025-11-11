@@ -10,7 +10,7 @@ import {
   BrandBadge,
   BrandButton,
   BrandSpinner,
-  BrandNavigation
+  BrandNavigation,
 } from '../components/branding';
 
 const Listings = () => {
@@ -26,7 +26,7 @@ const Listings = () => {
     setError('');
     try {
       const res = await apiFetch('/api/v2/listings', {
-        headers: { 'x-user-id': 'usr_seed_demo' }
+        headers: { 'x-user-id': 'usr_seed_demo' },
       });
       setData(res);
     } catch (e) {
@@ -48,7 +48,7 @@ const Listings = () => {
       await apiFetch(`/api/v2/listings/${selectedListing.id}/publish`, {
         method: 'POST',
         body: JSON.stringify({ platforms: [platform] }),
-        headers: { 'x-user-id': 'usr_seed_demo' }
+        headers: { 'x-user-id': 'usr_seed_demo' },
       });
       await fetchListings();
       setShowPublishModal(false);
@@ -66,12 +66,19 @@ const Listings = () => {
 
   return (
     <div className="min-h-screen bg-blush">
-      <BrandNavigation navigation={[{ name: 'Dashboard', href: '/dashboard' }, { name: 'Listings', href: '/listings' }]} />
+      <BrandNavigation
+        navigation={[
+          { name: 'Dashboard', href: '/dashboard' },
+          { name: 'Listings', href: '/listings' },
+        ]}
+      />
       <BrandSection background="white" padding="lg">
         <BrandContainer>
           <div className="flex items-center justify-between mb-6">
             <BrandHeading level={2}>Your Listings</BrandHeading>
-            <BrandButton variant="outline" onClick={fetchListings}>Refresh</BrandButton>
+            <BrandButton variant="outline" onClick={fetchListings}>
+              Refresh
+            </BrandButton>
           </div>
 
           {loading && (
@@ -84,7 +91,8 @@ const Listings = () => {
             <BrandCard variant="default" padding="default" className="mb-6">
               <BrandText variant="danger">{error}</BrandText>
               <BrandText size="sm" variant="secondary" className="mt-2">
-                Ensure DATABASE_URL is set and v2 API is enabled. This page uses x-user-id=usr_seed_demo.
+                Ensure DATABASE_URL is set and v2 API is enabled. This page uses
+                x-user-id=usr_seed_demo.
               </BrandText>
             </BrandCard>
           )}
@@ -108,16 +116,24 @@ const Listings = () => {
                         <td className="px-3 py-3">
                           <div className="flex items-center space-x-3">
                             {l.imageUrl && (
-                              <img src={l.imageUrl} alt={l.title} className="w-12 h-12 object-cover rounded" />
+                              <img
+                                src={l.imageUrl}
+                                alt={l.title}
+                                className="w-12 h-12 object-cover rounded"
+                              />
                             )}
                             <div>
                               <BrandText weight="semibold">{l.title}</BrandText>
-                              <BrandText size="sm" variant="secondary">{l.category || '—'}</BrandText>
+                              <BrandText size="sm" variant="secondary">
+                                {l.category || '—'}
+                              </BrandText>
                             </div>
                           </div>
                         </td>
                         <td className="px-3 py-3">
-                          <BrandText variant="gold" weight="bold">${String(l.price)}</BrandText>
+                          <BrandText variant="gold" weight="bold">
+                            ${String(l.price)}
+                          </BrandText>
                         </td>
                         <td className="px-3 py-3">
                           <BrandBadge variant={l.status === 'archived' ? 'secondary' : 'primary'}>
@@ -127,14 +143,25 @@ const Listings = () => {
                         <td className="px-3 py-3">
                           <div className="flex gap-2 flex-wrap">
                             {l.channelListings?.map((cl) => (
-                              <BrandBadge key={cl.id} variant="outline">{cl.platform}</BrandBadge>
+                              <BrandBadge key={cl.id} variant="outline">
+                                {cl.platform}
+                              </BrandBadge>
                             ))}
-                            {!l.channelListings?.length && <BrandText size="sm" variant="secondary">—</BrandText>}
+                            {!l.channelListings?.length && (
+                              <BrandText size="sm" variant="secondary">
+                                —
+                              </BrandText>
+                            )}
                           </div>
                         </td>
                         <td className="px-3 py-3">
                           <div className="flex gap-3 items-center">
-                            <Link to={`/listings/${l.id}/audit`} className="underline text-rose-700">Audit</Link>
+                            <Link
+                              to={`/listings/${l.id}/audit`}
+                              className="underline text-rose-700"
+                            >
+                              Audit
+                            </Link>
                             {l.status !== 'archived' && (
                               <button
                                 className="text-red-600 hover:underline"
@@ -143,7 +170,7 @@ const Listings = () => {
                                   try {
                                     await apiFetch(`/api/v2/listings/${l.id}/archive`, {
                                       method: 'PATCH',
-                                      headers: { 'x-user-id': 'usr_seed_demo' }
+                                      headers: { 'x-user-id': 'usr_seed_demo' },
                                     });
                                     await fetchListings();
                                   } catch (err) {
@@ -177,7 +204,9 @@ const Listings = () => {
       {showPublishModal && selectedListing && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-xl w-96 p-6">
-            <BrandHeading level={3} className="mb-2">Publish Listing</BrandHeading>
+            <BrandHeading level={3} className="mb-2">
+              Publish Listing
+            </BrandHeading>
             <BrandText variant="secondary" className="mb-4">
               Choose a platform to publish "{selectedListing.title}".
             </BrandText>

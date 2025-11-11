@@ -17,18 +17,26 @@ export async function generateProductSEO(listing) {
 
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }]
+      messages: [{ role: 'user', content: prompt }],
     });
 
     const text = response.choices[0].message.content;
-    const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+    const lines = text
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean);
 
     return {
-      title: lines.find((l) => l.toLowerCase().startsWith('title:'))?.replace(/title:/i, '').trim() || listing.title,
-      description: lines
-        .find((l) => l.toLowerCase().startsWith('description:'))
-        ?.replace(/description:/i, '')
-        .trim() || listing.description,
+      title:
+        lines
+          .find((l) => l.toLowerCase().startsWith('title:'))
+          ?.replace(/title:/i, '')
+          .trim() || listing.title,
+      description:
+        lines
+          .find((l) => l.toLowerCase().startsWith('description:'))
+          ?.replace(/description:/i, '')
+          .trim() || listing.description,
       keywords:
         lines
           .find((l) => l.toLowerCase().startsWith('keywords:'))
@@ -40,7 +48,7 @@ export async function generateProductSEO(listing) {
           .find((l) => l.toLowerCase().startsWith('hashtags:'))
           ?.replace(/hashtags:/i, '')
           .split(' ')
-          .map((h) => h.trim()) || []
+          .map((h) => h.trim()) || [],
     };
   } catch (e) {
     console.error('SEO generation failed:', e);
@@ -48,7 +56,7 @@ export async function generateProductSEO(listing) {
       title: listing.title,
       description: listing.description,
       keywords: [],
-      hashtags: []
+      hashtags: [],
     };
   }
 }

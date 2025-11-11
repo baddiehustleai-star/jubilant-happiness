@@ -1,11 +1,11 @@
 // src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  uploadService, 
-  aiListingService, 
+import {
+  uploadService,
+  aiListingService,
   crossPostingService,
-  backgroundRemovalService 
+  backgroundRemovalService,
 } from '../services';
 import PaymentService from '../services/paymentService';
 import EnhancedPhotoUpload from '../components/EnhancedPhotoUpload';
@@ -20,7 +20,7 @@ import {
   BrandButton,
   BrandBadge,
   BrandNavigation,
-  BrandSpinner
+  BrandSpinner,
 } from '../components/branding';
 
 const Dashboard = () => {
@@ -38,20 +38,20 @@ const Dashboard = () => {
     { name: 'Upgrades', href: '/upgrades' },
     { name: 'Listings', href: '/listings' },
     { name: 'Analytics', href: '/analytics' },
-    { name: 'Settings', href: '/settings' }
+    { name: 'Settings', href: '/settings' },
   ];
 
   const navigationActions = [
     {
       label: user?.premium ? '⭐ Premium' : 'Upgrade',
       variant: user?.premium ? 'outline' : 'gold',
-      onClick: () => window.location.href = '/upgrades'
+      onClick: () => (window.location.href = '/upgrades'),
     },
     {
       label: 'Sign Out',
       variant: 'outline',
-      onClick: logout
-    }
+      onClick: logout,
+    },
   ];
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Dashboard = () => {
     try {
       setIsLoading(true);
       const uploaded = await uploadService.uploadFiles(files);
-      setUploadedFiles(prev => [...prev, ...uploaded]);
+      setUploadedFiles((prev) => [...prev, ...uploaded]);
     } catch (error) {
       console.error('Upload error:', error);
     } finally {
@@ -88,7 +88,7 @@ const Dashboard = () => {
     try {
       setIsLoading(true);
       const listing = await aiListingService.generateListing(photo);
-      setGeneratedListings(prev => [...prev, listing]);
+      setGeneratedListings((prev) => [...prev, listing]);
     } catch (error) {
       console.error('Listing generation error:', error);
     } finally {
@@ -126,11 +126,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-blush">
       {/* Navigation */}
-      <BrandNavigation
-        navigation={navigationItems}
-        actions={navigationActions}
-        fixed={true}
-      />
+      <BrandNavigation navigation={navigationItems} actions={navigationActions} fixed={true} />
 
       {/* Main Content */}
       <div className="pt-20">
@@ -144,7 +140,7 @@ const Dashboard = () => {
               <BrandText variant="white" size="lg" className="max-w-2xl mx-auto mb-8">
                 Transform your photos into profitable listings with AI-powered optimization
               </BrandText>
-              
+
               {/* Quick Stats */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
                 <BrandCard variant="glass" padding="default">
@@ -155,7 +151,7 @@ const Dashboard = () => {
                     <BrandText variant="secondary">Photos Uploaded</BrandText>
                   </div>
                 </BrandCard>
-                
+
                 <BrandCard variant="glass" padding="default">
                   <div className="text-center">
                     <BrandText size="2xl" weight="bold" variant="gold" className="mb-2">
@@ -164,13 +160,15 @@ const Dashboard = () => {
                     <BrandText variant="secondary">Listings Generated</BrandText>
                   </div>
                 </BrandCard>
-                
+
                 <BrandCard variant="glass" padding="default">
                   <div className="text-center">
                     <BrandBadge variant="gradient" size="lg">
                       {subscription?.plan?.toUpperCase() || 'FREE'}
                     </BrandBadge>
-                    <BrandText variant="secondary" className="mt-2">Current Plan</BrandText>
+                    <BrandText variant="secondary" className="mt-2">
+                      Current Plan
+                    </BrandText>
                   </div>
                 </BrandCard>
               </div>
@@ -207,7 +205,7 @@ const Dashboard = () => {
               <BrandHeading level={3} className="mb-8">
                 Recent Uploads
               </BrandHeading>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {uploadedFiles.slice(0, 6).map((file, index) => (
                   <BrandCard key={index} variant="default" padding="default" hover={true}>
@@ -252,7 +250,7 @@ const Dashboard = () => {
               <BrandHeading level={3} className="mb-8">
                 Generated Listings
               </BrandHeading>
-              
+
               <div className="space-y-6">
                 {generatedListings.map((listing, index) => (
                   <BrandCard key={index} variant="default" padding="lg">
@@ -264,39 +262,28 @@ const Dashboard = () => {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      
+
                       <div className="lg:col-span-2 space-y-4">
                         <div>
                           <BrandHeading level={4} className="mb-2">
                             {listing.title}
                           </BrandHeading>
-                          <BrandText variant="secondary">
-                            {listing.description}
-                          </BrandText>
+                          <BrandText variant="secondary">{listing.description}</BrandText>
                         </div>
-                        
+
                         <div className="flex items-center space-x-4">
                           <BrandText weight="bold" size="lg" variant="gold">
                             ${listing.suggestedPrice}
                           </BrandText>
-                          <BrandBadge variant="primary">
-                            {listing.category}
-                          </BrandBadge>
+                          <BrandBadge variant="primary">{listing.category}</BrandBadge>
                         </div>
-                        
+
                         <div className="flex space-x-3">
-                          <BrandButton
-                            variant="primary"
-                            onClick={() => handleCrossPost(listing)}
-                          >
+                          <BrandButton variant="primary" onClick={() => handleCrossPost(listing)}>
                             Cross-Post
                           </BrandButton>
-                          <BrandButton variant="outline">
-                            Edit Listing
-                          </BrandButton>
-                          <BrandButton variant="ghost">
-                            Export CSV
-                          </BrandButton>
+                          <BrandButton variant="outline">Edit Listing</BrandButton>
+                          <BrandButton variant="ghost">Export CSV</BrandButton>
                         </div>
                       </div>
                     </div>

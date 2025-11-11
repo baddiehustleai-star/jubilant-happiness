@@ -54,8 +54,8 @@ router.post('/upload', auth, async (req, res) => {
         price_new: pricing.new,
         imageUrl,
         imageCleaned: cleanedImage,
-        status: 'draft'
-      }
+        status: 'draft',
+      },
     });
 
     res.status(201).json({
@@ -63,7 +63,7 @@ router.post('/upload', auth, async (req, res) => {
       listing,
       pricing,
       ai: aiData,
-      cleaned: !!cleanedImage
+      cleaned: !!cleanedImage,
     });
   } catch (e) {
     console.error('Upload pipeline failed:', e);

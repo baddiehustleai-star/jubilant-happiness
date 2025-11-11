@@ -5,7 +5,7 @@ This guide will take you from your current Codespace to a fully deployed mobile 
 ## 📋 Prerequisites
 
 1. **Google Cloud Account** with billing enabled
-2. **Project 758851214311** (your Firebase project) 
+2. **Project 758851214311** (your Firebase project)
 3. **Vercel Account** (free tier works)
 4. **gcloud CLI** installed
 
@@ -34,11 +34,13 @@ cd api
 ```
 
 This will:
+
 - ✅ Enable required Google Cloud APIs
 - ✅ Build and deploy your AI service to Cloud Run
 - ✅ Output your API URL (save this!)
 
 Expected output:
+
 ```
 ✅ Deployment complete!
 🌐 Service URL: https://photo2profit-api-[hash].a.run.app
@@ -47,6 +49,7 @@ Expected output:
 ## 📱 Step 3: Deploy Frontend to Vercel
 
 1. **Connect to Vercel:**
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -59,13 +62,14 @@ vercel --prod
 
 Go to your Vercel project → Settings → Environment Variables:
 
-| Variable | Value | Notes |
-|----------|-------|-------|
-| `VITE_FIREBASE_API_KEY` | `AIzaSy...` | From Firebase Console |
-| `VITE_FIREBASE_APP_ID` | `1:758851214311:web:...` | From Firebase Console |
-| `VITE_API_BASE_URL` | `https://photo2profit-api-[hash].a.run.app` | From Step 2 |
+| Variable                | Value                                       | Notes                 |
+| ----------------------- | ------------------------------------------- | --------------------- |
+| `VITE_FIREBASE_API_KEY` | `AIzaSy...`                                 | From Firebase Console |
+| `VITE_FIREBASE_APP_ID`  | `1:758851214311:web:...`                    | From Firebase Console |
+| `VITE_API_BASE_URL`     | `https://photo2profit-api-[hash].a.run.app` | From Step 2           |
 
 3. **Redeploy with env vars:**
+
 ```bash
 vercel --prod
 ```
@@ -79,7 +83,7 @@ Store sensitive API keys in Secret Manager:
 echo -n "your-ebay-client-id" | gcloud secrets create ebay-client-id --data-file=-
 echo -n "your-ebay-secret" | gcloud secrets create ebay-client-secret --data-file=-
 
-# Stripe keys  
+# Stripe keys
 echo -n "sk_live_..." | gcloud secrets create stripe-secret-key --data-file=-
 
 # Other API keys as needed
@@ -89,6 +93,7 @@ echo -n "your-openai-key" | gcloud secrets create openai-api-key --data-file=-
 ## 🧪 Step 5: Test Your Production App
 
 1. **Test Cloud Run API:**
+
 ```bash
 curl https://your-api-url.a.run.app/health
 ```
@@ -107,6 +112,7 @@ curl https://your-api-url.a.run.app/health
 ## 🎯 Step 6: Monitor and Scale
 
 ### Cloud Run Monitoring:
+
 ```bash
 # View logs
 gcloud logs read --service=photo2profit-api --limit=50
@@ -116,6 +122,7 @@ gcloud run services describe photo2profit-api --region=us-central1
 ```
 
 ### Firebase Analytics:
+
 - View user analytics in Firebase Console
 - Monitor API usage and errors
 - Track conversion funnel
@@ -125,6 +132,7 @@ gcloud run services describe photo2profit-api --region=us-central1
 For native app store distribution:
 
 1. **Install Capacitor:**
+
 ```bash
 npm install @capacitor/core @capacitor/cli @capacitor/android
 npx cap init photo2profit com.baddiehustle.photo2profit
@@ -132,6 +140,7 @@ npx cap add android
 ```
 
 2. **Build for Android:**
+
 ```bash
 npm run build
 npx cap copy
@@ -147,7 +156,7 @@ npx cap open android
 📱 Mobile PWA (Vercel)
    ↓ HTTPS
 🔥 Firebase Auth/Firestore (758851214311)
-   ↓ 
+   ↓
 ☁️ Cloud Run API (us-central1)
    ↓
 🤖 Vertex AI (Gemini 1.5 Flash)
@@ -157,11 +166,11 @@ npx cap open android
 
 ## 💰 Cost Estimates
 
-| Service | Free Tier | Paid Usage |
-|---------|-----------|------------|
-| **Vercel** | 100GB bandwidth | $20/month Pro |
-| **Firebase** | 1GB storage, 50K reads | $25/month Blaze |
-| **Cloud Run** | 2M requests | $0.40 per 1M requests |
+| Service       | Free Tier              | Paid Usage                 |
+| ------------- | ---------------------- | -------------------------- |
+| **Vercel**    | 100GB bandwidth        | $20/month Pro              |
+| **Firebase**  | 1GB storage, 50K reads | $25/month Blaze            |
+| **Cloud Run** | 2M requests            | $0.40 per 1M requests      |
 | **Vertex AI** | $0.00125 per 1K tokens | ~$5/month for moderate use |
 
 **Total estimated monthly cost:** ~$50-100 for a growing app
@@ -171,6 +180,7 @@ npx cap open android
 ### Common Issues:
 
 1. **"Permission denied" during deployment:**
+
 ```bash
 gcloud auth application-default login
 ```
@@ -185,6 +195,7 @@ gcloud auth application-default login
    - Verify Firebase service account permissions
 
 ### Support:
+
 - 📧 Check logs in Google Cloud Console
 - 🔍 Test endpoints individually
 - 📱 Use browser dev tools for PWA debugging
@@ -196,7 +207,7 @@ gcloud auth application-default login
 - [ ] Cloud Run API deployed and responding
 - [ ] Vercel frontend deployed with PWA
 - [ ] Firebase authentication working
-- [ ] AI product analysis functional  
+- [ ] AI product analysis functional
 - [ ] Mobile "Add to Home Screen" working
 - [ ] Cross-posting simulation functional
 - [ ] Environment variables secured

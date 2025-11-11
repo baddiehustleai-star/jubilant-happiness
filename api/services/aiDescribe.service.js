@@ -14,19 +14,22 @@ export async function describeProductFromImage(imageUrl) {
     contents: [
       {
         parts: [
-          { text: 'Describe this product as if for an online marketplace listing. Include a title, description, and key tags.' },
-          { inline_data: { mime_type: 'image/jpeg', data: imageUrl } }
-        ]
-      }
-    ]
+          {
+            text: 'Describe this product as if for an online marketplace listing. Include a title, description, and key tags.',
+          },
+          { inline_data: { mime_type: 'image/jpeg', data: imageUrl } },
+        ],
+      },
+    ],
   };
 
   const res = await fetch(
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + GEMINI_API_KEY,
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' +
+      GEMINI_API_KEY,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     }
   );
 
@@ -43,7 +46,7 @@ function parseGeminiDescription(rawText) {
 
   return {
     title: titleMatch ? titleMatch[1].trim() : 'AI Product Title',
-    description: descMatch ? descMatch[1].trim() : rawText.slice(0, 300)
+    description: descMatch ? descMatch[1].trim() : rawText.slice(0, 300),
   };
 }
 

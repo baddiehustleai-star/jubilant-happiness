@@ -378,6 +378,29 @@ curl http://localhost:8080/api/orders \
 
 ## 🌐 Deployment
 
+### 🤖 CI/CD Auto-Deploy to Cloud Run (Recommended)
+
+Set up automated deployment with GitHub Actions for hands-free deployments on every push:
+
+```bash
+# See the comprehensive setup guide
+cat CI_CD_SETUP_GUIDE.md
+```
+
+📚 **Complete Guide**: [CI_CD_SETUP_GUIDE.md](./CI_CD_SETUP_GUIDE.md)
+
+Features:
+- ✅ **Automated Deployment** - Auto-deploy on push to main
+- ✅ **Manual Trigger** - Deploy anytime via GitHub Actions
+- ✅ **Email Notifications** - Get deployment alerts via email
+- ✅ **Slack Notifications** - Real-time status updates
+- ✅ **SEO Refresh** - Automatic post-deploy SEO refresh
+- ✅ **Smart Filtering** - Only deploys when API code changes
+
+Quick start: Add 4 secrets to GitHub → Push to main → Done! ⚡
+
+📖 **Workflow Details**: [.github/workflows/DEPLOY_SETUP.md](./.github/workflows/DEPLOY_SETUP.md)
+
 ### 🚀 Quick Deployment with Verification
 
 For production deployment to Google Cloud Run with automated verification:

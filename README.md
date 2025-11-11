@@ -172,7 +172,30 @@ Set `VITE_API_BASE` (added to demo `.env`) to point the frontend toward:
 
 ### Deploy API to Cloud Run (Optional)
 
-See tutorial section "Deploy API to Cloud Run" for commands.
+**🚀 Automated CI/CD Pipeline Available!**
+
+We now have a fully automated deployment pipeline that deploys your API to Google Cloud Run on every push to `main`. 
+
+**Quick Setup (5 minutes)**:
+1. Create Google Cloud service account with required roles
+2. Add GitHub Secrets (GCP_PROJECT_ID, CLOUD_RUN_SERVICE, etc.)
+3. Push to main branch - automatic deployment!
+
+📚 **Complete Setup Guide**: See [`CICD_SETUP_GUIDE.md`](./CICD_SETUP_GUIDE.md) for:
+- Step-by-step service account creation
+- Required IAM roles and permissions  
+- GitHub secrets configuration
+- Slack notifications setup
+- Troubleshooting and best practices
+
+📋 **Quick Reference**: [`GITHUB_SECRETS_REFERENCE.md`](./GITHUB_SECRETS_REFERENCE.md)
+
+**Manual Deployment**:
+For one-time manual deployment, run:
+```bash
+cd api
+./deploy.sh
+```
 
 ---
 

@@ -376,6 +376,54 @@ curl http://localhost:8080/api/orders \
 
 ---
 
+## 🔄 CI/CD Pipeline
+
+### Automated Cloud Run Deployment
+
+Photo2Profit includes a fully automated CI/CD pipeline that deploys to Google Cloud Run on every push to `main`:
+
+- 🚀 **Automatic Deployment** - No manual deploys
+- ✅ **Build Verification** - Tests before deploy
+- 🔄 **SEO Refresh** - Auto-updates metadata
+- 💬 **Slack Alerts** - Success/failure notifications
+
+**Quick Start:** See [CICD_QUICKSTART.md](./CICD_QUICKSTART.md) for 5-minute setup
+
+**Full Guide:** See [GITHUB_SECRETS_SETUP.md](./GITHUB_SECRETS_SETUP.md) for complete instructions
+
+#### Required GitHub Secrets
+
+Add these in **Settings → Secrets → Actions**:
+
+```
+GCP_PROJECT_ID=photo2profitbaddie
+CLOUD_RUN_SERVICE=photo2profit-api
+CLOUD_RUN_REGION=us-west2
+GOOGLE_APPLICATION_CREDENTIALS_JSON=<service account JSON>
+SLACK_WEBHOOK_URL=<optional slack webhook>
+```
+
+#### How to Set Up
+
+1. **Create Google Service Account:**
+   - Go to [Cloud Console → IAM → Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
+   - Create account with **Cloud Run Admin** + **Service Account User** roles
+   - Download JSON key → paste into `GOOGLE_APPLICATION_CREDENTIALS_JSON` secret
+
+2. **Test the Workflow:**
+   ```bash
+   git push origin main
+   ```
+   
+3. **Watch Actions Tab:**
+   - View live deployment logs
+   - See build status and test results
+   - Get notified in Slack (if configured)
+
+Your CI/CD pipeline is now self-driving. Every push to main = automatic Cloud Run deploy + SEO refresh + Slack ping. No more manual deploys. No more forgotten env vars. Just push code and watch it ship! 🚀
+
+---
+
 ## 🌐 Deployment
 
 ### 🚀 Quick Deployment with Verification

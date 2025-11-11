@@ -12,6 +12,7 @@ GOOGLE_APPLICATION_CREDENTIALS_JSON=<paste entire JSON key>
 ```
 
 Optional:
+
 ```
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
 ```
@@ -57,12 +58,12 @@ Expected: `{"status": "ok", ...}`
 
 ## Troubleshooting
 
-| Error | Solution |
-|-------|----------|
-| Authentication failed | Check JSON key is complete and valid |
-| Service not found | Verify service name and region match |
-| Build failed | Test locally: `npm run build` |
-| Permission denied | Check service account has Cloud Run Admin role |
+| Error                 | Solution                                       |
+| --------------------- | ---------------------------------------------- |
+| Authentication failed | Check JSON key is complete and valid           |
+| Service not found     | Verify service name and region match           |
+| Build failed          | Test locally: `npm run build`                  |
+| Permission denied     | Check service account has Cloud Run Admin role |
 
 ---
 

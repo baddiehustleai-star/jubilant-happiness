@@ -8,6 +8,7 @@
 ## 📋 Quick Overview
 
 Every time you push to the `main` branch, GitHub Actions will automatically:
+
 1. ✅ Build your application
 2. ✅ Deploy to Google Cloud Run
 3. ✅ Trigger SEO refresh
@@ -30,17 +31,17 @@ GitHub Secrets keep your credentials secure and encrypted. You'll need to add th
 
 ### Required Secrets
 
-| Secret Name | Value | Description |
-|------------|-------|-------------|
-| `GCP_PROJECT_ID` | `photo2profitbaddie` | Your Google Cloud project ID |
-| `CLOUD_RUN_SERVICE` | `photo2profit-api` | Name of your Cloud Run service |
-| `CLOUD_RUN_REGION` | `us-west2` | Cloud Run deployment region |
-| `GOOGLE_APPLICATION_CREDENTIALS_JSON` | *(see Step 2 below)* | Service account JSON key for authentication |
+| Secret Name                           | Value                | Description                                 |
+| ------------------------------------- | -------------------- | ------------------------------------------- |
+| `GCP_PROJECT_ID`                      | `photo2profitbaddie` | Your Google Cloud project ID                |
+| `CLOUD_RUN_SERVICE`                   | `photo2profit-api`   | Name of your Cloud Run service              |
+| `CLOUD_RUN_REGION`                    | `us-west2`           | Cloud Run deployment region                 |
+| `GOOGLE_APPLICATION_CREDENTIALS_JSON` | _(see Step 2 below)_ | Service account JSON key for authentication |
 
 ### Optional Secrets
 
-| Secret Name | Value | Description |
-|------------|-------|-------------|
+| Secret Name         | Value                                  | Description                           |
+| ------------------- | -------------------------------------- | ------------------------------------- |
 | `SLACK_WEBHOOK_URL` | `https://hooks.slack.com/services/...` | For deployment notifications to Slack |
 
 ---
@@ -66,9 +67,10 @@ Add these roles to give the service account deployment permissions:
 
 - ✅ **Cloud Run Admin** - Deploy and manage Cloud Run services
 - ✅ **Service Account User** - Act as service account
-- ✅ **Storage Admin** *(optional)* - Access Cloud Storage for builds
+- ✅ **Storage Admin** _(optional)_ - Access Cloud Storage for builds
 
 To add roles:
+
 1. In the "Grant this service account access to project" section
 2. Click the **Select a role** dropdown
 3. Search for and select each role above
@@ -145,8 +147,9 @@ curl https://photo2profit-api-photo2profitbaddie.us-west2.run.app/health
 ```
 
 Expected response:
+
 ```json
-{"status": "ok", "timestamp": "2024-..."}
+{ "status": "ok", "timestamp": "2024-..." }
 ```
 
 ---
@@ -156,10 +159,12 @@ Expected response:
 ### Automatic Deployments
 
 Every time you:
+
 - Push to the `main` branch
 - Merge a pull request into `main`
 
 GitHub Actions will automatically:
+
 1. Build your application
 2. Deploy to Cloud Run
 3. Run post-deployment tasks
@@ -167,6 +172,7 @@ GitHub Actions will automatically:
 ### No Manual Work Required!
 
 You never need to run these commands manually:
+
 - ❌ `gcloud auth login`
 - ❌ `gcloud run deploy`
 - ❌ Terminal deployment scripts
@@ -177,11 +183,16 @@ Just push your code and let CI/CD handle everything!
 
 ## 🛡️ Optional: Add Safety Checks
 
-Want to ensure tests pass before deploying? You can enhance the workflow to require tests.
+Want to ensure tests pass before deploying? You have two options:
 
-### Option 1: Run Tests Before Deploy (Recommended)
+**Quick Option:** Add a test step to the deployment workflow  
+**Production Option:** Use branch protection to require CI to pass before merging
 
-Edit `.github/workflows/deploy-cloudrun.yml` and add this step before "Deploy to Cloud Run":
+📚 **See [CLOUD_RUN_SAFETY_CHECKS.md](./CLOUD_RUN_SAFETY_CHECKS.md)** for detailed instructions on both approaches.
+
+### Quick Implementation
+
+To add a test gate to the deployment workflow, edit `.github/workflows/deploy-cloudrun.yml` and add this step before "Deploy to Cloud Run":
 
 ```yaml
 - name: Run Tests
@@ -189,12 +200,6 @@ Edit `.github/workflows/deploy-cloudrun.yml` and add this step before "Deploy to
 ```
 
 This will block deployment if any tests fail.
-
-### Option 2: Separate CI and CD
-
-Keep the existing workflow for deployment, and rely on the separate `ci.yml` workflow for quality checks on pull requests.
-
-**Current setup:** `ci.yml` runs on all pull requests to ensure code quality before merging.
 
 ---
 
@@ -205,6 +210,7 @@ Keep the existing workflow for deployment, and rely on the separate `ci.yml` wor
 **Error:** "ERROR: (gcloud.auth.activate-service-account) Invalid key format"
 
 **Solution:**
+
 - Verify the JSON key is valid and complete
 - Make sure you copied the entire JSON content (from `{` to `}`)
 - Check that the secret name is exactly `GOOGLE_APPLICATION_CREDENTIALS_JSON`
@@ -214,6 +220,7 @@ Keep the existing workflow for deployment, and rely on the separate `ci.yml` wor
 **Error:** "Service 'photo2profit-api' not found"
 
 **Solution:**
+
 - Verify the Cloud Run service exists in your project
 - Check that `CLOUD_RUN_SERVICE` matches your actual service name
 - Ensure `CLOUD_RUN_REGION` is correct (e.g., `us-west2`)
@@ -223,6 +230,7 @@ Keep the existing workflow for deployment, and rely on the separate `ci.yml` wor
 **Error:** Build step fails during `npm run build`
 
 **Solution:**
+
 - Test the build locally: `npm run build`
 - Check that all dependencies are in `package.json` (not just devDependencies)
 - Verify environment variables are not missing
@@ -230,6 +238,7 @@ Keep the existing workflow for deployment, and rely on the separate `ci.yml` wor
 ### Slack Notifications Not Working
 
 **Solution:**
+
 - Verify `SLACK_WEBHOOK_URL` is set correctly
 - Test the webhook: `curl -X POST -H 'Content-Type: application/json' -d '{"text":"test"}' YOUR_WEBHOOK_URL`
 - Check that the webhook is active in your Slack workspace
@@ -239,6 +248,7 @@ Keep the existing workflow for deployment, and rely on the separate `ci.yml` wor
 **Error:** "Permission 'run.services.create' denied"
 
 **Solution:**
+
 - Verify service account has **Cloud Run Admin** role
 - Check that **Service Account User** role is also granted
 - Wait a few minutes for IAM changes to propagate
@@ -287,5 +297,6 @@ Use this checklist to track your progress:
 > Push to `main` and watch your code deploy automatically.
 
 **Questions?** Check the troubleshooting section above or review:
+
 - `.github/workflows/DEPLOY_SETUP.md`
 - `.github/workflows/deploy-cloudrun.yml`

@@ -410,6 +410,7 @@ Set up automatic deployments to Google Cloud Run on every push to `main`:
 ```
 
 **Quick Start:**
+
 1. Add GitHub secrets (GCP project ID, service name, service account JSON)
 2. Push to `main` branch
 3. GitHub Actions automatically deploys to Cloud Run
@@ -418,6 +419,7 @@ Set up automatic deployments to Google Cloud Run on every push to `main`:
 📋 **Quick Reference:** [CLOUD_RUN_CI_CD_QUICKSTART.md](./CLOUD_RUN_CI_CD_QUICKSTART.md)
 
 **Benefits:**
+
 - ✅ No manual deployment commands
 - ✅ Automatic build and deploy on every push
 - ✅ SEO refresh triggered automatically

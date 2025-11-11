@@ -67,18 +67,22 @@ gcloud run deploy photo2profit-api \
 ## Troubleshooting
 
 ### "Authentication failed"
+
 - Verify `GOOGLE_APPLICATION_CREDENTIALS_JSON` is valid JSON
 - Check service account has Cloud Run Admin role
 
 ### "Service not found"
+
 - Verify `CLOUD_RUN_SERVICE` matches your actual service name
 - Check `CLOUD_RUN_REGION` is correct
 
 ### "Build failed"
+
 - Check `package.json` scripts
 - Ensure all dependencies are in `package.json` (not just dev)
 
 ### Slack notifications not working
+
 - Verify `SLACK_WEBHOOK_URL` is set and valid
 - Test webhook with: `curl -X POST -H 'Content-Type: application/json' -d '{"text":"test"}' YOUR_WEBHOOK_URL`
 

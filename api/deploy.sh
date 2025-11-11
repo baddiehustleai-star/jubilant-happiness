@@ -5,7 +5,7 @@
 
 PROJECT_ID="758851214311"
 SERVICE_NAME="photo2profit-api"
-REGION="us-central1"
+REGION="us-west2"  # Updated to match production requirements
 
 echo "🚀 Deploying Photo2Profit API to Cloud Run..."
 echo "📦 Project: $PROJECT_ID"

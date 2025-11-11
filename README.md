@@ -350,6 +350,27 @@ curl http://localhost:8080/api/orders \
 
 ## 🌐 Deployment
 
+### Quick Deploy (Cloud Run) - Recommended
+
+**Three simple steps to deploy v1.0:**
+
+```bash
+# 1. Deploy API to Cloud Run
+cd api && ./final-deploy.sh
+
+# 2. Test SEO refresh endpoint
+./test-seo-refresh.sh
+
+# 3. Tag the release
+git tag -a v1.0.1 -m "Production deployment"
+git push origin v1.0.1
+```
+
+📚 **Complete guides:**
+- [QUICK_DEPLOY.md](./QUICK_DEPLOY.md) - Three-step deployment
+- [FINAL_DEPLOY.md](./FINAL_DEPLOY.md) - Detailed deployment checklist
+- [PRODUCTION_DEPLOYMENT_CHECKLIST.md](./PRODUCTION_DEPLOYMENT_CHECKLIST.md) - Full production setup
+
 ### Deploy to Render (API + Dashboard, free tier)
 
 We included a `render.yaml` blueprint at the repo root so you can deploy the whole stack from one click or commit.

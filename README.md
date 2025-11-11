@@ -400,6 +400,32 @@ The deployment checklist verifies:
 - ✅ Product pages load correctly
 - ✅ All critical endpoints respond
 
+### 🤖 Automated CI/CD Deployment to Cloud Run
+
+Set up automatic deployments to Google Cloud Run on every push to `main`:
+
+```bash
+# One-time setup: Configure GitHub secrets for automated deployments
+# See CLOUD_RUN_CI_CD_SETUP.md for full guide
+```
+
+**Quick Start:**
+
+1. Add GitHub secrets (GCP project ID, service name, service account JSON)
+2. Push to `main` branch
+3. GitHub Actions automatically deploys to Cloud Run
+
+📚 **See [CLOUD_RUN_CI_CD_SETUP.md](./CLOUD_RUN_CI_CD_SETUP.md)** for complete CI/CD setup guide  
+📋 **Quick Reference:** [CLOUD_RUN_CI_CD_QUICKSTART.md](./CLOUD_RUN_CI_CD_QUICKSTART.md)
+
+**Benefits:**
+
+- ✅ No manual deployment commands
+- ✅ Automatic build and deploy on every push
+- ✅ SEO refresh triggered automatically
+- ✅ Slack notifications (optional)
+- ✅ Full deployment history in GitHub Actions
+
 ### Deploy to Render (API + Dashboard, free tier)
 
 We included a `render.yaml` blueprint at the repo root so you can deploy the whole stack from one click or commit.

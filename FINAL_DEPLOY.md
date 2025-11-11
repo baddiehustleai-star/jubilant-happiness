@@ -3,6 +3,7 @@
 ## Prerequisites
 
 Before deploying, ensure you have:
+
 - Google Cloud SDK installed and authenticated
 - Access to project `photo2profit-758851214311`
 - Environment variables configured
@@ -12,7 +13,7 @@ Before deploying, ensure you have:
 
 ### Required Cloud Run Variables
 
-Make sure these exist in your Cloud Run service (under *Cloud Run → Variables & Secrets*):
+Make sure these exist in your Cloud Run service (under _Cloud Run → Variables & Secrets_):
 
 ```bash
 JWT_SECRET=dev-jwt-secret
@@ -59,6 +60,7 @@ gcloud run deploy photo2profit-api \
 ```
 
 **Expected Output:**
+
 ```
 ✓ Building using Dockerfile and deploying container to Cloud Run service [photo2profit-api]
 ✓ Deploying new service... Done.
@@ -76,6 +78,7 @@ curl -X POST \
 ```
 
 **Expected Success Response:**
+
 ```json
 {
   "success": true,
@@ -86,6 +89,7 @@ curl -X POST \
 ```
 
 **What This Does:**
+
 - Refreshes SEO metadata for up to 10 products
 - Sends an email report titled "Photo2Profit Monthly SEO Report"
 - Updates Firestore with new SEO scores
@@ -105,6 +109,7 @@ curl https://photo2profit-api-758851214311.us-west2.run.app/health
 ```
 
 Visit your main app URL in the browser:
+
 - Frontend should be pulling from the deployed API
 - Product listings should display
 - Image uploads should work
@@ -112,6 +117,7 @@ Visit your main app URL in the browser:
 ## 5. Verify GitHub Actions (Optional)
 
 Go to **GitHub → Actions** and verify:
+
 - ✅ CI workflow passing
 - ✅ Deploy workflow completed (if configured)
 - ✅ No failed checks
@@ -159,6 +165,7 @@ git push origin v1.0.1
 **Issue:** Missing or incorrect `x-cron-secret` header
 
 **Fix:**
+
 ```bash
 # Check the secret value in Cloud Run
 gcloud run services describe photo2profit-api --region us-west2 \
@@ -170,6 +177,7 @@ gcloud run services describe photo2profit-api --region us-west2 \
 **Issue:** SMTP credentials not configured or incorrect
 
 **Fix:**
+
 ```bash
 # Verify SMTP variables are set
 gcloud run services describe photo2profit-api --region us-west2 \
@@ -183,11 +191,13 @@ gcloud run services update photo2profit-api --region us-west2 \
 ### Deployment Fails
 
 **Common causes:**
+
 1. Missing Dockerfile in api directory
 2. Insufficient permissions
 3. API not enabled
 
 **Fix:**
+
 ```bash
 # Enable required APIs
 gcloud services enable cloudbuild.googleapis.com run.googleapis.com

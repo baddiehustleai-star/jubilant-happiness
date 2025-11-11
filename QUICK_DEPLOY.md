@@ -34,6 +34,7 @@ curl -X POST \
 ```
 
 Expected response:
+
 ```json
 { "success": true, "refreshed": 10, "examined": 10, "errors": [] }
 ```
@@ -72,6 +73,7 @@ gcloud run services update photo2profit-api \
 ## Verification
 
 ✅ **Health Check:**
+
 ```bash
 curl https://photo2profit-api-758851214311.us-west2.run.app/health
 ```
@@ -80,6 +82,7 @@ curl https://photo2profit-api-758851214311.us-west2.run.app/health
 Check your inbox for "Photo2Profit Monthly SEO Report"
 
 ✅ **GitHub Actions:**
+
 ```bash
 gh run list --limit 5
 ```
@@ -89,5 +92,6 @@ Or visit: https://github.com/baddiehustleai-star/jubilant-happiness/actions
 ---
 
 **Full Documentation:**
+
 - Complete guide: [FINAL_DEPLOY.md](./FINAL_DEPLOY.md)
 - Production checklist: [PRODUCTION_DEPLOYMENT_CHECKLIST.md](./PRODUCTION_DEPLOYMENT_CHECKLIST.md)

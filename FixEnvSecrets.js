@@ -1,9 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-// Keywords to search for
-const keywords = ['API_KEY', 'PASSWORD', 'SECRET', 'WEBHOOK_URL'];
-
 // Replacement map (add more if needed)
 const replacements = {
   API_KEY: 'process.env.API_KEY',
@@ -19,7 +16,7 @@ const projectRoot = process.cwd();
 
 function scanDir(dir) {
   // Skip node_modules and .git directories
-  const skipDirs = ['node_modules', '.git', 'dist', 'build', '.next'];
+  const skipDirs = ['node_modules', '.git', 'dist', 'build', '.next', 'tests', 'test', '__tests__'];
   
   for (const file of fs.readdirSync(dir)) {
     if (skipDirs.includes(file)) continue;
@@ -30,6 +27,9 @@ function scanDir(dir) {
     if (stat.isDirectory()) {
       scanDir(fullPath);
     } else if (/\.(js|jsx|ts|tsx|json|yml|yaml)$/i.test(file)) {
+      // Skip test files
+      if (/\.(test|spec)\.(js|jsx|ts|tsx)$/i.test(file)) continue;
+      
       let content = fs.readFileSync(fullPath, 'utf8');
       let changed = false;
 
@@ -42,7 +42,7 @@ function scanDir(dir) {
         );
         
         if (regex.test(content)) {
-          content = content.replace(regex, (match, keyName, quote) => {
+          content = content.replace(regex, (match, keyName) => {
             return `${keyName}: ${replacements[key]}`;
           });
           changed = true;

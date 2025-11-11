@@ -107,7 +107,7 @@ function createScanner() {
         );
         
         if (regex.test(content)) {
-          content = content.replace(regex, (match, keyName, quote) => {
+          content = content.replace(regex, (match, keyName) => {
             return `${keyName}: ${replacements[key]}`;
           });
           changed = true;

@@ -6,7 +6,7 @@
    - STRIPE_SECRET_KEY - your Stripe secret key (test key for dev)
    - SENTRY_DSN - optional Sentry DSN
    - FIREBASE config (if using Firebase): add as usual in client config
-      - VITE_STRIPE_PRICE_ID - the Stripe Price ID to use for test checkout (set in Vercel as an env var so client can read it)
+     - VITE_STRIPE_PRICE_ID - the Stripe Price ID to use for test checkout (set in Vercel as an env var so client can read it)
 
 3. Install dependencies
 

@@ -35,6 +35,7 @@ jobs:
           credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
 
       - name: Deploy to Cloud Run
+        id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ env.SERVICE }}
@@ -85,4 +86,24 @@ jobs:
           }'
 
       - name: Summary
-        run: echo "✅ Deployment complete for $SERVICE in $REGION"
+        if: always()
+        run: |
+          echo "## 🚀 Cloud Run Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | \`${{ env.SERVICE }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Region | \`${{ env.REGION }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Project | \`${{ env.PROJECT_ID }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Branch | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.deploy.outcome }}" == "success" ]; then
+            echo "| Status | ✅ **Deployed Successfully** |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### 🔗 Service URL" >> $GITHUB_STEP_SUMMARY
+            echo "https://${{ env.SERVICE }}-${{ env.PROJECT_ID }}.${{ env.REGION }}.run.app" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Status | ❌ **Deployment Failed** |" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Deployment workflow complete for $SERVICE in $REGION"

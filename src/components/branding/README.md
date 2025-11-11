@@ -7,17 +7,20 @@ A comprehensive design system for the Photo2Profit application featuring elegant
 **Firebase Project:** 758851214311
 
 ### Color Palette
+
 - **Primary:** Rose (#E11D48) - Passionate, energetic selling
-- **Secondary:** Gold (#F59E0B) - Premium, profitable outcomes  
+- **Secondary:** Gold (#F59E0B) - Premium, profitable outcomes
 - **Accent:** Cream (#FEF7CD) - Warm, approachable
 - **Neutral:** Dark (#1F2937) - Professional, trustworthy
 
 ### Typography
+
 - **Headings:** "Playfair Display" - Elegant, premium feel
 - **Body:** "Inter" - Clean, readable interface text
 - **Brand:** "Diamond" - Distinctive logo typography
 
 ### Design Principles
+
 1. **Luxury & Accessibility:** Premium feel that's approachable
 2. **Trust & Reliability:** Professional interface for business users
 3. **Energy & Success:** Motivational colors and animations
@@ -26,13 +29,7 @@ A comprehensive design system for the Photo2Profit application featuring elegant
 ## 🚀 Quick Start
 
 ```jsx
-import {
-  BrandButton,
-  BrandCard,
-  BrandHeading,
-  BrandText,
-  Logo
-} from '../components/branding';
+import { BrandButton, BrandCard, BrandHeading, BrandText, Logo } from '../components/branding';
 
 function MyComponent() {
   return (
@@ -57,6 +54,7 @@ function MyComponent() {
 ### Layout Components
 
 #### `BrandContainer`
+
 Responsive container with consistent padding and max-widths.
 
 ```jsx
@@ -66,10 +64,12 @@ Responsive container with consistent padding and max-widths.
 ```
 
 **Props:**
+
 - `size`: 'sm' | 'default' | 'lg' | 'fluid'
 - `className`: Additional CSS classes
 
 #### `BrandSection`
+
 Page sections with consistent spacing and backgrounds.
 
 ```jsx
@@ -83,12 +83,14 @@ Page sections with consistent spacing and backgrounds.
 ```
 
 **Props:**
+
 - `background`: 'default' | 'white' | 'rose' | 'gold' | 'gradient' | 'cream'
 - `padding`: 'none' | 'sm' | 'default' | 'lg' | 'xl'
 
 ### UI Components
 
 #### `BrandButton`
+
 Consistent button styling with multiple variants.
 
 ```jsx
@@ -98,11 +100,13 @@ Consistent button styling with multiple variants.
 ```
 
 **Props:**
+
 - `variant`: 'primary' | 'secondary' | 'gold' | 'outline' | 'ghost' | 'danger'
 - `size`: 'sm' | 'default' | 'lg'
 - `disabled`: boolean
 
 #### `BrandCard`
+
 Flexible card component with multiple styles.
 
 ```jsx
@@ -113,11 +117,13 @@ Flexible card component with multiple styles.
 ```
 
 **Props:**
+
 - `variant`: 'default' | 'luxury' | 'glass' | 'minimal'
 - `padding`: 'none' | 'sm' | 'default' | 'lg' | 'xl'
 - `hover`: boolean (adds hover effects)
 
 #### `BrandInput`
+
 Form input with consistent styling and validation.
 
 ```jsx
@@ -132,6 +138,7 @@ Form input with consistent styling and validation.
 ```
 
 **Props:**
+
 - `label`: string
 - `error`: string (error message)
 - `helper`: string (help text)
@@ -140,6 +147,7 @@ Form input with consistent styling and validation.
 ### Typography Components
 
 #### `BrandHeading`
+
 Responsive headings with consistent hierarchy.
 
 ```jsx
@@ -149,11 +157,13 @@ Responsive headings with consistent hierarchy.
 ```
 
 **Props:**
+
 - `level`: 1-6 (h1-h6)
 - `variant`: 'default' | 'primary' | 'gold' | 'white' | 'light'
 - `gradient`: boolean (applies gradient text)
 
 #### `BrandText`
+
 Body text with consistent styling.
 
 ```jsx
@@ -163,6 +173,7 @@ Body text with consistent styling.
 ```
 
 **Props:**
+
 - `size`: 'xs' | 'sm' | 'default' | 'lg' | 'xl' | '2xl'
 - `variant`: 'default' | 'primary' | 'secondary' | 'light' | 'white' | 'gold'
 - `weight`: 'light' | 'normal' | 'medium' | 'semibold' | 'bold'
@@ -170,23 +181,25 @@ Body text with consistent styling.
 ### Navigation Components
 
 #### `BrandNavigation`
+
 Application header with logo, navigation, and actions.
 
 ```jsx
 <BrandNavigation
   navigation={[
     { name: 'Dashboard', href: '/dashboard' },
-    { name: 'Pricing', href: '/pricing' }
+    { name: 'Pricing', href: '/pricing' },
   ]}
   actions={[
     { label: 'Sign In', variant: 'outline', onClick: signIn },
-    { label: 'Get Started', variant: 'primary', onClick: getStarted }
+    { label: 'Get Started', variant: 'primary', onClick: getStarted },
   ]}
   fixed
 />
 ```
 
 **Props:**
+
 - `logo`: boolean (show/hide logo)
 - `navigation`: Array of navigation items
 - `actions`: Array of action buttons
@@ -194,6 +207,7 @@ Application header with logo, navigation, and actions.
 - `fixed`: boolean (fixed positioning)
 
 #### `BrandFooter`
+
 Application footer with links and branding.
 
 ```jsx
@@ -203,19 +217,18 @@ Application footer with links and branding.
       title: 'Product',
       items: [
         { name: 'Features', href: '/features' },
-        { name: 'Pricing', href: '/pricing' }
-      ]
-    }
+        { name: 'Pricing', href: '/pricing' },
+      ],
+    },
   ]}
-  social={[
-    { name: 'Twitter', href: '#', icon: <TwitterIcon /> }
-  ]}
+  social={[{ name: 'Twitter', href: '#', icon: <TwitterIcon /> }]}
 />
 ```
 
 ### Brand Assets
 
 #### `Logo`
+
 Main Photo2Profit logo with variants.
 
 ```jsx
@@ -225,12 +238,14 @@ Main Photo2Profit logo with variants.
 ```
 
 **Props:**
+
 - `size`: 'sm' | 'md' | 'lg' | 'xl'
 - `variant`: 'default' | 'white' | 'dark'
 
 ## 🎨 Design Tokens
 
 ### Colors
+
 All brand colors are available as Tailwind CSS classes:
 
 ```css
@@ -250,7 +265,9 @@ All brand colors are available as Tailwind CSS classes:
 ```
 
 ### Spacing
+
 Consistent spacing scale:
+
 - `xs`: 0.5rem (8px)
 - `sm`: 1rem (16px)
 - `default`: 1.5rem (24px)
@@ -258,7 +275,9 @@ Consistent spacing scale:
 - `xl`: 3rem (48px)
 
 ### Shadows
+
 Brand-specific shadow utilities:
+
 ```css
 .shadow-brand     /* Primary brand shadow */
 .shadow-brand-lg  /* Larger brand shadow */
@@ -268,11 +287,13 @@ Brand-specific shadow utilities:
 ## 💫 Animations
 
 ### Hover Effects
+
 - `card-hover`: Subtle lift and shadow on hover
 - `button-hover`: Scale and shadow animations
 - `transition-brand`: Consistent transition timing
 
 ### Loading States
+
 ```jsx
 <BrandSpinner size="lg" />
 ```
@@ -280,6 +301,7 @@ Brand-specific shadow utilities:
 ## 📱 Responsive Design
 
 All components are mobile-first and responsive:
+
 - Mobile: 320px+
 - Tablet: 768px+
 - Desktop: 1024px+
@@ -288,6 +310,7 @@ All components are mobile-first and responsive:
 ## 🔧 Customization
 
 ### Extending Colors
+
 Add custom colors in `tailwind.config.js`:
 
 ```js
@@ -296,13 +319,14 @@ module.exports = {
     extend: {
       colors: {
         'custom-rose': '#YOUR_COLOR',
-      }
-    }
-  }
-}
+      },
+    },
+  },
+};
 ```
 
 ### Custom Components
+
 Create new branded components:
 
 ```jsx
@@ -314,9 +338,7 @@ const CustomFeatureCard = ({ feature }) => (
     <BrandText weight="semibold" className="mb-2">
       {feature.title}
     </BrandText>
-    <BrandText variant="secondary">
-      {feature.description}
-    </BrandText>
+    <BrandText variant="secondary">{feature.description}</BrandText>
   </BrandCard>
 );
 ```
@@ -333,6 +355,7 @@ const CustomFeatureCard = ({ feature }) => (
 ## 🌟 Examples
 
 ### Landing Page Hero
+
 ```jsx
 <BrandSection background="gradient" padding="xl">
   <BrandContainer>
@@ -353,6 +376,7 @@ const CustomFeatureCard = ({ feature }) => (
 ```
 
 ### Feature Cards Grid
+
 ```jsx
 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
   {features.map((feature, index) => (
@@ -362,9 +386,7 @@ const CustomFeatureCard = ({ feature }) => (
         <BrandHeading level={4} className="mb-3">
           {feature.title}
         </BrandHeading>
-        <BrandText variant="secondary">
-          {feature.description}
-        </BrandText>
+        <BrandText variant="secondary">{feature.description}</BrandText>
       </div>
     </BrandCard>
   ))}
@@ -372,16 +394,11 @@ const CustomFeatureCard = ({ feature }) => (
 ```
 
 ### Form Example
+
 ```jsx
 <BrandCard variant="glass" padding="lg">
   <form onSubmit={handleSubmit}>
-    <BrandInput
-      label="Email"
-      type="email"
-      value={email}
-      onChange={setEmail}
-      required
-    />
+    <BrandInput label="Email" type="email" value={email} onChange={setEmail} required />
     <BrandInput
       label="Password"
       type="password"
@@ -400,6 +417,7 @@ const CustomFeatureCard = ({ feature }) => (
 ## 🔄 Updates & Maintenance
 
 The branding system is designed to be:
+
 - **Scalable**: Easy to add new components
 - **Maintainable**: Centralized styling and tokens
 - **Flexible**: Customizable without breaking consistency

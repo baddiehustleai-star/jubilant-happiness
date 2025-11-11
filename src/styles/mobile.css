@@ -83,12 +83,12 @@
     line-height: 1.1;
     margin-bottom: 16px;
   }
-  
+
   .mobile-hero-subtitle {
     font-size: 1.25rem !important;
     margin-bottom: 24px;
   }
-  
+
   .mobile-section-padding {
     padding: 60px 20px;
   }
@@ -100,7 +100,7 @@
   bottom: 80px;
   left: 16px;
   right: 16px;
-  background: linear-gradient(135deg, #B76E79, #E9CBA7);
+  background: linear-gradient(135deg, #b76e79, #e9cba7);
   color: white;
   padding: 16px 20px;
   border-radius: 12px;
@@ -128,14 +128,18 @@
   width: 40px;
   height: 40px;
   border: 3px solid rgba(183, 110, 121, 0.2);
-  border-top: 3px solid #B76E79;
+  border-top: 3px solid #b76e79;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Haptic feedback classes */
@@ -168,7 +172,7 @@
 
 .mobile-upload-area:active {
   transform: scale(0.98);
-  border-color: #B76E79;
+  border-color: #b76e79;
   background: linear-gradient(135deg, rgba(248, 224, 231, 0.8), rgba(233, 203, 167, 0.5));
 }
 

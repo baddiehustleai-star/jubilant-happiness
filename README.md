@@ -1,7 +1,7 @@
 # 💎 Photo2Profit — AI-Powered Resale Automation Platform
 
 [![CI](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml)
-[![API Health (prod)](https://img.shields.io/website?url=https%3A%2F%2Fphoto2profit-api-uc.a.run.app%2Fhealth&label=API%20Health%20(prod))](https://photo2profit-api-uc.a.run.app/health)
+[![API Health (prod)](<https://img.shields.io/website?url=https%3A%2F%2Fphoto2profit-api-uc.a.run.app%2Fhealth&label=API%20Health%20(prod)>)](https://photo2profit-api-uc.a.run.app/health)
 [![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.png)](https://shell.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/baddiehustleai-star/jubilant-happiness&cloudshell_print=echo%20%22💎%20Welcome%20to%20Photo2Profit%20Cloud%20Shell%20Session%22%20&&cloudshell_tutorial=CLOUD_SHELL_TUTORIAL.md)
 
 > Note for automated contributors: see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and guidance for Copilot coding agents.
@@ -9,7 +9,6 @@
 A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring rose-gold branding and elegant typography.
 
 > Quickly spin up a fully provisioned environment in your browser. See `CLOUD_SHELL_TUTORIAL.md` for manual steps.
-
 
 ## ✨ Features
 
@@ -23,6 +22,7 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 ## 🚀 Quick Start
 
 ### Automated Setup (Recommended)
+
 ```bash
 # One-command setup: installs deps, configures APIs, creates .env
 ./setup.sh
@@ -38,6 +38,7 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 ```
 
 ### Manual Setup
+
 ```bash
 # Install dependencies
 npm install
@@ -59,7 +60,9 @@ npm run preview
 ## 🔐 Firebase Configuration
 
 ### Quick Setup
+
 1. **Copy the environment template:**
+
    ```bash
    cp .env.example .env
    ```
@@ -146,6 +149,7 @@ You can develop directly in the cloud without local installs:
 Manual, granular steps and deployment guidance live in `CLOUD_SHELL_TUTORIAL.md`.
 
 ### What the Script Does
+
 - Enables APIs (Secret Manager, Vertex AI, Firestore)
 - Seeds placeholder secrets (Stripe, eBay, Facebook) if missing
 - Installs dependencies root + API
@@ -153,17 +157,21 @@ Manual, granular steps and deployment guidance live in `CLOUD_SHELL_TUTORIAL.md`
 - Starts API (port 8080) and Vite dev server (port 5173)
 
 ### API Base Configuration
+
 Set `VITE_API_BASE` (added to demo `.env`) to point the frontend toward:
+
 - Local dev API: `http://localhost:8080` (default in Cloud Shell)
 - Cloud Run: `https://<your-cloud-run-service-url>`
-If empty, the app will use same-origin requests.
+  If empty, the app will use same-origin requests.
 
 ### When to Customize
+
 - Replace placeholder secrets with real values in Google Secret Manager.
 - Adjust `server.js` origins/cors for your preview URL.
 - Set `VITE_*` environment variables for production builds.
 
 ### Deploy API to Cloud Run (Optional)
+
 See tutorial section "Deploy API to Cloud Run" for commands.
 
 ---
@@ -173,6 +181,7 @@ See tutorial section "Deploy API to Cloud Run" for commands.
 Photo2Profit now includes powerful AI endpoints for automated product analysis, background removal, and price intelligence:
 
 ### Quick Start
+
 ```bash
 # Set your API keys in api/.env
 GEMINI_API_KEY="your-gemini-api-key"
@@ -183,7 +192,9 @@ SERPAPI_KEY="your-serpapi-key"
 ### Available Endpoints
 
 #### 1. `/analyze` - Product Recognition
+
 Identifies products using Gemini 1.5 Pro Vision:
+
 ```bash
 curl -X POST http://localhost:8080/analyze \
   -H "Content-Type: application/json" \
@@ -191,7 +202,9 @@ curl -X POST http://localhost:8080/analyze \
 ```
 
 #### 2. `/background` - Background Removal
+
 Removes backgrounds using remove.bg API:
+
 ```bash
 curl -X POST http://localhost:8080/background \
   -H "Content-Type: application/json" \
@@ -199,7 +212,9 @@ curl -X POST http://localhost:8080/background \
 ```
 
 #### 3. `/price-lookup` - Market Price Intelligence
+
 Searches eBay, Amazon, and Google Shopping via SerpAPI:
+
 ```bash
 curl -X POST http://localhost:8080/price-lookup \
   -H "Content-Type: application/json" \
@@ -207,7 +222,9 @@ curl -X POST http://localhost:8080/price-lookup \
 ```
 
 #### 4. `/magic` - Complete AI Pipeline 🪄
+
 Combines all three services in one call:
+
 ```bash
 curl -X POST http://localhost:8080/magic \
   -H "Content-Type: application/json" \
@@ -215,11 +232,13 @@ curl -X POST http://localhost:8080/magic \
 ```
 
 Returns:
+
 - Background-removed image (base64)
 - AI-generated product description
 - Average market price + comparable listings
 
 ### Getting API Keys
+
 - **Gemini API**: https://aistudio.google.com/app/apikey
 - **remove.bg**: https://www.remove.bg/users/sign_up
 - **SerpAPI**: https://serpapi.com/users/sign_up
@@ -231,18 +250,21 @@ Returns:
 Photo2Profit is a complete AI-powered commerce platform with authentication, payments, order management, and **automated marketplace publishing**.
 
 ### 🔐 Authentication
+
 - **Google OAuth 2.0** - One-click sign-in
 - **Email/JWT Login** - Simple authentication
 - **Silent Token Refresh** - 15min access tokens, 30-day refresh tokens
 - **Secure Sessions** - HttpOnly cookies
 
 ### 💳 Stripe Payments
+
 - **Shareable Product Pages** - Public URLs: `/p/{user}/{id}`
 - **One-Click Checkout** - Stripe Checkout integration
 - **Order Tracking** - Automatic Firestore logging
 - **Email Receipts** - Beautiful HTML receipts via Nodemailer
 
 ### 📦 Order Management
+
 - **Dashboard** - View all sales at `/orders`
 - **Product CRUD** - Upload, edit, delete products
 - **Product Management** - Full Firestore-backed product catalog
@@ -255,6 +277,7 @@ Photo2Profit is a complete AI-powered commerce platform with authentication, pay
 **Learn more:** See [`PRODUCT_MANAGEMENT_GUIDE.md`](./PRODUCT_MANAGEMENT_GUIDE.md)
 
 ### 🚀 Automated Publishing
+
 - **Batch Publishing** - Auto-publish to eBay & Facebook Marketplace
 - **Threshold Triggers** - Publish after N products (e.g., every 5)
 - **Time-Based** - Schedule hourly/daily via Cloud Scheduler
@@ -262,23 +285,28 @@ Photo2Profit is a complete AI-powered commerce platform with authentication, pay
 - **Manual Control** - Trigger publishing on-demand
 
 **Learn more:**
+
 - [`AUTO_PUBLISH_GUIDE.md`](./AUTO_PUBLISH_GUIDE.md) - Complete feature guide
 - [`CLOUD_SCHEDULER_SETUP.md`](./CLOUD_SCHEDULER_SETUP.md) - Time-based scheduling setup
 
 ### Setup Guide
 
 1. **Configure Google OAuth:**
+
    ```bash
    GOOGLE_CLIENT_ID=your_id.apps.googleusercontent.com
    GOOGLE_CLIENT_SECRET=your_secret
    ```
+
    Get credentials: https://console.cloud.google.com/apis/credentials
 
 2. **Configure Stripe:**
+
    ```bash
    STRIPE_SECRET_KEY=sk_test_...
    STRIPE_WEBHOOK_SECRET=whsec_...
    ```
+
    Dashboard: https://dashboard.stripe.com/test/apikeys
    Webhook URL: `https://your-api.com/api/stripe-webhook`
    Event: `checkout.session.completed`
@@ -365,6 +393,7 @@ npm run deploy:checklist
 📚 **See [FINAL_DEPLOYMENT_GUIDE.md](./FINAL_DEPLOYMENT_GUIDE.md)** for complete deployment instructions and troubleshooting.
 
 The deployment checklist verifies:
+
 - ✅ Environment variables are configured
 - ✅ API is deployed and accessible
 - ✅ SEO refresh endpoint is functional
@@ -375,9 +404,9 @@ The deployment checklist verifies:
 
 We included a `render.yaml` blueprint at the repo root so you can deploy the whole stack from one click or commit.
 
-1) Create a free Postgres on Render; the blueprint will wire `DATABASE_URL` automatically.
-2) (Optional) Create a free Redis on Upstash and copy its URL into the API’s `REDIS_URL` env.
-3) Deploy the blueprint:
+1. Create a free Postgres on Render; the blueprint will wire `DATABASE_URL` automatically.
+2. (Optional) Create a free Redis on Upstash and copy its URL into the API’s `REDIS_URL` env.
+3. Deploy the blueprint:
 
 - Option A (UI): open https://render.com/deploy, select this repo. Render will read `render.yaml` and create:
   - `photo2profit-db` (Postgres)
@@ -386,14 +415,17 @@ We included a `render.yaml` blueprint at the repo root so you can deploy the who
 - Option B (CI): push to `main` after adding `RENDER_API_KEY` in GitHub secrets; the workflow at `.github/workflows/deploy.yaml` runs `render deploy --yaml ./render.yaml`.
 
 API env vars set by the blueprint:
+
 - `DATABASE_URL` (from Render Postgres)
 - `REDIS_URL` (manual; paste Upstash if you want queues)
 - `SHARED_WEBHOOK_SECRET`, `JWT_SECRET`, `NODE_ENV`
 
 Frontend env var:
+
 - `VITE_API_BASE` is auto-populated from the API service URL so the dashboard calls the right backend.
 
 Verify after deploy:
+
 - API health: `curl https://<your-api>.onrender.com/health` → JSON with `{ "status": "healthy" }`
 - Dashboard: open `https://<your-dashboard>.onrender.com` → visit `/listings`
 - Queue dashboard: `https://<your-api>.onrender.com/admin/queues` (if `REDIS_URL` is set)
@@ -402,6 +434,7 @@ Verify after deploy:
 Get instant alerts for every deployment (success or failure) in your Slack channel. See [SLACK_NOTIFICATIONS_SETUP.md](./SLACK_NOTIFICATIONS_SETUP.md) for the 5-minute setup guide.
 
 ### Other options
+
 You can also deploy the frontend on **Vercel** or **Firebase Hosting**:
 
 - Connect your GitHub repo
@@ -429,30 +462,34 @@ Your weekly scheduler runs automatically from Firebase Cloud Functions.
 
 ## 🧠 Roadmap
 
-| Phase          | Focus                                              |
-| -------------- | -------------------------------------------------- |
-| **MVP (Now)**  | AI listings, cross-posting, weekly exports         |
+| Phase          | Focus                                                           |
+| -------------- | --------------------------------------------------------------- |
+| **MVP (Now)**  | AI listings, cross-posting, weekly exports                      |
 | **Next**       | OAuth integrations for live posting + Inventory Sync (webhooks) |
-| **Pro**        | AI trend analytics, auto pricing, referral rewards |
-| **Enterprise** | API for thrift stores & reseller networks          |
+| **Pro**        | AI trend analytics, auto pricing, referral rewards              |
+| **Enterprise** | API for thrift stores & reseller networks                       |
 
 ### 🔧 Database & Inventory Sync (New)
 
 The platform now supports an optional Postgres + Prisma data layer (v2 API) for production-ready listing + channel mapping.
 
 #### Why Prisma + Postgres
+
 - Strong relational model (Listing ↔ ChannelListing) for multi-market control
 - Transaction safety for publish flows
 - Easier analytics & future platform expansion
 
 #### Schema Overview
+
 Models:
+
 - User: accounts
 - Listing: core product
 - MarketplaceAccount: connected OAuth / tokens (unique per user+platform)
 - ChannelListing: per-platform listing state & external ID
 
 #### Getting Started
+
 ```bash
 cd api
 npm install prisma @prisma/client --save-dev
@@ -465,25 +502,30 @@ npx prisma migrate dev --name init
 `api/prisma/schema.prisma` already included. Ensure `DATABASE_URL` is exported in your environment before starting the API to auto-enable `/api/v2` routes.
 
 #### New V2 Routes (Conditional)
+
 Mounted only if `process.env.DATABASE_URL` is set:
+
 - POST /api/v2/listings/generate
 - POST /api/v2/listings
-- GET  /api/v2/listings
-- GET  /api/v2/listings/:id
+- GET /api/v2/listings
+- GET /api/v2/listings/:id
 - POST /api/v2/listings/:id/publish
 - PATCH /api/v2/listings/:id/archive
 - POST /api/v2/integrations/ebay/auth
-- GET  /api/v2/audit-events (filters: listingId, platform, type, limit, cursor)
+- GET /api/v2/audit-events (filters: listingId, platform, type, limit, cursor)
 
 Auth: Provide `Authorization: Bearer <jwt>` or legacy `x-user-id` header (development). JWT must include `sub` field.
 
 #### Webhooks & Sync
+
 Inventory sync webhooks now land at:
+
 - POST /api/webhooks/ebay
 - POST /api/webhooks/facebook
 - POST /api/webhooks/poshmark
 
 On event `{ listing_id, event_type: 'sold' | 'price_change', new_price? }`:
+
 1. Resolve listing (Prisma ChannelListing → Listing) or Firestore fallback.
 2. If sold: mark sold + delist other channels.
 3. If price_change: update price across remaining active channels.
@@ -492,11 +534,13 @@ Security: set `SHARED_WEBHOOK_SECRET` and send `X-Signature: <hex hmac>` where
 `hex hmac = HMAC_SHA256(secret, raw_body_json)`. If unset, verification is skipped (local/dev).
 
 #### Migration Strategy
+
 1. Keep Firestore listings while rolling out Postgres.
 2. Dual-resolution in sync service permits gradual switchover.
 3. Once confident, backfill ChannelListing rows then remove Firestore crossPostResults.
 
 #### Seeding Demo Data (Postgres)
+
 If you want sample data to exercise the v2 API (e.g., `/api/v2/audit-events`):
 
 ```bash
@@ -509,17 +553,20 @@ npm run prisma:seed
 ```
 
 What it creates:
+
 - 1 demo user: seed+demo@photo2profit.com
 - 5 listings (4 active, 1 archived) with categories/conditions
 - Channel listings for ebay/facebook
 - Audit events: publish, price_change, delist
 
 Then query:
+
 ```bash
 curl -s "http://localhost:3000/api/v2/audit-events?limit=20" | jq
 ```
 
 #### Next DB Enhancements
+
 - Unique constraint on ChannelListing (listingId+platform) — added
 - AuditEvent table for webhook history — added
 - BullMQ queue for publish jobs (inline fallback w/o Redis) — added
@@ -564,10 +611,10 @@ Please see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding
 ## 🚀 Multi-Platform Release Guide
 
 Follow **[GOOGLE_PLAY_RELEASE.md](./GOOGLE_PLAY_RELEASE.md)** for Android  
-*(works on Linux or Windows using Android Studio)*  
+_(works on Linux or Windows using Android Studio)_
 
 Follow **[APPLE_APP_STORE_RELEASE.md](./APPLE_APP_STORE_RELEASE.md)** for iOS  
-*(requires macOS and Xcode)*  
+_(requires macOS and Xcode)_
 
 Photo2Profit is ready to dominate web + mobile! 💎  
 Manifested by **Hustle & Heal™**

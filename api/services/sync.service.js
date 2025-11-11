@@ -23,7 +23,10 @@ function getDb() {
 async function findListingByPlatformListingId(platform, platformListingId) {
   // Prisma channelListings.externalId match
   try {
-    const channel = await prisma.channelListing.findFirst({ where: { platform, externalId: platformListingId }, include: { listing: true } });
+    const channel = await prisma.channelListing.findFirst({
+      where: { platform, externalId: platformListingId },
+      include: { listing: true },
+    });
     if (channel) return { id: channel.listing.id, data: channel.listing, prisma: true };
   } catch (e) {
     logger.warn('Prisma lookup failed (maybe not migrated yet)', e.message);
@@ -31,7 +34,11 @@ async function findListingByPlatformListingId(platform, platformListingId) {
   // Firestore fallback
   const db = getDb();
   if (!db) return null;
-  const snap = await db.collection('listings').where(`crossPostResults.${platform}.listingId`, '==', platformListingId).limit(1).get();
+  const snap = await db
+    .collection('listings')
+    .where(`crossPostResults.${platform}.listingId`, '==', platformListingId)
+    .limit(1)
+    .get();
   if (snap.empty) return null;
   const doc = snap.docs[0];
   return { id: doc.id, data: doc.data(), firestore: true };
@@ -50,34 +57,62 @@ export async function handleSyncEvent(sourcePlatform, listingExternalId, eventTy
     if (listingWrap.prisma) {
       // Use channelListings relation for other platforms
       const channels = await prisma.channelListing.findMany({ where: { listingId: id } });
-      const otherChannels = channels.filter(c => c.platform !== sourcePlatform);
+      const otherChannels = channels.filter((c) => c.platform !== sourcePlatform);
       if (eventType === 'sold') {
         await prisma.listing.update({ where: { id }, data: { sold: true, status: 'sold' } });
         for (const ch of otherChannels) {
           await delistPrismaChannel(ch);
         }
-        await prisma.auditEvent.create({ data: { listingId: id, type: 'sold', detail: `Sold on ${sourcePlatform}`, payload: { sourcePlatform } } });
+        await prisma.auditEvent.create({
+          data: {
+            listingId: id,
+            type: 'sold',
+            detail: `Sold on ${sourcePlatform}`,
+            payload: { sourcePlatform },
+          },
+        });
       } else if (eventType === 'price_change') {
         const new_price = payload?.new_price;
         if (new_price) await prisma.listing.update({ where: { id }, data: { price: new_price } });
         for (const ch of otherChannels) {
           await updatePrice(ch.platform, { ...ch, new_price });
         }
-        await prisma.auditEvent.create({ data: { listingId: id, type: 'price_change', detail: `Price change from ${sourcePlatform}`, payload: { new_price } } });
+        await prisma.auditEvent.create({
+          data: {
+            listingId: id,
+            type: 'price_change',
+            detail: `Price change from ${sourcePlatform}`,
+            payload: { new_price },
+          },
+        });
       }
       return { success: true, prisma: true };
     }
 
     // Firestore legacy path
-  const db = getDb();
-  const crossPost = data.crossPostResults || {};
-    const otherPlatforms = Object.keys(crossPost).filter(p => p !== sourcePlatform);
+    const db = getDb();
+    const crossPost = data.crossPostResults || {};
+    const otherPlatforms = Object.keys(crossPost).filter((p) => p !== sourcePlatform);
     if (eventType === 'sold') {
-  if (db) await db.collection('listings').doc(id).set({ status: 'sold', soldAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+      if (db)
+        await db
+          .collection('listings')
+          .doc(id)
+          .set(
+            { status: 'sold', soldAt: admin.firestore.FieldValue.serverTimestamp() },
+            { merge: true }
+          );
       for (const p of otherPlatforms) await delist(p, crossPost[p]);
     } else if (eventType === 'price_change') {
       const new_price = payload?.new_price || data.price;
-  if (db) await db.collection('listings').doc(id).set({ price: new_price, updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+      if (db)
+        await db
+          .collection('listings')
+          .doc(id)
+          .set(
+            { price: new_price, updatedAt: admin.firestore.FieldValue.serverTimestamp() },
+            { merge: true }
+          );
       for (const p of otherPlatforms) await updatePrice(p, { ...crossPost[p], new_price });
     }
     // Firestore path does not log AuditEvent (Prisma-only)

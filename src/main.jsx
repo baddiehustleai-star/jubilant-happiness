@@ -23,7 +23,7 @@ import './styles/mobile.css';
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-luxury-gradient">
@@ -34,14 +34,14 @@ const ProtectedRoute = ({ children }) => {
       </div>
     );
   }
-  
+
   return user ? children : <Navigate to="/login" />;
 };
 
 // Public Route Component (redirect to dashboard if logged in)
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-luxury-gradient">
@@ -52,7 +52,7 @@ const PublicRoute = ({ children }) => {
       </div>
     );
   }
-  
+
   return user ? <Navigate to="/dashboard" /> : children;
 };
 
@@ -62,94 +62,91 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* Public Routes */}
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
               <PublicRoute>
                 <Landing />
               </PublicRoute>
-            } 
+            }
           />
-          <Route 
-            path="/login" 
+          <Route
+            path="/login"
             element={
               <PublicRoute>
                 <Login />
               </PublicRoute>
-            } 
+            }
           />
-          
+
           {/* Payment Result Pages */}
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
-          
+
           {/* Public Product Page (no auth required) */}
           <Route path="/p/:id" element={<PublicProduct />} />
-          
+
           {/* Firebase Test Route (public for testing) */}
-          <Route 
-            path="/firebase-test" 
-            element={<FirebaseTest />} 
-          />
-          
+          <Route path="/firebase-test" element={<FirebaseTest />} />
+
           {/* Protected Routes */}
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/products" 
+          <Route
+            path="/products"
             element={
               <ProtectedRoute>
                 <ProductsDashboard />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/product/:id" 
+          <Route
+            path="/product/:id"
             element={
               <ProtectedRoute>
                 <ProductEditor />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/upgrades" 
+          <Route
+            path="/upgrades"
             element={
               <ProtectedRoute>
                 <Upgrades />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/listings" 
+          <Route
+            path="/listings"
             element={
               <ProtectedRoute>
                 <Listings />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/listings/:id/audit" 
+          <Route
+            path="/listings/:id/audit"
             element={
               <ProtectedRoute>
                 <ListingAudit />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/orders" 
+          <Route
+            path="/orders"
             element={
               <ProtectedRoute>
                 <Orders />
               </ProtectedRoute>
-            } 
+            }
           />
-          
+
           {/* Catch all - redirect to landing */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

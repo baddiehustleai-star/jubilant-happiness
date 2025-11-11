@@ -13,9 +13,9 @@ export const uploadService = {
       name: file.name,
       url: URL.createObjectURL(file),
       preview: URL.createObjectURL(file),
-      uploadedAt: new Date()
+      uploadedAt: new Date(),
     }));
-  }
+  },
 };
 
 export const aiListingService = {
@@ -26,12 +26,13 @@ export const aiListingService = {
       id: `listing-${Date.now()}`,
       photo,
       title: 'Sample Product Listing',
-      description: 'This is an AI-generated product description that will be created based on the photo analysis.',
+      description:
+        'This is an AI-generated product description that will be created based on the photo analysis.',
       suggestedPrice: 29.99,
       category: 'General',
-      createdAt: new Date()
+      createdAt: new Date(),
     };
-  }
+  },
 };
 
 export const crossPostingService = {
@@ -49,13 +50,13 @@ export const crossPostingService = {
       price: listing.suggestedPrice,
       images: listing.photo?.url ? [listing.photo.url] : [],
       platforms: platforms || [],
-      userId: userId || listing.userId || 'demo-user'
+      userId: userId || listing.userId || 'demo-user',
     };
 
     try {
       const res = await apiFetch('/api/cross-post', {
         method: 'POST',
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
       return res;
     } catch (error) {
@@ -63,10 +64,10 @@ export const crossPostingService = {
       return {
         success: false,
         error: error.body?.error || error.message,
-        listingId: listing.id
+        listingId: listing.id,
       };
     }
-  }
+  },
 };
 
 export const backgroundRemovalService = {
@@ -76,9 +77,9 @@ export const backgroundRemovalService = {
     return {
       success: true,
       originalUrl: file.url,
-      processedUrl: file.url // Placeholder
+      processedUrl: file.url, // Placeholder
     };
-  }
+  },
 };
 
 // Export payment service

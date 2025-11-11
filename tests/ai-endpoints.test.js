@@ -9,15 +9,15 @@ describe('AI endpoints (optional - requires API running)', () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          imageUrl: 'https://via.placeholder.com/400x400.png?text=Test+Product'
-        })
+          imageUrl: 'https://via.placeholder.com/400x400.png?text=Test+Product',
+        }),
       });
-      
+
       if (!res.ok) {
         console.warn('API not available or analyze failed');
         return; // Skip test if API not running
       }
-      
+
       const data = await res.json();
       expect(data).toBeTruthy();
       // Should have success flag or error
@@ -34,15 +34,15 @@ describe('AI endpoints (optional - requires API running)', () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          productTitle: 'vintage watch'
-        })
+          productTitle: 'vintage watch',
+        }),
       });
-      
+
       if (!res.ok) {
         console.warn('API not available or price-lookup failed');
         return;
       }
-      
+
       const data = await res.json();
       expect(data).toBeTruthy();
       expect(data).toHaveProperty('success');
@@ -58,15 +58,15 @@ describe('AI endpoints (optional - requires API running)', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           imageUrl: 'https://via.placeholder.com/400x400.png?text=Test+Product',
-          removeBg: false
-        })
+          removeBg: false,
+        }),
       });
-      
+
       if (!res.ok) {
         console.warn('API not available or workflow failed');
         return;
       }
-      
+
       const data = await res.json();
       expect(data).toBeTruthy();
       expect(data).toHaveProperty('success');

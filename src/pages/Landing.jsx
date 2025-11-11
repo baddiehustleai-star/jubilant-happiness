@@ -3,66 +3,69 @@ import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import Footer from '../components/Footer';
 import PWAInstallPrompt from '../components/PWAInstallPrompt';
-import { 
+import {
   BrandSection,
   BrandContainer,
   BrandHeading,
   BrandText,
   BrandButton,
   BrandCard,
-  BrandNavigation
+  BrandNavigation,
 } from '../components/branding';
 
 export default function Landing() {
   const navigate = useNavigate();
-  
+
   const navigationActions = [
     {
       label: 'Sign In',
       variant: 'outline',
-      onClick: () => navigate('/login')
+      onClick: () => navigate('/login'),
     },
     {
       label: 'Get Started',
       variant: 'primary',
-      onClick: () => navigate('/login')
-    }
+      onClick: () => navigate('/login'),
+    },
   ];
 
   const features = [
     {
       title: 'AI-Powered Listings',
-      description: 'Generate compelling product descriptions and titles automatically using advanced AI',
-      icon: '🤖'
+      description:
+        'Generate compelling product descriptions and titles automatically using advanced AI',
+      icon: '🤖',
     },
     {
       title: 'Background Removal',
       description: 'Professional photo editing with one-click background removal',
-      icon: '✨'
+      icon: '✨',
     },
     {
       title: 'Cross-Platform Posting',
       description: 'Post to multiple marketplaces simultaneously with optimized formatting',
-      icon: '🚀'
+      icon: '🚀',
     },
     {
       title: 'Smart Pricing',
       description: 'Get AI-suggested pricing based on market analysis and trends',
-      icon: '💰'
-    }
+      icon: '💰',
+    },
   ];
 
   const testimonials = [
     {
       name: 'Sarah Chen',
       role: 'Online Seller',
-      quote: 'Photo2Profit increased my listing efficiency by 300%. I can now focus on sourcing while the AI handles the tedious work.'
+      quote:
+        'Photo2Profit increased my listing efficiency by 300%. I can now focus on sourcing while the AI handles the tedious work.',
     },
     {
       name: 'Mike Rodriguez',
       role: 'Reseller',
-      quote: 'The background removal feature alone saves me hours each week. The AI listings are spot-on every time.'
-    }
+      quote:
+        'The background removal feature alone saves me hours each week. The AI listings are spot-on every time.',
+    },
   ];
 
   return (
@@ -93,9 +96,7 @@ export default function Landing() {
                   <BrandHeading level={4} className="mb-3">
                     {feature.title}
                   </BrandHeading>
-                  <BrandText variant="secondary">
-                    {feature.description}
-                  </BrandText>
+                  <BrandText variant="secondary">{feature.description}</BrandText>
                 </div>
               </BrandCard>
             ))}
@@ -170,9 +171,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {testimonials.map((testimonial, index) => (
               <BrandCard key={index} variant="default" padding="lg">
-                <BrandText className="italic mb-4">
-                  "{testimonial.quote}"
-                </BrandText>
+                <BrandText className="italic mb-4">"{testimonial.quote}"</BrandText>
                 <div>
                   <BrandText weight="semibold" className="mb-1">
                     {testimonial.name}

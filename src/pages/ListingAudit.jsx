@@ -9,7 +9,7 @@ import {
   BrandText,
   BrandBadge,
   BrandSpinner,
-  BrandNavigation
+  BrandNavigation,
 } from '../components/branding';
 
 const ListingAudit = () => {
@@ -24,8 +24,12 @@ const ListingAudit = () => {
     setError('');
     try {
       const [evt, lst] = await Promise.all([
-        apiFetch(`/api/v2/audit-events?listingId=${encodeURIComponent(id)}&limit=50`, { headers: { 'x-user-id': 'usr_seed_demo' } }),
-        apiFetch(`/api/v2/listings/${encodeURIComponent(id)}`, { headers: { 'x-user-id': 'usr_seed_demo' } })
+        apiFetch(`/api/v2/audit-events?listingId=${encodeURIComponent(id)}&limit=50`, {
+          headers: { 'x-user-id': 'usr_seed_demo' },
+        }),
+        apiFetch(`/api/v2/listings/${encodeURIComponent(id)}`, {
+          headers: { 'x-user-id': 'usr_seed_demo' },
+        }),
       ]);
       setEvents(evt || []);
       setListing(lst || null);
@@ -47,7 +51,9 @@ const ListingAudit = () => {
         <BrandContainer>
           <div className="flex items-center justify-between mb-6">
             <BrandHeading level={2}>Audit History</BrandHeading>
-            <Link to="/listings" className="underline text-rose-700">← Back to Listings</Link>
+            <Link to="/listings" className="underline text-rose-700">
+              ← Back to Listings
+            </Link>
           </div>
 
           {loading && (
@@ -60,7 +66,8 @@ const ListingAudit = () => {
             <BrandCard variant="default" padding="default" className="mb-6">
               <BrandText variant="danger">{error}</BrandText>
               <BrandText size="sm" variant="secondary" className="mt-2">
-                Ensure DATABASE_URL is set and v2 API is enabled. This page uses x-user-id=usr_seed_demo.
+                Ensure DATABASE_URL is set and v2 API is enabled. This page uses
+                x-user-id=usr_seed_demo.
               </BrandText>
             </BrandCard>
           )}
@@ -69,7 +76,11 @@ const ListingAudit = () => {
             <BrandCard variant="default" padding="lg" className="mb-6">
               <div className="flex items-center gap-4">
                 {listing.imageUrl && (
-                  <img src={listing.imageUrl} alt={listing.title} className="w-16 h-16 object-cover rounded" />
+                  <img
+                    src={listing.imageUrl}
+                    alt={listing.title}
+                    className="w-16 h-16 object-cover rounded"
+                  />
                 )}
                 <div>
                   <BrandHeading level={3}>{listing.title}</BrandHeading>
@@ -77,7 +88,9 @@ const ListingAudit = () => {
                     <BrandBadge variant={listing.status === 'archived' ? 'secondary' : 'primary'}>
                       {listing.status}
                     </BrandBadge>
-                    <BrandText variant="gold" weight="bold">${String(listing.price)}</BrandText>
+                    <BrandText variant="gold" weight="bold">
+                      ${String(listing.price)}
+                    </BrandText>
                   </div>
                 </div>
               </div>
@@ -103,13 +116,19 @@ const ListingAudit = () => {
                     <tbody>
                       {events.map((e) => (
                         <tr key={e.id} className="border-b">
-                          <td className="px-3 py-3 text-sm text-gray-600">{new Date(e.createdAt).toLocaleString()}</td>
+                          <td className="px-3 py-3 text-sm text-gray-600">
+                            {new Date(e.createdAt).toLocaleString()}
+                          </td>
                           <td className="px-3 py-3 capitalize">{e.platform || '—'}</td>
                           <td className="px-3 py-3 capitalize">
-                            <BrandBadge variant={e.type === 'price_change' ? 'gold' : 'primary'}>{e.type}</BrandBadge>
+                            <BrandBadge variant={e.type === 'price_change' ? 'gold' : 'primary'}>
+                              {e.type}
+                            </BrandBadge>
                           </td>
                           <td className="px-3 py-3 text-sm">{e.detail || '—'}</td>
-                          <td className="px-3 py-3 font-mono text-xs whitespace-pre-wrap">{e.payload ? JSON.stringify(e.payload) : '—'}</td>
+                          <td className="px-3 py-3 font-mono text-xs whitespace-pre-wrap">
+                            {e.payload ? JSON.stringify(e.payload) : '—'}
+                          </td>
                         </tr>
                       ))}
                     </tbody>

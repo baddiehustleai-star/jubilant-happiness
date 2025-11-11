@@ -11,12 +11,12 @@ import {
   BrandButton,
   BrandInput,
   BrandSpinner,
-  Logo
+  Logo,
 } from '../components/branding';
 
 export default function Login() {
   const navigate = useNavigate();
-  
+
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -79,11 +79,9 @@ export default function Login() {
         <div className="flex justify-center mb-6">
           <Logo size="large" />
         </div>
-        
-        <BrandHeading className="text-center mb-2">
-          Sign in to Photo2Profit
-        </BrandHeading>
-        
+
+        <BrandHeading className="text-center mb-2">Sign in to Photo2Profit</BrandHeading>
+
         <BrandText className="text-center mb-6">
           Turn your photos into profitable listings with AI
         </BrandText>
@@ -121,7 +119,13 @@ export default function Login() {
           />
 
           <BrandButton type="submit" disabled={loading || !email} className="w-full">
-            {loading ? <><BrandSpinner size="small" className="mr-2" /> Signing in...</> : 'Sign In'}
+            {loading ? (
+              <>
+                <BrandSpinner size="small" className="mr-2" /> Signing in...
+              </>
+            ) : (
+              'Sign In'
+            )}
           </BrandButton>
         </form>
 

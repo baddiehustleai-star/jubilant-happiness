@@ -12,9 +12,7 @@ function isAuthorized(req) {
   const bearer = (req.headers['authorization'] || '').replace('Bearer ', '');
   const queryToken = req.query.token;
   const secret = process.env.CRON_SECRET || process.env.SHARED_WEBHOOK_SECRET;
-  return (
-    !!secret && (headerSecret === secret || bearer === secret || queryToken === secret)
-  );
+  return !!secret && (headerSecret === secret || bearer === secret || queryToken === secret);
 }
 
 // POST /api/seo/refresh
@@ -25,15 +23,15 @@ router.post('/refresh', async (req, res) => {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-  // Keep batch tiny by default to control cost (can be raised via ?limit=)
-  const limit = Math.min(parseInt(req.query.limit || '10', 10), 50);
+    // Keep batch tiny by default to control cost (can be raised via ?limit=)
+    const limit = Math.min(parseInt(req.query.limit || '10', 10), 50);
     const offset = parseInt(req.query.offset || '0', 10);
 
     // Fetch a small batch of listings
     const listings = await prisma.listing.findMany({
       skip: offset,
       take: limit,
-      orderBy: { updatedAt: 'desc' }
+      orderBy: { updatedAt: 'desc' },
     });
 
     let processed = 0;
@@ -62,16 +60,19 @@ router.post('/refresh', async (req, res) => {
         const seo = await generateProductSEO(listing);
         const imageMeta = await generateImageAlt(imageUrl, listing.title, listing.description);
 
-        await cacheRef.set({
-          listingId: String(listing.id),
-          title: seo.title,
-          description: seo.description,
-          keywords: seo.keywords,
-          hashtags: seo.hashtags,
-          imageAlt: imageMeta.alt,
-          imageCaption: imageMeta.caption,
-          updatedAt: now.toISOString()
-        }, { merge: true });
+        await cacheRef.set(
+          {
+            listingId: String(listing.id),
+            title: seo.title,
+            description: seo.description,
+            keywords: seo.keywords,
+            hashtags: seo.hashtags,
+            imageAlt: imageMeta.alt,
+            imageCaption: imageMeta.caption,
+            updatedAt: now.toISOString(),
+          },
+          { merge: true }
+        );
 
         processed++;
       } catch (e) {

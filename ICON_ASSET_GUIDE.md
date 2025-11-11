@@ -40,21 +40,22 @@
 
 ## ✨ Sizing & Purpose
 
-| File | Size | Purpose |
-|------|------|----------|
-| icon-16.png / icon-32.png | 16×16 / 32×32 | Favicon for browsers |
-| icon-48 → 256.png | Various | Android + PWA icons |
-| icon-384 / 512.png | 384×384 / 512×512 | High-res PWA + maskable |
-| apple-icon-120 → 180.png | Various | iPhone / iPad home-screen icons |
-| maskable-icon-192 / 512.png | 192×192 / 512×512 | Adaptive Android maskable icons |
-| splash-*.png | Various | iOS launch screens (various devices) |
-| store-icon-1024.png | 1024×1024 | App Store & Play Store submission (no transparency) |
+| File                        | Size              | Purpose                                             |
+| --------------------------- | ----------------- | --------------------------------------------------- |
+| icon-16.png / icon-32.png   | 16×16 / 32×32     | Favicon for browsers                                |
+| icon-48 → 256.png           | Various           | Android + PWA icons                                 |
+| icon-384 / 512.png          | 384×384 / 512×512 | High-res PWA + maskable                             |
+| apple-icon-120 → 180.png    | Various           | iPhone / iPad home-screen icons                     |
+| maskable-icon-192 / 512.png | 192×192 / 512×512 | Adaptive Android maskable icons                     |
+| splash-\*.png               | Various           | iOS launch screens (various devices)                |
+| store-icon-1024.png         | 1024×1024         | App Store & Play Store submission (no transparency) |
 
 ---
 
 ## 🪩 Branding Guidelines
 
 ### Color Palette
+
 ```css
 /* Rose-Gold Gradient */
 Primary: #B76E79 (rose-gold)
@@ -64,6 +65,7 @@ Accent: #FADADD → #E6A8C2 (gradient)
 ```
 
 ### Design Rules
+
 - ✅ **Background:** Soft blush / rose-gold gradient (`#FADADD → #E6A8C2`)
 - ✅ **Foreground:** Diamond camera + dollar sign symbol
 - ✅ **Corner Radius:** 20% for 512×512 icons (keep edges round)
@@ -72,6 +74,7 @@ Accent: #FADADD → #E6A8C2 (gradient)
 - ✅ **Format:** PNG, 72 dpi, sRGB color profile
 
 ### Icon Elements
+
 1. 💎 **Diamond/Gem motif** (represents luxury)
 2. 📸 **Camera symbol** (photo upload)
 3. 💰 **Dollar sign** (profit focus)
@@ -102,8 +105,18 @@ Update `/public/manifest.json`:
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icons/icon-384.png", "sizes": "384x384", "type": "image/png" },
     { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/maskable-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "/icons/maskable-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/icons/maskable-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/maskable-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
 ```
@@ -112,15 +125,15 @@ Update `/public/manifest.json`:
 
 ## 📍 Platform-Specific Usage
 
-| Platform | File(s) | Notes |
-|----------|---------|-------|
-| **Vercel / Web PWA** | icon-192.png, icon-512.png, manifest.json | Standard PWA icons |
-| **Android / Play Store** | store-icon-1024.png | High-res icon for Play Console |
-| **iOS / App Store** | store-icon-1024.png, apple-icon-180.png | No transparency for store icon |
-| **Xcode Assets.xcassets** | apple-icon-*.png | All apple-icon sizes |
-| **Firebase Hosting** | Same `/public/icons/` folder | Auto-served via Firebase |
-| **Favicon** | icon-16.png, icon-32.png | Browser tab icons |
-| **Android Adaptive** | maskable-icon-192.png, maskable-icon-512.png | Supports Android 12+ themes |
+| Platform                  | File(s)                                      | Notes                          |
+| ------------------------- | -------------------------------------------- | ------------------------------ |
+| **Vercel / Web PWA**      | icon-192.png, icon-512.png, manifest.json    | Standard PWA icons             |
+| **Android / Play Store**  | store-icon-1024.png                          | High-res icon for Play Console |
+| **iOS / App Store**       | store-icon-1024.png, apple-icon-180.png      | No transparency for store icon |
+| **Xcode Assets.xcassets** | apple-icon-\*.png                            | All apple-icon sizes           |
+| **Firebase Hosting**      | Same `/public/icons/` folder                 | Auto-served via Firebase       |
+| **Favicon**               | icon-16.png, icon-32.png                     | Browser tab icons              |
+| **Android Adaptive**      | maskable-icon-192.png, maskable-icon-512.png | Supports Android 12+ themes    |
 
 ---
 
@@ -160,6 +173,7 @@ convert master-icon.png -background white -alpha remove -alpha off -resize 1024x
 ```
 
 ### Using Figma/Canva
+
 1. Design master icon at **1024×1024** with transparent background
 2. Export all required sizes (use table above)
 3. For store-icon-1024.png: flatten background to white
@@ -211,6 +225,7 @@ convert splash-template.png -resize 2048x2732 splash-2048x2732.png
 ## 🎨 Design Tools
 
 ### Recommended Tools
+
 - **Figma** - Free, browser-based, great for icon design
 - **Canva** - Simple templates for icon creation
 - **Adobe Illustrator** - Professional vector design
@@ -218,6 +233,7 @@ convert splash-template.png -resize 2048x2732 splash-2048x2732.png
 - **ImageMagick** - CLI for batch resizing/conversion
 
 ### Quick Templates
+
 - Use Photo2Profit brand colors (#B76E79, #E9CBA7)
 - Start with diamond/gem shape
 - Add camera icon overlay
@@ -229,6 +245,7 @@ convert splash-template.png -resize 2048x2732 splash-2048x2732.png
 ## 🚀 Testing
 
 ### Test PWA Install
+
 ```bash
 # 1. Deploy to Vercel
 vercel --prod
@@ -239,6 +256,7 @@ vercel --prod
 ```
 
 ### Test in Capacitor
+
 ```bash
 # Android
 npx cap sync android
@@ -258,5 +276,5 @@ For custom icon design or branding help:
 
 ---
 
-> ✨ *Luxury is efficiency. Profit is automation.*  
+> ✨ _Luxury is efficiency. Profit is automation._  
 > — **Photo2Profit™ by Baddie Hustle & Heal** 💎

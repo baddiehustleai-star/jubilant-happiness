@@ -5,6 +5,7 @@ This guide provides step-by-step instructions for deploying Photo2Profit to prod
 ## 📋 Overview
 
 The final deployment checklist ensures:
+
 1. ✅ Environment variables are properly configured
 2. ✅ API is deployed to Cloud Run and accessible
 3. ✅ SEO refresh endpoint is functional
@@ -33,6 +34,7 @@ Run the automated deployment script that handles everything:
 ```
 
 This script will:
+
 1. Check prerequisites
 2. Configure Google Cloud project
 3. Enable required APIs
@@ -86,6 +88,7 @@ curl https://photo2profit-api-uc.a.run.app/health | jq
 ```
 
 Expected response:
+
 ```json
 {
   "status": "healthy",
@@ -102,6 +105,7 @@ curl -X POST https://photo2profit-api-uc.a.run.app/api/seo/refresh?limit=1 \
 ```
 
 Expected response:
+
 ```json
 {
   "success": true,
@@ -166,20 +170,24 @@ SHARED_WEBHOOK_SECRET=your_webhook_secret
 After deployment, verify each component:
 
 ### ✅ API Health
+
 - [ ] `/health` endpoint returns 200 OK
 - [ ] Response includes `"status": "healthy"`
 
 ### ✅ SEO Refresh
+
 - [ ] `/api/seo/refresh` endpoint accessible
 - [ ] Returns success with product count
 - [ ] Properly secured with CRON_SECRET
 
 ### ✅ Product Pages
+
 - [ ] `/share/:id` route responds
 - [ ] Returns HTML with meta tags
 - [ ] Images load correctly
 
 ### ✅ Critical Endpoints
+
 - [ ] `/api/analyze-product` responds
 - [ ] `/api/cross-post` responds
 - [ ] `/api/create-checkout-session` responds
@@ -201,6 +209,7 @@ Trigger the workflow manually from GitHub Actions tab:
 The workflow is located at `.github/workflows/final-deployment-checklist.yml`
 
 Required secrets (optional for full automation):
+
 - `GCP_SA_KEY` - Google Cloud service account key
 - `FIREBASE_API_KEY` - Firebase API key
 - `STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
@@ -263,6 +272,7 @@ echo $DATABASE_URL
 ## 📈 Next Steps After Deployment
 
 1. **Update Frontend Environment**
+
    ```bash
    # In Vercel dashboard
    VITE_API_BASE=https://photo2profit-api-uc.a.run.app
@@ -273,6 +283,7 @@ echo $DATABASE_URL
    - Events: `checkout.session.completed`, `invoice.payment_succeeded`
 
 3. **Setup Monitoring**
+
    ```bash
    # Enable Cloud Run logging
    gcloud logging read "resource.type=cloud_run_revision" --limit 50

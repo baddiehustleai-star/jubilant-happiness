@@ -2,47 +2,47 @@ name: ✅ Verify Cloud Run Deployment
 
 on:
   push:
-    branches: [ main ]
-    paths: 
+    branches: [main]
+    paths:
       - 'api/**'
       - 'scripts/**'
       - '.github/workflows/verify-cloudrun.yml'
   workflow_dispatch:
-  workflow_call:  # Allow other workflows to call this one
+  workflow_call: # Allow other workflows to call this one
 
 env:
   CLOUD_RUN_URL: https://photo2profit-api-uc.a.run.app
 
 jobs:
   verify:
-    name: 🧪 Verify Cloud Run Endpoints  
+    name: 🧪 Verify Cloud Run Endpoints
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: 📥 Checkout
-      uses: actions/checkout@v4
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
 
-    - name: 📦 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: 📦 Install dependencies
-      run: npm install node-fetch@3
+      - name: 📦 Install dependencies
+        run: npm install node-fetch@3
 
-    - name: 🔍 Run endpoint verification
-      run: |
-        echo "🚀 Testing endpoints at: $CLOUD_RUN_URL"
-        node scripts/verify-endpoints.js
+      - name: 🔍 Run endpoint verification
+        run: |
+          echo "🚀 Testing endpoints at: $CLOUD_RUN_URL"
+          node scripts/verify-endpoints.js
 
-    - name: 📊 Report Status
-      if: always()
-      run: |
-        if [ $? -eq 0 ]; then
-          echo "✅ All endpoints verified successfully!"
-          echo "🎉 Photo2Profit API is production-ready!"
-        else
-          echo "❌ Some endpoints failed verification"
-          echo "⚠️ Cloud Run service needs attention"
-          exit 1
-        fi
+      - name: 📊 Report Status
+        if: always()
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "✅ All endpoints verified successfully!"
+            echo "🎉 Photo2Profit API is production-ready!"
+          else
+            echo "❌ Some endpoints failed verification"
+            echo "⚠️ Cloud Run service needs attention"
+            exit 1
+          fi

@@ -8,7 +8,7 @@ export async function analyzeWithVertex({ title, description, category }) {
     competitorAnalysis: `${description || ''} (${category || 'general'})`,
     optimizedTitle: title || 'Optimized Listing',
     tags: ['ai', 'listing'],
-    bestPlatforms: ['ebay', 'facebook']
+    bestPlatforms: ['ebay', 'facebook'],
   };
 }
 

@@ -3,6 +3,7 @@
 ## ✅ What Was Built
 
 ### 1. Auto-Publish Service (`api/services/autopublish.service.js`)
+
 - **eBay Integration**: Publishes products to eBay Inventory API
 - **Facebook Integration**: Publishes to Facebook Product Catalog
 - **Threshold Logic**: Auto-publishes after N products (configurable)
@@ -10,7 +11,9 @@
 - **Error Handling**: Tracks success/failure per channel
 
 ### 2. Product Schema Updates
+
 All products now include:
+
 ```javascript
 {
   published: false,              // Publishing status
@@ -21,16 +24,19 @@ All products now include:
 ```
 
 ### 3. API Endpoints
+
 - `POST /admin/publish-my-products` - User publishes their pending products
 - `POST /admin/publish-all-pending` - Admin/cron publishes all users' pending products
 - `GET /admin/publish-config` - Check auto-publish settings and status
 
 ### 4. Auto-Trigger Integration
+
 - `/api/upload` route checks threshold after each upload
 - `/magic` route checks threshold after AI processing
 - Automatic batch publishing when threshold reached
 
 ### 5. Documentation
+
 - **AUTO_PUBLISH_GUIDE.md**: Complete setup and usage guide
 - **README.md**: Updated with publishing features
 - **api/.env.example**: Added all required environment variables
@@ -39,6 +45,7 @@ All products now include:
 ## 🔧 Configuration
 
 ### Environment Variables Added
+
 ```bash
 # Enable/disable auto-publishing
 AUTO_PUBLISH_ENABLED="true"
@@ -63,6 +70,7 @@ FB_CATALOG_ID="123456789"
 ## 📋 How It Works
 
 ### Threshold-Based Publishing (Default)
+
 1. User uploads a product via `/api/upload` or `/magic`
 2. Product saved with `published: false`
 3. System checks unpublished count
@@ -71,12 +79,14 @@ FB_CATALOG_ID="123456789"
 6. Products marked `published: true` with timestamps
 
 ### Time-Based Publishing (Cloud Scheduler)
+
 1. Cloud Scheduler hits `/admin/publish-all-pending` hourly
 2. System finds all unpublished products across all users
 3. Batch publishes to eBay and Facebook
 4. Returns summary of successes/errors
 
 ### Manual Publishing
+
 1. User calls `POST /admin/publish-my-products` with JWT
 2. All their unpublished products publish immediately
 3. Returns detailed results per product
@@ -84,11 +94,13 @@ FB_CATALOG_ID="123456789"
 ## 🧪 Testing
 
 ### 1. Check Configuration
+
 ```bash
 ./test-autopublish.sh
 ```
 
 ### 2. Test Manual Publishing
+
 ```bash
 # Get JWT from login
 TOKEN="your-jwt-token"
@@ -103,6 +115,7 @@ curl -X POST http://localhost:8080/admin/publish-my-products \
 ```
 
 ### 3. Test Threshold Trigger
+
 ```bash
 # Upload 5 products
 for i in {1..5}; do
@@ -117,6 +130,7 @@ done
 ## 📊 What Happens Next
 
 ### When Products Are Uploaded
+
 1. ✅ Product saved to Firestore with `published: false`
 2. ✅ Threshold check runs automatically
 3. ✅ If threshold met, batch publishing starts
@@ -126,6 +140,7 @@ done
 7. ✅ Products updated with `published: true, publishedAt: timestamp`
 
 ### When Cron Job Runs (if configured)
+
 1. ✅ Cloud Scheduler hits `/admin/publish-all-pending`
 2. ✅ System queries all users' unpublished products
 3. ✅ Batch publishes everything found
@@ -152,6 +167,7 @@ done
 ## 🔍 Monitoring
 
 ### Server Logs Show:
+
 ```
 ✅ Auto-publish triggered for user@example.com
 📊 Unpublished products for user@example.com: 5/5
@@ -161,6 +177,7 @@ done
 ```
 
 ### Failed Publishes:
+
 ```
 ❌ Product abc123 failed to publish: {
   ebay: { success: false, error: "Rate limit exceeded" },
@@ -195,15 +212,19 @@ done
 ## 🐛 Troubleshooting
 
 ### "eBay token not configured"
+
 → Add `EBAY_OAUTH_TOKEN` to `api/.env`
 
 ### "Facebook not configured"
+
 → Add `FACEBOOK_ACCESS_TOKEN` and `FB_CATALOG_ID`
 
 ### Products not auto-publishing
+
 → Check `AUTO_PUBLISH_ENABLED=true` and verify threshold reached
 
 ### Rate limit errors
+
 → Increase `AUTO_PUBLISH_THRESHOLD` or use time-based publishing
 
 ---

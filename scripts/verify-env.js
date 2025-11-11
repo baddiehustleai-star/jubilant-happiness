@@ -14,7 +14,7 @@ const required = [
   'VITE_API_BASE_URL',
   'VITE_STRIPE_PUBLISHABLE_KEY',
   'VITE_STRIPE_PRICE_ID_TRIAL',
-  'VITE_STRIPE_PRICE_ID_PRO'
+  'VITE_STRIPE_PRICE_ID_PRO',
 ];
 
 const optional = [
@@ -23,7 +23,7 @@ const optional = [
   'VITE_GEMINI_API_KEY',
   'VITE_EBAY_CLIENT_ID',
   'VITE_EBAY_CLIENT_SECRET',
-  'VITE_EBAY_REDIRECT_URI'
+  'VITE_EBAY_REDIRECT_URI',
 ];
 
 let missing = [];
@@ -43,7 +43,7 @@ if (missing.length) {
 }
 
 // Report optional ones
-const missingOptional = optional.filter(k => !process.env[k]);
+const missingOptional = optional.filter((k) => !process.env[k]);
 if (missingOptional.length) {
   console.log('\nℹ️ Optional enhancements not configured:');
   for (const o of missingOptional) console.log('   • ' + o);

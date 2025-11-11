@@ -18,7 +18,7 @@ async function waitForHealth(url, timeoutMs = 15000) {
     } catch {
       // ignore until timeout
     }
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise((r) => setTimeout(r, 300));
   }
   return null;
 }
@@ -27,7 +27,7 @@ beforeAll(async () => {
   child = spawn('node', ['api/server.js'], {
     cwd: process.cwd(),
     env: { ...process.env, PORT: TEST_PORT, NODE_ENV: 'test' },
-    stdio: ['ignore', 'pipe', 'pipe']
+    stdio: ['ignore', 'pipe', 'pipe'],
   });
 
   // Optional: surface logs for debugging

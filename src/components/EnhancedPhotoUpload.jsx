@@ -8,77 +8,79 @@ export default function EnhancedPhotoUpload({ user, onUploadComplete, maxFiles =
   const [progress, setProgress] = useState(0);
 
   // ✅ Handle file drop/selection
-  const onDrop = useCallback(async (acceptedFiles) => {
-    if (!user) {
-      alert('Please sign in to upload photos');
-      return;
-    }
-
-    if (acceptedFiles.length === 0) {
-      alert('Please select valid image files');
-      return;
-    }
-
-    setUploading(true);
-    setProgress(0);
-
-    try {
-      const newUploads = [];
-
-      for (let i = 0; i < acceptedFiles.length; i++) {
-        const file = acceptedFiles[i];
-        setProgress(((i + 1) / acceptedFiles.length) * 100);
-
-        // Simulate upload process (in production, this would upload to Firebase Storage)
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        const mockUpload = {
-          id: Date.now() + i,
-          file,
-          originalName: file.name,
-          downloadURL: URL.createObjectURL(file),
-          uploadedAt: new Date(),
-          aiListing: {
-            title: `Beautiful ${file.name.replace(/\.[^/.]+$/, "")}`,
-            priceRange: {
-              min: Math.floor(Math.random() * 20) + 10,
-              max: Math.floor(Math.random() * 50) + 30,
-            }
-          }
-        };
-
-        newUploads.push(mockUpload);
-        setUploadedFiles(prev => [...prev, mockUpload]);
+  const onDrop = useCallback(
+    async (acceptedFiles) => {
+      if (!user) {
+        alert('Please sign in to upload photos');
+        return;
       }
 
-      // Notify parent component
-      onUploadComplete(newUploads);
-      
-      alert(`✅ Successfully uploaded ${acceptedFiles.length} photos!`);
+      if (acceptedFiles.length === 0) {
+        alert('Please select valid image files');
+        return;
+      }
 
-    } catch (error) {
-      console.error('❌ Upload failed:', error);
-      alert('Upload failed. Please try again.');
-    } finally {
-      setUploading(false);
+      setUploading(true);
       setProgress(0);
-    }
-  }, [user, onUploadComplete]);
+
+      try {
+        const newUploads = [];
+
+        for (let i = 0; i < acceptedFiles.length; i++) {
+          const file = acceptedFiles[i];
+          setProgress(((i + 1) / acceptedFiles.length) * 100);
+
+          // Simulate upload process (in production, this would upload to Firebase Storage)
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          const mockUpload = {
+            id: Date.now() + i,
+            file,
+            originalName: file.name,
+            downloadURL: URL.createObjectURL(file),
+            uploadedAt: new Date(),
+            aiListing: {
+              title: `Beautiful ${file.name.replace(/\.[^/.]+$/, '')}`,
+              priceRange: {
+                min: Math.floor(Math.random() * 20) + 10,
+                max: Math.floor(Math.random() * 50) + 30,
+              },
+            },
+          };
+
+          newUploads.push(mockUpload);
+          setUploadedFiles((prev) => [...prev, mockUpload]);
+        }
+
+        // Notify parent component
+        onUploadComplete(newUploads);
+
+        alert(`✅ Successfully uploaded ${acceptedFiles.length} photos!`);
+      } catch (error) {
+        console.error('❌ Upload failed:', error);
+        alert('Upload failed. Please try again.');
+      } finally {
+        setUploading(false);
+        setProgress(0);
+      }
+    },
+    [user, onUploadComplete]
+  );
 
   // ✅ Dropzone configuration
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.heic']
+      'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.heic'],
     },
     maxFiles,
     maxSize: 25 * 1024 * 1024, // 25MB
-    disabled: uploading
+    disabled: uploading,
   });
 
   // ✅ Remove uploaded file
   const removeFile = (fileId) => {
-    setUploadedFiles(prev => prev.filter(f => f.id !== fileId));
+    setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
   };
 
   return (
@@ -88,40 +90,37 @@ export default function EnhancedPhotoUpload({ user, onUploadComplete, maxFiles =
         {...getRootProps()}
         className={`
           border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all
-          ${isDragActive 
-            ? 'border-rose-500 bg-rose-50' 
-            : uploading 
-            ? 'border-gray-300 bg-gray-50 cursor-not-allowed'
-            : 'border-gray-300 hover:border-rose-400 hover:bg-rose-25'
+          ${
+            isDragActive
+              ? 'border-rose-500 bg-rose-50'
+              : uploading
+                ? 'border-gray-300 bg-gray-50 cursor-not-allowed'
+                : 'border-gray-300 hover:border-rose-400 hover:bg-rose-25'
           }
         `}
       >
         <input {...getInputProps()} />
-        
-        <div className="text-6xl mb-4">
-          {uploading ? '⏳' : isDragActive ? '📥' : '📷'}
-        </div>
-        
+
+        <div className="text-6xl mb-4">{uploading ? '⏳' : isDragActive ? '📥' : '📷'}</div>
+
         <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          {uploading 
-            ? 'Uploading Photos...' 
-            : isDragActive 
-            ? 'Drop photos here!' 
-            : 'Upload Your Product Photos'
-          }
+          {uploading
+            ? 'Uploading Photos...'
+            : isDragActive
+              ? 'Drop photos here!'
+              : 'Upload Your Product Photos'}
         </h3>
-        
+
         <p className="text-gray-600 mb-4">
-          {uploading 
-            ? `Processing ${Math.round(progress)}% complete` 
-            : `Drag & drop up to ${maxFiles} photos, or click to select`
-          }
+          {uploading
+            ? `Processing ${Math.round(progress)}% complete`
+            : `Drag & drop up to ${maxFiles} photos, or click to select`}
         </p>
 
         {/* ✅ Progress Bar */}
         {uploading && (
           <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-            <div 
+            <div
               className="bg-gradient-to-r from-rose-500 to-amber-500 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             ></div>
@@ -155,7 +154,7 @@ export default function EnhancedPhotoUpload({ user, onUploadComplete, maxFiles =
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Uploaded Photos ({uploadedFiles.length})
           </h3>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {uploadedFiles.map((upload) => (
               <div key={upload.id} className="relative group">
@@ -166,13 +165,11 @@ export default function EnhancedPhotoUpload({ user, onUploadComplete, maxFiles =
                     className="w-full h-full object-cover"
                   />
                 </div>
-                
+
                 {/* ✅ File Info Overlay */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all rounded-lg flex items-center justify-center">
                   <div className="opacity-0 group-hover:opacity-100 transition-all text-center text-white p-2">
-                    <p className="text-sm font-medium truncate">
-                      {upload.originalName}
-                    </p>
+                    <p className="text-sm font-medium truncate">{upload.originalName}</p>
                     {upload.aiListing && (
                       <p className="text-xs text-green-300 mt-1">
                         ${upload.aiListing.priceRange.min}-${upload.aiListing.priceRange.max}
@@ -214,8 +211,8 @@ export default function EnhancedPhotoUpload({ user, onUploadComplete, maxFiles =
           <div>
             <h4 className="text-amber-800 font-medium mb-1">Demo Mode Active</h4>
             <p className="text-amber-700 text-sm">
-              This is a fully functional demo. Files are processed locally. 
-              To enable cloud storage and AI processing, configure your Firebase and API keys.
+              This is a fully functional demo. Files are processed locally. To enable cloud storage
+              and AI processing, configure your Firebase and API keys.
             </p>
           </div>
         </div>

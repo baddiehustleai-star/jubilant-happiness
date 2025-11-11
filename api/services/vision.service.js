@@ -51,13 +51,14 @@ Return JSON only:
     });
 
     const responseText = result.response.candidates[0].content.parts[0].text;
-    
+
     // Extract JSON from markdown code blocks if present
-    const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) || responseText.match(/\{[\s\S]*\}/);
-    const jsonText = jsonMatch ? (jsonMatch[1] || jsonMatch[0]) : responseText;
-    
+    const jsonMatch =
+      responseText.match(/```json\n([\s\S]*?)\n```/) || responseText.match(/\{[\s\S]*\}/);
+    const jsonText = jsonMatch ? jsonMatch[1] || jsonMatch[0] : responseText;
+
     const analysis = JSON.parse(jsonText);
-    
+
     logger.info('Vision analysis complete', { title: analysis.title, category: analysis.category });
     return {
       success: true,

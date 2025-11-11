@@ -8,42 +8,46 @@
 ## 📱 Required Icon Sizes
 
 ### PWA (Web App Manifest)
+
 Place these in `/public/icons/` and reference in `manifest.json`:
 
-| Filename | Size (px) | Purpose |
-|----------|-----------|---------|
-| `icon-72x72.png` | 72 × 72 | Android legacy devices |
-| `icon-96x96.png` | 96 × 96 | Android small |
-| `icon-128x128.png` | 128 × 128 | Android medium |
-| `icon-144x144.png` | 144 × 144 | Android large |
-| `icon-152x152.png` | 152 × 152 | iOS small |
-| `icon-192x192.png` | 192 × 192 | Android standard |
-| `icon-384x384.png` | 384 × 384 | Android high-res |
-| `icon-512x512.png` | 512 × 512 | PWA splash screens |
+| Filename           | Size (px) | Purpose                |
+| ------------------ | --------- | ---------------------- |
+| `icon-72x72.png`   | 72 × 72   | Android legacy devices |
+| `icon-96x96.png`   | 96 × 96   | Android small          |
+| `icon-128x128.png` | 128 × 128 | Android medium         |
+| `icon-144x144.png` | 144 × 144 | Android large          |
+| `icon-152x152.png` | 152 × 152 | iOS small              |
+| `icon-192x192.png` | 192 × 192 | Android standard       |
+| `icon-384x384.png` | 384 × 384 | Android high-res       |
+| `icon-512x512.png` | 512 × 512 | PWA splash screens     |
 
 ### Google Play Store
+
 Required for Play Console submission:
 
-| Asset | Size (px) | Notes |
-|-------|-----------|-------|
-| App Icon | 512 × 512 | PNG, 32-bit with alpha |
+| Asset           | Size (px)  | Notes                  |
+| --------------- | ---------- | ---------------------- |
+| App Icon        | 512 × 512  | PNG, 32-bit with alpha |
 | Feature Graphic | 1024 × 500 | JPEG or PNG (no alpha) |
-| High-res Icon | 512 × 512 | Same as app icon |
+| High-res Icon   | 512 × 512  | Same as app icon       |
 
 ### Apple App Store
+
 Required for App Store Connect submission:
 
-| Asset | Size (px) | Notes |
-|-------|-----------|-------|
-| App Icon | 1024 × 1024 | PNG, **no transparency** |
-| iPhone Screenshots | Various | 6.7", 6.5", 5.5" sizes |
-| iPad Screenshots | Various | 12.9" and 11" sizes |
+| Asset              | Size (px)   | Notes                    |
+| ------------------ | ----------- | ------------------------ |
+| App Icon           | 1024 × 1024 | PNG, **no transparency** |
+| iPhone Screenshots | Various     | 6.7", 6.5", 5.5" sizes   |
+| iPad Screenshots   | Various     | 12.9" and 11" sizes      |
 
 ---
 
 ## 🎨 Design Guidelines
 
 ### Brand Colors (Photo2Profit)
+
 ```css
 Rose Gold Primary: #B76E79
 Champagne Gold: #E9CBA7
@@ -51,6 +55,7 @@ Soft Blush: #F8E0E7
 ```
 
 ### Icon Design Rules
+
 1. ✅ **Transparent background** for PWA/Android (use PNG with alpha)
 2. ❌ **No transparency** for iOS App Store icon (Apple requirement)
 3. 💎 Use diamond/gem motif with rose-gold gradient
@@ -58,6 +63,7 @@ Soft Blush: #F8E0E7
 5. 💰 Subtle dollar sign or profit indicator
 
 ### Export Settings
+
 - **Format:** PNG-24 with transparency (except iOS 1024×1024)
 - **Color Space:** sRGB
 - **Compression:** High quality (minimal artifacts)
@@ -68,12 +74,14 @@ Soft Blush: #F8E0E7
 ## 🛠️ Quick Generation
 
 ### Using Figma/Canva
+
 1. Design master icon at 1024×1024
 2. Export all required sizes
 3. Remove alpha channel for iOS version
 4. Place in `/public/icons/`
 
 ### Using ImageMagick (CLI)
+
 ```bash
 # Generate all PWA sizes from master icon
 convert icon-master.png -resize 72x72 icon-72x72.png
@@ -107,7 +115,12 @@ Update your `/public/manifest.json`:
     { "src": "/icons/icon-152x152.png", "sizes": "152x152", "type": "image/png" },
     { "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icons/icon-384x384.png", "sizes": "384x384", "type": "image/png" },
-    { "src": "/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ],
   "start_url": "/",
   "display": "standalone",
@@ -135,12 +148,14 @@ Update your `/public/manifest.json`:
 ## 💡 Testing Icons
 
 ### Test PWA Install
+
 1. Deploy to Vercel
 2. Open on mobile browser
 3. Tap "Add to Home Screen"
 4. Verify icon appears correctly
 
 ### Test in Capacitor
+
 ```bash
 # Android
 npx cap run android
@@ -151,6 +166,5 @@ npx cap run ios
 
 ---
 
-> ✨ *Your icon is your first impression. Make it diamond-worthy.*  
+> ✨ _Your icon is your first impression. Make it diamond-worthy._  
 > — **Photo2Profit™ by Baddie Hustle & Heal** 💎
-

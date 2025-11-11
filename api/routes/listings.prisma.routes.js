@@ -1,6 +1,13 @@
 import express from 'express';
 import auth from '../middleware/auth.js';
-import { generateListingAI, createListing, getListings, getListing, publishListing, archiveListing } from '../controllers/listings.prisma.controller.js';
+import {
+  generateListingAI,
+  createListing,
+  getListings,
+  getListing,
+  publishListing,
+  archiveListing,
+} from '../controllers/listings.prisma.controller.js';
 
 const router = express.Router();
 

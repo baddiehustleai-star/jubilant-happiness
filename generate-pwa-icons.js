@@ -24,7 +24,7 @@ const BRAND_COLORS = {
   rose: '#B76E79',
   gold: '#D4AF37',
   blush: '#F8E0E7',
-  dark: '#2D1B1E'
+  dark: '#2D1B1E',
 };
 
 /**
@@ -33,7 +33,7 @@ const BRAND_COLORS = {
 function generateSVG(size) {
   const fontSize = Math.floor(size * 0.4);
   const borderRadius = Math.floor(size * 0.2);
-  
+
   return `
 <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -70,7 +70,7 @@ function generateLogoSVG(size) {
   const iconSize = Math.floor(size * 0.25);
   const iconY = Math.floor(size * 0.3);
   const textY = Math.floor(size * 0.65);
-  
+
   return `
 <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -85,7 +85,7 @@ function generateLogoSVG(size) {
   <rect width="${size}" height="${size}" fill="${BRAND_COLORS.blush}"/>
   
   <!-- Icon circle -->
-  <circle cx="${size/2}" cy="${iconY}" r="${iconSize}" fill="url(#brandGradient)"/>
+  <circle cx="${size / 2}" cy="${iconY}" r="${iconSize}" fill="url(#brandGradient)"/>
   
   <!-- P2P in circle -->
   <text
@@ -145,66 +145,57 @@ async function generateIcons() {
   try {
     // Generate PWA icons (simple P2P mark)
     const sizes = [192, 512];
-    
+
     for (const size of sizes) {
       const svg = generateSVG(size);
       const pngPath = join(publicDir, `pwa-${size}x${size}.png`);
-      
-      await sharp(Buffer.from(svg))
-        .resize(size, size)
-        .png()
-        .toFile(pngPath);
-      
+
+      await sharp(Buffer.from(svg)).resize(size, size).png().toFile(pngPath);
+
       console.log(`✅ Generated: pwa-${size}x${size}.png`);
     }
 
     // Generate detailed logo icons
     const logoSizes = [192, 512];
-    
+
     for (const size of logoSizes) {
       const svg = generateLogoSVG(size);
       const svgPath = join(publicDir, `icon-${size}.svg`);
       const pngPath = join(iconsDir, `logo-${size}x${size}.png`);
-      
+
       // Save SVG
       writeFileSync(svgPath, svg);
       console.log(`✅ Generated: icon-${size}.svg`);
-      
+
       // Convert to PNG
-      await sharp(Buffer.from(svg))
-        .resize(size, size)
-        .png()
-        .toFile(pngPath);
-      
+      await sharp(Buffer.from(svg)).resize(size, size).png().toFile(pngPath);
+
       console.log(`✅ Generated: icons/logo-${size}x${size}.png`);
     }
 
     // Generate favicon
     const faviconSvg = generateFaviconSVG();
     const faviconPath = join(publicDir, 'favicon.ico');
-    
+
     await sharp(Buffer.from(faviconSvg))
       .resize(32, 32)
       .png()
       .toFile(faviconPath.replace('.ico', '.png'));
-    
+
     console.log(`✅ Generated: favicon.png`);
 
     // Generate apple-touch-icon
     const appleTouchSvg = generateSVG(180);
     const appleTouchPath = join(publicDir, 'apple-touch-icon.png');
-    
-    await sharp(Buffer.from(appleTouchSvg))
-      .resize(180, 180)
-      .png()
-      .toFile(appleTouchPath);
-    
+
+    await sharp(Buffer.from(appleTouchSvg)).resize(180, 180).png().toFile(appleTouchPath);
+
     console.log(`✅ Generated: apple-touch-icon.png`);
 
     // Generate maskable icon (with padding)
     const maskableSvg = generateSVG(512);
     const maskablePath = join(publicDir, 'maskable-icon-512x512.png');
-    
+
     await sharp(Buffer.from(maskableSvg))
       .resize(512, 512)
       .extend({
@@ -212,11 +203,11 @@ async function generateIcons() {
         bottom: 50,
         left: 50,
         right: 50,
-        background: { r: 255, g: 255, b: 255, alpha: 0 }
+        background: { r: 255, g: 255, b: 255, alpha: 0 },
       })
       .png()
       .toFile(maskablePath);
-    
+
     console.log(`✅ Generated: maskable-icon-512x512.png`);
 
     console.log('\n🎉 All icons generated successfully!');
@@ -225,7 +216,6 @@ async function generateIcons() {
     console.log('2. Verify manifest.json icon paths');
     console.log('3. Test PWA installation on mobile');
     console.log('4. Run: npm run build');
-
   } catch (error) {
     console.error('❌ Error generating icons:', error);
     process.exit(1);

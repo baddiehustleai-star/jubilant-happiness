@@ -23,7 +23,9 @@ export default function ApiHealth() {
         if (mounted) setState({ loading: false, data: null, error: e?.message || 'Unavailable' });
       }
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const ok = !!state.data && state.data.status === 'healthy';
@@ -52,12 +54,16 @@ export default function ApiHealth() {
           </div>
           <div>
             <BrandText variant="secondary">Features</BrandText>
-            <div className="truncate">{Object.keys(state.data.features || {}).join(', ') || '—'}</div>
+            <div className="truncate">
+              {Object.keys(state.data.features || {}).join(', ') || '—'}
+            </div>
           </div>
         </div>
       )}
       {!state.loading && state.error && (
-        <BrandText variant="secondary" className="mt-2 text-xs">{state.error}</BrandText>
+        <BrandText variant="secondary" className="mt-2 text-xs">
+          {state.error}
+        </BrandText>
       )}
     </BrandCard>
   );

@@ -5,6 +5,7 @@ Use this checklist before enabling auto-publishing in production.
 ## 🔐 Credentials Setup
 
 ### eBay
+
 - [ ] Created eBay Developer account at https://developer.ebay.com
 - [ ] Created Production app (not Sandbox)
 - [ ] Enabled OAuth 2.0
@@ -16,6 +17,7 @@ Use this checklist before enabling auto-publishing in production.
 - [ ] Set up refresh token flow (tokens expire after 2 hours)
 
 ### Facebook
+
 - [ ] Created Facebook Business account at https://business.facebook.com
 - [ ] Created Facebook App at https://developers.facebook.com
 - [ ] Created Product Catalog in Business Manager
@@ -32,6 +34,7 @@ Use this checklist before enabling auto-publishing in production.
 ## ⚙️ Configuration
 
 ### Environment Variables
+
 - [ ] `AUTO_PUBLISH_ENABLED=true` (or `false` for manual-only)
 - [ ] `AUTO_PUBLISH_THRESHOLD=5` (adjusted based on usage patterns)
 - [ ] `AUTO_PUBLISH_CHANNELS=ebay,facebook` (or subset)
@@ -41,6 +44,7 @@ Use this checklist before enabling auto-publishing in production.
 - [ ] `.env.example` updated with all variables
 
 ### Database
+
 - [ ] Firestore security rules allow product writes
 - [ ] Index created for `published=false` queries (if needed for large datasets)
 - [ ] Backup strategy in place for product data
@@ -49,6 +53,7 @@ Use this checklist before enabling auto-publishing in production.
 ## 🧪 Testing
 
 ### Manual Testing
+
 - [ ] Upload a single product
 - [ ] Verify it has `published: false`
 - [ ] Call `/admin/publish-my-products` manually
@@ -58,6 +63,7 @@ Use this checklist before enabling auto-publishing in production.
 - [ ] Check `publishResults` contains correct IDs
 
 ### Threshold Testing
+
 - [ ] Set `AUTO_PUBLISH_THRESHOLD=2` for testing
 - [ ] Upload 2 products
 - [ ] Verify auto-publish triggers
@@ -66,6 +72,7 @@ Use this checklist before enabling auto-publishing in production.
 - [ ] Increase threshold to production value
 
 ### Error Handling
+
 - [ ] Test with invalid eBay token (verify graceful failure)
 - [ ] Test with invalid Facebook token (verify graceful failure)
 - [ ] Test with one valid, one invalid token (verify partial success)
@@ -73,6 +80,7 @@ Use this checklist before enabling auto-publishing in production.
 - [ ] Verify failed products can be retried with manual publish
 
 ### Rate Limiting
+
 - [ ] Upload 20 products in quick succession
 - [ ] Verify no rate limit errors from eBay
 - [ ] Verify no rate limit errors from Facebook
@@ -94,6 +102,7 @@ If using time-based publishing:
 ## 📊 Monitoring
 
 ### Logging
+
 - [ ] Server logs include publishing events
 - [ ] Logs capture: `✅ Auto-publish triggered`
 - [ ] Logs capture: `📤 Publishing product abc123...`
@@ -102,6 +111,7 @@ If using time-based publishing:
 - [ ] Log retention configured (30 days minimum)
 
 ### Alerts
+
 - [ ] Alert for high failure rate (>10% failures)
 - [ ] Alert for zero publishes in 24 hours (if auto-publish enabled)
 - [ ] Alert for Cloud Scheduler job failures
@@ -109,6 +119,7 @@ If using time-based publishing:
 - [ ] Notification channel configured (email/Slack)
 
 ### Metrics
+
 - [ ] Dashboard shows: Total products created
 - [ ] Dashboard shows: Total products published
 - [ ] Dashboard shows: Publish success rate
@@ -118,6 +129,7 @@ If using time-based publishing:
 ## 🔒 Security
 
 ### API Keys
+
 - [ ] `ADMIN_API_KEY` is strong (32+ characters)
 - [ ] API keys stored in Cloud Secret Manager
 - [ ] API keys not hardcoded in code
@@ -125,6 +137,7 @@ If using time-based publishing:
 - [ ] Access to Secret Manager restricted to service account
 
 ### Authentication
+
 - [ ] `/admin/publish-my-products` requires valid JWT
 - [ ] `/admin/publish-all-pending` requires API key
 - [ ] Rate limiting enabled on admin endpoints
@@ -132,6 +145,7 @@ If using time-based publishing:
 - [ ] HTTPS enforced for all API endpoints
 
 ### Data Privacy
+
 - [ ] Products only published with user consent
 - [ ] User emails not leaked in public listings
 - [ ] Sensitive data removed from published descriptions
@@ -141,12 +155,14 @@ If using time-based publishing:
 ## 📋 Documentation
 
 ### Internal
+
 - [ ] Team trained on auto-publishing feature
 - [ ] Runbook created for common issues
 - [ ] Escalation path defined for marketplace API issues
 - [ ] Contact info for eBay/Facebook support documented
 
 ### External
+
 - [ ] User documentation updated
 - [ ] FAQ includes auto-publishing questions
 - [ ] Help center article created
@@ -165,6 +181,7 @@ In case of issues:
 ## 📈 Performance
 
 ### Load Testing
+
 - [ ] Tested with 100 products uploaded rapidly
 - [ ] Tested with 1000 products in database
 - [ ] Tested concurrent uploads from multiple users
@@ -172,6 +189,7 @@ In case of issues:
 - [ ] API response times acceptable during publishing
 
 ### Optimization
+
 - [ ] Consider batching eBay API calls (if volume high)
 - [ ] Consider queuing system for large batches
 - [ ] Database queries optimized with indexes
@@ -180,6 +198,7 @@ In case of issues:
 ## 💰 Cost Management
 
 ### API Costs
+
 - [ ] eBay API usage within free tier (or budget allocated)
 - [ ] Facebook API usage monitored
 - [ ] Cloud Scheduler cost acceptable ($0.10/job/month)
@@ -187,6 +206,7 @@ In case of issues:
 - [ ] Budget alerts configured
 
 ### Rate Limits
+
 - [ ] eBay daily limit understood (5,000 calls/day free)
 - [ ] Facebook rate limits understood
 - [ ] Buffer built into thresholds to avoid limits

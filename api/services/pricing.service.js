@@ -32,9 +32,7 @@ export async function lookupPrices(productTitle, category = '') {
       fetchGoogleShoppingPrices(productTitle),
     ]);
 
-    const [ebay, amazon, google] = results.map((r) =>
-      r.status === 'fulfilled' ? r.value : null
-    );
+    const [ebay, amazon, google] = results.map((r) => (r.status === 'fulfilled' ? r.value : null));
 
     const priceData = {
       ebay: ebay || { min: null, max: null, avg: null, listings: [] },
@@ -43,15 +41,12 @@ export async function lookupPrices(productTitle, category = '') {
     };
 
     // Calculate suggested price (average of available data)
-    const allPrices = [
-      ebay?.avg,
-      amazon?.avg,
-      google?.avg,
-    ].filter((p) => p != null);
+    const allPrices = [ebay?.avg, amazon?.avg, google?.avg].filter((p) => p != null);
 
-    const suggestedPrice = allPrices.length > 0
-      ? Math.round((allPrices.reduce((a, b) => a + b, 0) / allPrices.length) * 100) / 100
-      : null;
+    const suggestedPrice =
+      allPrices.length > 0
+        ? Math.round((allPrices.reduce((a, b) => a + b, 0) / allPrices.length) * 100) / 100
+        : null;
 
     logger.info('Price lookup complete', { suggestedPrice, sources: allPrices.length });
     return {

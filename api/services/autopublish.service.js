@@ -52,7 +52,7 @@ async function publishToEbay(product, userEmail) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ebayToken}`,
+        Authorization: `Bearer ${ebayToken}`,
       },
       body: JSON.stringify(listing),
     });
@@ -76,7 +76,7 @@ async function publishToEbay(product, userEmail) {
 async function publishToFacebook(product, userEmail) {
   const fbToken = process.env.FACEBOOK_ACCESS_TOKEN;
   const catalogId = process.env.FB_CATALOG_ID;
-  
+
   if (!fbToken || !catalogId) {
     console.warn('⚠️  Facebook not configured, skipping');
     return { success: false, error: 'Facebook not configured' };
@@ -98,17 +98,14 @@ async function publishToFacebook(product, userEmail) {
       payload.image_url = product.image;
     }
 
-    const response = await fetch(
-      `https://graph.facebook.com/v19.0/${catalogId}/products`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${fbToken}`,
-        },
-        body: JSON.stringify(payload),
-      }
-    );
+    const response = await fetch(`https://graph.facebook.com/v19.0/${catalogId}/products`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${fbToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
 
     if (!response.ok) {
       const error = await response.json();
@@ -207,7 +204,7 @@ export async function publishPendingProducts(userEmail) {
       const publishResults = await publishProduct(product, userEmail);
 
       // Check if at least one channel succeeded
-      const hasSuccess = Object.values(publishResults).some(r => r.success);
+      const hasSuccess = Object.values(publishResults).some((r) => r.success);
 
       if (hasSuccess) {
         // Mark as published
@@ -291,15 +288,15 @@ export const autoPublishConfig = CONFIG;
  */
 export async function saveProduct(product) {
   try {
-    const docRef = await db.collection("products").add({
+    const docRef = await db.collection('products').add({
       ...product,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
-    console.log("✅ Product saved to Firestore:", docRef.id);
+    console.log('✅ Product saved to Firestore:', docRef.id);
     return docRef.id;
   } catch (err) {
-    console.error("❌ Error saving product:", err.message);
+    console.error('❌ Error saving product:', err.message);
     throw err;
   }
 }

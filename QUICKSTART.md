@@ -19,6 +19,7 @@ npm install
 ### 2. Configure Firebase
 
 #### Option A: Use the verification script
+
 ```bash
 # Copy the environment template
 cp .env.example .env
@@ -29,6 +30,7 @@ cp .env.example .env
 ```
 
 #### Option B: Manual setup
+
 1. Open the `.env` file in your project root
 2. Follow the instructions in [`GETTING_FIREBASE_API_KEYS.md`](./GETTING_FIREBASE_API_KEYS.md)
 3. Update these two required values:
@@ -86,6 +88,7 @@ Your app will be running at [http://localhost:5173](http://localhost:5173)
 ## 🆘 Troubleshooting
 
 ### Build Errors
+
 ```bash
 # Clean install
 rm -rf node_modules package-lock.json
@@ -93,6 +96,7 @@ npm install
 ```
 
 ### Firebase Not Configured
+
 ```bash
 # Verify your configuration
 ./verify-firebase-setup.sh
@@ -102,12 +106,14 @@ cat .env | grep VITE_FIREBASE
 ```
 
 ### Development Server Issues
+
 ```bash
 # Restart the dev server after changing .env
 npm run dev
 ```
 
 ### "Permission Denied" in Firestore/Storage
+
 - Make sure you've created the database/storage in test mode
 - Check that you're authenticated (signed in)
 - Test mode allows all reads/writes for 30 days
@@ -115,6 +121,7 @@ npm run dev
 ## 🔒 Security Notes
 
 After testing in development:
+
 1. Update Firestore security rules (see `firestore.rules`)
 2. Update Storage security rules (see `storage.rules`)
 3. Enable Firebase App Check for production
@@ -158,6 +165,7 @@ VITE_REMOVEBG_API_KEY=your_key
 ## 🎉 You're Ready!
 
 Your Photo2Profit application is now configured with:
+
 - ✅ Firebase Authentication
 - ✅ Firestore Database
 - ✅ Firebase Storage

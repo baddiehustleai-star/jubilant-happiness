@@ -47,11 +47,13 @@ UI unlocks premium features instantly
 ### Backend Files
 
 **1. `api/routes/stripeProducts.routes.js`** (NEW)
+
 - Fetches active Stripe products from Firestore cache
 - Endpoint: `GET /api/stripe-products`
 - Returns array of products with prices
 
 **2. `api/services/aiPricing.service.js`** (NEW)
+
 - `getSmartPricing()` - Main function for price suggestions
 - `getEbayPriceSuggestion()` - eBay Market Insights API integration
 - `getAIPriceSuggestion()` - ML-based pricing with category detection
@@ -63,6 +65,7 @@ UI unlocks premium features instantly
   - Fallback pricing when APIs unavailable
 
 **3. `api/server.js`** (UPDATED)
+
 - **Line ~18**: Added `import stripeProductsRoutes`
 - **Line ~478**: Registered `/api` stripe products route
 - **Line ~1598-1660**: Enhanced webhook handler:
@@ -76,10 +79,12 @@ UI unlocks premium features instantly
 ### Frontend Files
 
 **4. `src/lib/stripeClient.js`** (NEW)
+
 - Helper function to fetch Stripe products
 - Clean API abstraction layer
 
 **5. `src/pages/Upgrades.jsx`** (NEW)
+
 - Premium upgrades marketplace
 - Features:
   - Product grid with images
@@ -91,6 +96,7 @@ UI unlocks premium features instantly
   - Trust badges
 
 **6. `src/components/PremiumBackgroundPicker.jsx`** (NEW)
+
 - Gallery of 6 professional backgrounds
 - Features:
   - White, Pink, Granite, Marble, Studio Gray, Beige
@@ -102,6 +108,7 @@ UI unlocks premium features instantly
   - Helpful tips
 
 **7. `src/contexts/AuthContext.jsx`** (UPDATED)
+
 - **Added Firestore imports**: `db`, `collection`, `query`, `where`, `getDocs`, `onSnapshot`
 - **New function**: `fetchUserData(email)` - Fetches premium status from Firestore
 - **New function**: `setupPremiumListener(email)` - Real-time updates via `onSnapshot`
@@ -109,15 +116,18 @@ UI unlocks premium features instantly
 - **Real-time sync**: Premium status updates automatically without page reload
 
 **8. `src/pages/Dashboard.jsx`** (UPDATED)
+
 - Added "Products" and "Upgrades" to navigation
 - Upgrade button shows "⭐ Premium" badge if user is premium
 - Links to `/upgrades` page
 
 **9. `src/main.jsx`** (UPDATED)
+
 - Added Upgrades import
 - Added `/upgrades` protected route
 
 **10. `firestore.rules`** (UPDATED)
+
 - Users collection now allows:
   - Read by UID or email match
   - Server can create user records (for webhooks)
@@ -175,9 +185,9 @@ You should see your Stripe product with the price!
 ### Lock/Unlock Background Picker
 
 ```jsx
-import PremiumBackgroundPicker from "../components/PremiumBackgroundPicker";
-import { useAuth } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import PremiumBackgroundPicker from '../components/PremiumBackgroundPicker';
+import { useAuth } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 function ProductEditor() {
   const { user } = useAuth();
@@ -186,21 +196,14 @@ function ProductEditor() {
   return (
     <div>
       {user?.premium ? (
-        <PremiumBackgroundPicker 
-          onSelect={setBackgroundUrl}
-          currentBackground={backgroundUrl}
-        />
+        <PremiumBackgroundPicker onSelect={setBackgroundUrl} currentBackground={backgroundUrl} />
       ) : (
         <div className="text-center p-6 bg-gray-50 rounded-xl border">
           <div className="text-4xl mb-3">🔒</div>
-          <h3 className="font-semibold text-lg mb-2">
-            Premium Feature
-          </h3>
-          <p className="text-gray-600 mb-4">
-            Unlock professional backgrounds and AI pricing
-          </p>
-          <Link 
-            to="/upgrades" 
+          <h3 className="font-semibold text-lg mb-2">Premium Feature</h3>
+          <p className="text-gray-600 mb-4">Unlock professional backgrounds and AI pricing</p>
+          <Link
+            to="/upgrades"
             className="inline-block px-6 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600"
           >
             Upgrade to Premium
@@ -215,8 +218,8 @@ function ProductEditor() {
 ### Lock AI Pricing
 
 ```jsx
-import { getSmartPricing } from "../api/services/aiPricing.service.js";
-import { useAuth } from "../contexts/AuthContext";
+import { getSmartPricing } from '../api/services/aiPricing.service.js';
+import { useAuth } from '../contexts/AuthContext';
 
 function PricingSection({ title, description }) {
   const { user } = useAuth();
@@ -224,7 +227,7 @@ function PricingSection({ title, description }) {
 
   const generatePricing = async () => {
     if (!user?.premium) {
-      alert("Upgrade to Premium to use AI pricing!");
+      alert('Upgrade to Premium to use AI pricing!');
       return;
     }
 
@@ -236,9 +239,7 @@ function PricingSection({ title, description }) {
     <div>
       {user?.premium ? (
         <>
-          <button onClick={generatePricing}>
-            🤖 Generate AI Prices
-          </button>
+          <button onClick={generatePricing}>🤖 Generate AI Prices</button>
           {pricing && (
             <div className="grid grid-cols-3 gap-3">
               <div>Used: ${pricing.used}</div>
@@ -264,8 +265,8 @@ function PricingSection({ title, description }) {
 ```javascript
 // Users can read their own premium status by email
 match /users/{userId} {
-  allow read: if request.auth != null && 
-    (request.auth.uid == userId || 
+  allow read: if request.auth != null &&
+    (request.auth.uid == userId ||
      request.auth.token.email == resource.data.email);
   allow create: if true; // Webhooks can create
 }
@@ -332,11 +333,13 @@ match /purchases/{purchaseId} {
 ### How It Works
 
 **1. eBay API (Primary)**
+
 - Queries eBay Market Insights API
 - Returns real market prices
 - Requires `EBAY_APP_ID` and `EBAY_OAUTH_TOKEN`
 
 **2. AI Estimation (Fallback)**
+
 - Category-based multipliers:
   - Electronics: 1.5x
   - Jewelry: 2.0x
@@ -351,27 +354,28 @@ match /purchases/{purchaseId} {
 - Description length → +10% if detailed
 
 **3. Fallback (Emergency)**
+
 - Word count × $2 + $15 base
 
 ### Usage Example
 
 ```javascript
-import { getSmartPricing, validatePricing, formatPrice } from "./api/services/aiPricing.service.js";
+import { getSmartPricing, validatePricing, formatPrice } from './api/services/aiPricing.service.js';
 
 // Get pricing
 const pricing = await getSmartPricing(
-  "Apple iPhone 13 Pro Max 256GB Unlocked",
-  "Brand new in box, never opened, factory sealed",
-  "electronics"
+  'Apple iPhone 13 Pro Max 256GB Unlocked',
+  'Brand new in box, never opened, factory sealed',
+  'electronics'
 );
 
 // Validate tiers
 const validated = validatePricing(pricing);
 
 // Display
-console.log(formatPrice(validated.used));        // "$849.99"
+console.log(formatPrice(validated.used)); // "$849.99"
 console.log(formatPrice(validated.marketplace)); // "$999.99"
-console.log(formatPrice(validated.new));         // "$1,299.99"
+console.log(formatPrice(validated.new)); // "$1,299.99"
 ```
 
 ---
@@ -444,12 +448,14 @@ vercel --prod
 ## 💰 Monetization Strategy
 
 ### Free Tier
+
 - 10 product uploads/month
 - Basic backgrounds
 - Manual pricing
 - Standard support
 
 ### Premium Tier ($29.99/month)
+
 - Unlimited uploads
 - 20+ professional backgrounds
 - AI-powered pricing
@@ -458,6 +464,7 @@ vercel --prod
 - Analytics dashboard
 
 ### Enterprise Tier ($99.99/month)
+
 - Everything in Premium
 - White-label branding
 - API access
@@ -471,6 +478,7 @@ vercel --prod
 ### Premium Status Not Updating
 
 **Check:**
+
 ```javascript
 // In browser console
 localStorage.getItem('token');
@@ -478,6 +486,7 @@ localStorage.getItem('token');
 ```
 
 **Fix:**
+
 ```bash
 # Check Firestore users collection
 firebase firestore:get users --limit 10
@@ -489,11 +498,13 @@ firebase firestore:get users --limit 10
 ### Upgrades Page Empty
 
 **Check:**
+
 ```bash
 curl http://localhost:8080/api/stripe-products
 ```
 
 **Expected:**
+
 ```json
 [
   {
@@ -506,6 +517,7 @@ curl http://localhost:8080/api/stripe-products
 ```
 
 **Fix:**
+
 ```bash
 # Sync Stripe products
 curl -X POST http://localhost:8080/api/sync-stripe-products
@@ -514,6 +526,7 @@ curl -X POST http://localhost:8080/api/sync-stripe-products
 ### Webhook Not Firing
 
 **Check:**
+
 ```bash
 # View webhook logs
 stripe listen --forward-to localhost:8080/api/stripe-webhook
@@ -523,6 +536,7 @@ stripe trigger checkout.session.completed
 ```
 
 **Fix:**
+
 - Verify `STRIPE_WEBHOOK_SECRET` in `.env`
 - Check webhook signature verification
 - Test with Stripe CLI
@@ -545,6 +559,7 @@ You've successfully built:
 - [x] Dashboard premium badge
 
 **Your app now:**
+
 - Accepts payments → Unlocks features → Tracks usage → Sends receipts
 - All automatically, no manual intervention needed!
 

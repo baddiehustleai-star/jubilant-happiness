@@ -14,10 +14,14 @@ export async function listAuditEvents(req, res) {
       where,
       orderBy: { createdAt: 'desc' },
       take,
-      ...(cursor ? { skip: 1, cursor: { id: String(cursor) } } : {})
+      ...(cursor ? { skip: 1, cursor: { id: String(cursor) } } : {}),
     });
 
-    res.json({ items: results, count: results.length, nextCursor: results.length === take ? results[results.length - 1].id : null });
+    res.json({
+      items: results,
+      count: results.length,
+      nextCursor: results.length === take ? results[results.length - 1].id : null,
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

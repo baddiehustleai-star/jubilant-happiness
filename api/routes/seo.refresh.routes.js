@@ -13,7 +13,12 @@ router.post('/api/seo/refresh', async (req, res) => {
 
     const size = Math.min(parseInt(req.query.limit || '10', 10), 50);
     const result = await runMonthlySEORefresh(size);
-    res.json({ success: true, refreshed: result.count, examined: result.totalExamined, errors: result.errors });
+    res.json({
+      success: true,
+      refreshed: result.count,
+      examined: result.totalExamined,
+      errors: result.errors,
+    });
   } catch (e) {
     console.error('SEO refresh failed:', e);
     res.status(500).json({ error: e.message });

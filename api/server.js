@@ -35,11 +35,11 @@ import { analyzeProduct } from './services/vision.service.js';
 import { removeBackground, replaceBackground } from './services/background.service.js';
 import { lookupPrices } from './services/pricing.service.js';
 // Auto-publish service
-import { 
-  checkAndPublishThreshold, 
-  publishPendingProducts, 
+import {
+  checkAndPublishThreshold,
+  publishPendingProducts,
   publishAllPending,
-  autoPublishConfig 
+  autoPublishConfig,
 } from './services/autopublish.service.js';
 import { sendReceiptEmail, sendWelcomeEmail } from './services/email.service.js';
 import { syncStripeProducts, getAllStripeProducts } from './services/stripeSync.service.js';
@@ -54,7 +54,7 @@ const PROJECT_ID = '758851214311';
 // Initialize Firebase Admin
 if (!admin.apps.length) {
   admin.initializeApp({
-    projectId: PROJECT_ID
+    projectId: PROJECT_ID,
   });
 }
 
@@ -79,9 +79,9 @@ if (process.env.SMTP_USER && process.env.SMTP_PASS) {
 }
 
 // Initialize Vertex AI
-const vertex = new VertexAI({ 
-  project: PROJECT_ID, 
-  location: 'us-central1' 
+const vertex = new VertexAI({
+  project: PROJECT_ID,
+  location: 'us-central1',
 });
 
 // Initialize Secret Manager
@@ -94,7 +94,7 @@ let stripe = null;
 async function getSecret(secretName) {
   try {
     const [version] = await secretClient.accessSecretVersion({
-      name: `projects/${PROJECT_ID}/secrets/${secretName}/versions/latest`
+      name: `projects/${PROJECT_ID}/secrets/${secretName}/versions/latest`,
     });
     return version.payload.data.toString();
   } catch (error) {
@@ -123,26 +123,30 @@ initializeStripe();
 
 // Middleware
 app.use(helmet());
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:5174', 
-    'http://localhost:5175',
-    'https://photo2profit-758851214311.web.app',
-    'https://photo2profit.app',
-    /^https:\/\/.*\.vercel\.app$/,
-    /^https:\/\/.*\.app\.github\.dev$/,
-    /^https:\/\/.*\.run\.app$/
-  ],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:5175',
+      'https://photo2profit-758851214311.web.app',
+      'https://photo2profit.app',
+      /^https:\/\/.*\.vercel\.app$/,
+      /^https:\/\/.*\.app\.github\.dev$/,
+      /^https:\/\/.*\.run\.app$/,
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(fileUpload({
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
-  abortOnLimit: true
-}));
+app.use(
+  fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+    abortOnLimit: true,
+  })
+);
 
 // Session and Passport middleware
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
@@ -186,7 +190,10 @@ passport.use(
         if (!email) return done(null, false);
 
         // Ensure user doc exists in Firestore
-        await db.collection('users').doc(email).set({ email, name: profile.displayName }, { merge: true });
+        await db
+          .collection('users')
+          .doc(email)
+          .set({ email, name: profile.displayName }, { merge: true });
 
         done(null, { email, name: profile.displayName });
       } catch (error) {
@@ -204,8 +211,8 @@ passport.deserializeUser((obj, done) => done(null, obj));
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB limit
-  }
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
 });
 
 // ------------------------------------------------------------
@@ -218,20 +225,22 @@ const PLATFORM_CONFIG = {
     display: 'Facebook',
     tokenField: 'facebookAccessToken',
     secrets: ['facebook-access-token', 'facebook-catalog-id'],
-    authUrl: 'https://www.facebook.com/v19.0/dialog/oauth?client_id=YOUR_FB_APP_ID&redirect_uri=YOUR_REDIRECT_URI&scope=catalog_management'
+    authUrl:
+      'https://www.facebook.com/v19.0/dialog/oauth?client_id=YOUR_FB_APP_ID&redirect_uri=YOUR_REDIRECT_URI&scope=catalog_management',
   },
   ebay: {
     display: 'eBay',
     tokenField: 'ebayAccessToken',
     secrets: ['ebay-access-token', 'ebay-client-id', 'ebay-client-secret'],
-    authUrl: 'https://auth.ebay.com/oauth2/authorize?client_id=YOUR_EBAY_APP_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=https://api.ebay.com/oauth/api_scope/sell.inventory'
+    authUrl:
+      'https://auth.ebay.com/oauth2/authorize?client_id=YOUR_EBAY_APP_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=https://api.ebay.com/oauth/api_scope/sell.inventory',
   },
   poshmark: {
     display: 'Poshmark',
     tokenField: 'poshmarkSession',
     secrets: [],
-    authUrl: null // typically cookie/session-based automation
-  }
+    authUrl: null, // typically cookie/session-based automation
+  },
 };
 
 // List connected integrations for a user
@@ -241,7 +250,9 @@ app.get('/api/integrations', async (req, res) => {
     if (!userId) return res.status(400).json({ error: 'Missing userId' });
     const doc = await db.collection('users').doc(userId).get();
     const data = doc.exists ? doc.data() : {};
-    const status = Object.fromEntries(Object.keys(PLATFORM_CONFIG).map(p => [p, !!data?.[PLATFORM_CONFIG[p].tokenField]]));
+    const status = Object.fromEntries(
+      Object.keys(PLATFORM_CONFIG).map((p) => [p, !!data?.[PLATFORM_CONFIG[p].tokenField]])
+    );
     res.json({ userId, integrations: status });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -253,7 +264,11 @@ app.get('/api/integrations/:platform/auth-url', async (req, res) => {
   const { platform } = req.params;
   const cfg = PLATFORM_CONFIG[platform?.toLowerCase()];
   if (!cfg) return res.status(404).json({ error: 'Unknown platform' });
-  res.json({ platform, authUrl: cfg.authUrl, note: 'Use this URL to initiate OAuth. This is a placeholder for demo.' });
+  res.json({
+    platform,
+    authUrl: cfg.authUrl,
+    note: 'Use this URL to initiate OAuth. This is a placeholder for demo.',
+  });
 });
 
 // Handle OAuth callback (store token placeholder)
@@ -264,7 +279,10 @@ app.post('/api/integrations/:platform/callback', async (req, res) => {
     const cfg = PLATFORM_CONFIG[platform?.toLowerCase()];
     if (!cfg) return res.status(404).json({ error: 'Unknown platform' });
     if (!userId || !token) return res.status(400).json({ error: 'Missing userId or token' });
-    await db.collection('users').doc(userId).set({ [cfg.tokenField]: token }, { merge: true });
+    await db
+      .collection('users')
+      .doc(userId)
+      .set({ [cfg.tokenField]: token }, { merge: true });
     res.json({ success: true, platform, stored: cfg.tokenField });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -279,7 +297,10 @@ app.delete('/api/integrations/:platform', async (req, res) => {
     const cfg = PLATFORM_CONFIG[platform?.toLowerCase()];
     if (!cfg) return res.status(404).json({ error: 'Unknown platform' });
     if (!userId) return res.status(400).json({ error: 'Missing userId' });
-    await db.collection('users').doc(userId).set({ [cfg.tokenField]: admin.firestore.FieldValue.delete() }, { merge: true });
+    await db
+      .collection('users')
+      .doc(userId)
+      .set({ [cfg.tokenField]: admin.firestore.FieldValue.delete() }, { merge: true });
     res.json({ success: true, platform });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -298,14 +319,14 @@ app.post('/api/listings/generate', async (req, res) => {
     const ai = await analyzeWithVertex({
       title: 'Generated Listing',
       description: `Image: ${image_url || 'n/a'}`,
-      category: category || 'general'
+      category: category || 'general',
     });
     // Shape a friendly response
     const result = {
       title: ai?.optimizedTitle || `Stylish ${category || 'item'} – Great Condition`,
       description: ai?.competitorAnalysis || 'AI-generated description coming soon.',
       suggested_price: ai?.suggestedPrice || 49.99,
-      tags: ai?.tags || []
+      tags: ai?.tags || [],
     };
     res.json(result);
   } catch (e) {
@@ -321,7 +342,7 @@ app.post('/api/listings', async (req, res) => {
       ...req.body,
       userId,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      status: req.body?.status || 'draft'
+      status: req.body?.status || 'draft',
     };
     const ref = await db.collection('listings').add(listing);
     res.status(201).json({ id: ref.id, ...listing });
@@ -335,8 +356,12 @@ app.get('/api/listings', async (req, res) => {
   try {
     const userId = req.headers['x-user-id'] || req.query.userId;
     if (!userId) return res.status(400).json({ error: 'Missing userId' });
-    const snap = await db.collection('listings').where('userId', '==', userId).orderBy('createdAt', 'desc').get();
-    const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const snap = await db
+      .collection('listings')
+      .where('userId', '==', userId)
+      .orderBy('createdAt', 'desc')
+      .get();
+    const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
     res.json(items);
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -357,7 +382,13 @@ app.get('/api/listings/:id', async (req, res) => {
 // Update listing
 app.patch('/api/listings/:id', async (req, res) => {
   try {
-    await db.collection('listings').doc(req.params.id).set({ ...req.body, updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    await db
+      .collection('listings')
+      .doc(req.params.id)
+      .set(
+        { ...req.body, updatedAt: admin.firestore.FieldValue.serverTimestamp() },
+        { merge: true }
+      );
     const docRef = await db.collection('listings').doc(req.params.id).get();
     res.json({ id: docRef.id, ...docRef.data() });
   } catch (e) {
@@ -371,7 +402,10 @@ app.delete('/api/listings/:id', async (req, res) => {
     const ref = db.collection('listings').doc(req.params.id);
     const doc = await ref.get();
     if (!doc.exists) return res.status(404).json({ error: 'Listing not found' });
-    await ref.set({ status: 'archived', archivedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    await ref.set(
+      { status: 'archived', archivedAt: admin.firestore.FieldValue.serverTimestamp() },
+      { merge: true }
+    );
     res.json({ success: true, archived: true });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -384,14 +418,14 @@ app.delete('/api/listings/:id', async (req, res) => {
 
 // helper: poshmark simulation
 async function simulatePoshmarkPost({ price }) {
-  await new Promise(r => setTimeout(r, 900));
+  await new Promise((r) => setTimeout(r, 900));
   return {
     success: true,
     platform: 'Poshmark',
     listingId: `posh_${Date.now()}`,
     url: `https://poshmark.com/listing/${Date.now()}`,
-    fees: (parseFloat(price) * 0.20).toFixed(2),
-    estimatedViews: Math.floor(Math.random() * 250) + 25
+    fees: (parseFloat(price) * 0.2).toFixed(2),
+    estimatedViews: Math.floor(Math.random() * 250) + 25,
   };
 }
 
@@ -413,7 +447,7 @@ app.post('/api/listings/:id/publish', async (req, res) => {
             title: listing.title,
             description: listing.description,
             price: listing.price || listing.suggestedPrice,
-            images: listing.images || []
+            images: listing.images || [],
           });
           break;
         case 'ebay':
@@ -421,14 +455,14 @@ app.post('/api/listings/:id/publish', async (req, res) => {
             title: listing.title,
             description: listing.description,
             price: listing.price || listing.suggestedPrice,
-            images: listing.images || []
+            images: listing.images || [],
           });
           break;
         case 'poshmark':
           results.poshmark = await simulatePoshmarkPost({
             title: listing.title,
             description: listing.description,
-            price: listing.price || listing.suggestedPrice
+            price: listing.price || listing.suggestedPrice,
           });
           break;
         default:
@@ -436,11 +470,14 @@ app.post('/api/listings/:id/publish', async (req, res) => {
       }
     }
 
-    await docRef.set({
-      crossPostResults: { ...(listing.crossPostResults || {}), ...results },
-      status: 'published',
-      updatedAt: admin.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
+    await docRef.set(
+      {
+        crossPostResults: { ...(listing.crossPostResults || {}), ...results },
+        status: 'published',
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
 
     res.json({ success: true, results });
   } catch (e) {
@@ -469,7 +506,10 @@ app.delete('/api/listings/:id/unpublish/:platform', async (req, res) => {
     const data = doc.data();
     const results = { ...(data.crossPostResults || {}) };
     if (results?.[platform]) delete results[platform];
-    await docRef.set({ crossPostResults: results, updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    await docRef.set(
+      { crossPostResults: results, updatedAt: admin.firestore.FieldValue.serverTimestamp() },
+      { merge: true }
+    );
     res.json({ success: true });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -526,7 +566,7 @@ app.post('/api/analyze', async (req, res) => {
     if (!imageUrl) {
       return res.status(400).json({ error: 'imageUrl required' });
     }
-    
+
     const result = await analyzeProduct(imageUrl);
     res.json(result);
   } catch (error) {
@@ -541,7 +581,7 @@ app.post('/api/background/remove', async (req, res) => {
     if (!imageUrl) {
       return res.status(400).json({ error: 'imageUrl required' });
     }
-    
+
     const result = await removeBackground(imageUrl, { size, format, bg_color: bgColor });
     res.json(result);
   } catch (error) {
@@ -556,7 +596,7 @@ app.post('/api/background/replace', async (req, res) => {
     if (!transparentImageDataUri) {
       return res.status(400).json({ error: 'transparentImageDataUri required' });
     }
-    
+
     const result = await replaceBackground(transparentImageDataUri, bgColor || 'ffffff');
     res.json(result);
   } catch (error) {
@@ -571,7 +611,7 @@ app.post('/api/price-lookup', async (req, res) => {
     if (!productTitle) {
       return res.status(400).json({ error: 'productTitle required' });
     }
-    
+
     const result = await lookupPrices(productTitle, category);
     res.json(result);
   } catch (error) {
@@ -586,13 +626,13 @@ app.post('/api/workflow/full-analysis', async (req, res) => {
     if (!imageUrl) {
       return res.status(400).json({ error: 'imageUrl required' });
     }
-    
+
     // Step 1: Analyze product
     const analysis = await analyzeProduct(imageUrl);
     if (!analysis.success) {
       return res.json({ success: false, error: 'Analysis failed', analysis });
     }
-    
+
     // Step 2: Optional background removal/replacement
     let processedImage = imageUrl;
     if (removeBg) {
@@ -606,10 +646,10 @@ app.post('/api/workflow/full-analysis', async (req, res) => {
         processedImage = bgRemoved.dataUri;
       }
     }
-    
+
     // Step 3: Price lookup
     const pricing = await lookupPrices(analysis.data.title, analysis.data.category);
-    
+
     res.json({
       success: true,
       analysis: analysis.data,
@@ -753,7 +793,9 @@ app.post('/magic', authMiddleware, async (req, res) => {
           contents: [
             {
               parts: [
-                { text: 'Describe this product with title, category, and useful keywords for selling.' },
+                {
+                  text: 'Describe this product with title, category, and useful keywords for selling.',
+                },
                 { inlineData: { mimeType: 'image/jpeg', data: imageUrl } },
               ],
             },
@@ -763,8 +805,7 @@ app.post('/magic', authMiddleware, async (req, res) => {
     );
 
     const geminiData = await geminiRes.json();
-    const description =
-      geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || 'Unknown product';
+    const description = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || 'Unknown product';
 
     // 3. Pull prices from SerpAPI (Google Shopping)
     const serpUrl = `https://serpapi.com/search.json?engine=google_shopping&q=${encodeURIComponent(
@@ -805,13 +846,8 @@ app.post('/magic', authMiddleware, async (req, res) => {
 
     // Save to Firestore under user's collection (with fallback to memory)
     try {
-      await db
-        .collection('users')
-        .doc(userEmail)
-        .collection('products')
-        .doc(id)
-        .set(product);
-      
+      await db.collection('users').doc(userEmail).collection('products').doc(id).set(product);
+
       // Check if we should auto-publish based on threshold
       const publishCheck = await checkAndPublishThreshold(userEmail);
       if (publishCheck.triggered) {
@@ -837,17 +873,17 @@ app.post('/magic', authMiddleware, async (req, res) => {
 app.get('/product/:id', async (req, res) => {
   try {
     let item;
-    
+
     // Try memory store first
     item = miniProducts.get(req.params.id);
-    
+
     // If not in memory, try Firestore across all users
     if (!item) {
       try {
         // Search through users' products (this is expensive but works for demo)
         // In production, consider a products collection with userId field
         const usersSnapshot = await db.collection('users').listDocuments();
-        
+
         for (const userDoc of usersSnapshot) {
           const productDoc = await userDoc.collection('products').doc(req.params.id).get();
           if (productDoc.exists) {
@@ -871,7 +907,7 @@ app.get('/product/:id', async (req, res) => {
       .join('');
 
     const title = item.description.split('\n')[0] || 'Photo2Profit Product';
-    
+
     res.send(`
       <!DOCTYPE html>
       <html>
@@ -980,10 +1016,14 @@ app.get('/product/:id', async (req, res) => {
               <h1>${title}</h1>
               <div class="description">${item.description}</div>
               ${item.prices.average ? `<div class="price-badge">~$${item.prices.average}</div>` : ''}
-              ${listings ? `
+              ${
+                listings
+                  ? `
                 <h3>🔍 Top Marketplace Listings</h3>
                 <ul>${listings}</ul>
-              ` : ''}
+              `
+                  : ''
+              }
               <button onclick="shareProduct()">📤 Share This Product</button>
               <div class="footer">
                 Powered by Photo2Profit AI ✨
@@ -1022,7 +1062,7 @@ app.get('/dashboard', authMiddleware, async (req, res) => {
   try {
     const userEmail = req.user.email;
     let items = [];
-    
+
     // Try Firestore first (user-specific collection)
     try {
       const snapshot = await db
@@ -1162,12 +1202,16 @@ app.get('/dashboard', authMiddleware, async (req, res) => {
             <h1>✨ Photo2Profit Dashboard</h1>
             <div class="subtitle">Your AI-Powered Product Catalog</div>
           </div>
-          ${items.length > 0 ? `<div class="grid">${cards}</div>` : `
+          ${
+            items.length > 0
+              ? `<div class="grid">${cards}</div>`
+              : `
             <div class="empty">
               <p>No products yet! Upload a photo to get started.</p>
               <a href="/" class="cta">Create Your First Product</a>
             </div>
-          `}
+          `
+          }
         </body>
       </html>
     `);
@@ -1209,18 +1253,14 @@ app.patch('/api/products/:id', authMiddleware, async (req, res) => {
     const { description, price } = req.body;
     const userEmail = req.user.email;
 
-    const ref = db
-      .collection('users')
-      .doc(userEmail)
-      .collection('products')
-      .doc(id);
+    const ref = db.collection('users').doc(userEmail).collection('products').doc(id);
 
     const updates = {};
     if (description !== undefined) updates.description = description;
     if (price !== undefined) updates['prices.average'] = parseFloat(price);
 
     await ref.update(updates);
-    
+
     // Also update memory store
     const memProduct = miniProducts.get(id);
     if (memProduct && memProduct.userEmail === userEmail) {
@@ -1241,14 +1281,10 @@ app.delete('/api/products/:id', authMiddleware, async (req, res) => {
     const { id } = req.params;
     const userEmail = req.user.email;
 
-    const ref = db
-      .collection('users')
-      .doc(userEmail)
-      .collection('products')
-      .doc(id);
+    const ref = db.collection('users').doc(userEmail).collection('products').doc(id);
 
     await ref.delete();
-    
+
     // Also delete from memory store
     const memProduct = miniProducts.get(id);
     if (memProduct && memProduct.userEmail === userEmail) {
@@ -1326,11 +1362,7 @@ app.post('/api/upload', authMiddleware, async (req, res) => {
     const estimatedPrice = Math.floor(Math.random() * 80 + 20);
 
     // 4. Create and save product
-    const docRef = db
-      .collection('users')
-      .doc(userEmail)
-      .collection('products')
-      .doc();
+    const docRef = db.collection('users').doc(userEmail).collection('products').doc();
 
     const newItem = {
       id: docRef.id,
@@ -1349,7 +1381,7 @@ app.post('/api/upload', authMiddleware, async (req, res) => {
     };
 
     await docRef.set(newItem);
-    
+
     // Also save to memory
     miniProducts.set(docRef.id, newItem);
 
@@ -1579,41 +1611,42 @@ app.post('/api/checkout/:user/:id', async (req, res) => {
 });
 
 // Stripe webhook handler
-app.post(
-  '/api/stripe-webhook',
-  express.raw({ type: 'application/json' }),
-  async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    let event;
+app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
 
-    try {
-      if (!stripe) {
-        return res.status(503).send('Stripe not configured');
-      }
-
-      const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-      if (!webhookSecret) {
-        console.warn('⚠️  STRIPE_WEBHOOK_SECRET not set, skipping verification');
-        event = req.body;
-      } else {
-        event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
-      }
-    } catch (err) {
-      console.error('⚠️ Webhook signature verification failed:', err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
+  try {
+    if (!stripe) {
+      return res.status(503).send('Stripe not configured');
     }
 
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object;
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    if (!webhookSecret) {
+      console.warn('⚠️  STRIPE_WEBHOOK_SECRET not set, skipping verification');
+      event = req.body;
+    } else {
+      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    }
+  } catch (err) {
+    console.error('⚠️ Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
 
-      const productName = session.line_items?.[0]?.description || session.metadata?.productId || 'Unknown item';
-      const amount = session.amount_total / 100;
-      const buyerEmail = session.customer_details?.email || 'anonymous';
-      const sellerEmail = session.metadata?.sellerEmail || 'unknown';
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
 
-      try {
-        // Save purchase record
-        await db.collection('purchases').doc(session.id).set({
+    const productName =
+      session.line_items?.[0]?.description || session.metadata?.productId || 'Unknown item';
+    const amount = session.amount_total / 100;
+    const buyerEmail = session.customer_details?.email || 'anonymous';
+    const sellerEmail = session.metadata?.sellerEmail || 'unknown';
+
+    try {
+      // Save purchase record
+      await db
+        .collection('purchases')
+        .doc(session.id)
+        .set({
           email: buyerEmail,
           amount,
           productId: session.metadata?.productId || null,
@@ -1621,70 +1654,69 @@ app.post(
           createdAt: new Date().toISOString(),
         });
 
-        // Save order record
-        await db.collection('orders').add({
-          buyerEmail,
-          sellerEmail,
-          productId: session.metadata?.productId,
-          productName,
-          amount,
-          currency: session.currency || 'usd',
-          createdAt: new Date().toISOString(),
-          stripeSessionId: session.id,
-          status: 'paid',
-        });
+      // Save order record
+      await db.collection('orders').add({
+        buyerEmail,
+        sellerEmail,
+        productId: session.metadata?.productId,
+        productName,
+        amount,
+        currency: session.currency || 'usd',
+        createdAt: new Date().toISOString(),
+        stripeSessionId: session.id,
+        status: 'paid',
+      });
 
-        console.log('✅ Order logged:', { buyerEmail, productName, amount });
+      console.log('✅ Order logged:', { buyerEmail, productName, amount });
 
-        // Mark user as premium
-        if (buyerEmail && buyerEmail !== 'anonymous') {
-          const usersRef = db.collection('users');
-          const userQuery = await usersRef.where('email', '==', buyerEmail).get();
+      // Mark user as premium
+      if (buyerEmail && buyerEmail !== 'anonymous') {
+        const usersRef = db.collection('users');
+        const userQuery = await usersRef.where('email', '==', buyerEmail).get();
 
-          if (!userQuery.empty) {
-            const userDoc = userQuery.docs[0].ref;
-            await userDoc.update({
-              premium: true,
-              premiumActivatedAt: new Date().toISOString(),
-              lastPurchase: session.id,
-            });
-            console.log(`⭐ Upgraded user ${buyerEmail} to premium`);
-          } else {
-            console.warn(`⚠️ No user found for ${buyerEmail} - creating user record`);
-            // Create user record if it doesn't exist
-            await usersRef.add({
-              email: buyerEmail,
-              premium: true,
-              premiumActivatedAt: new Date().toISOString(),
-              lastPurchase: session.id,
-              createdAt: new Date().toISOString(),
-            });
-            console.log(`✅ Created premium user record for ${buyerEmail}`);
-          }
+        if (!userQuery.empty) {
+          const userDoc = userQuery.docs[0].ref;
+          await userDoc.update({
+            premium: true,
+            premiumActivatedAt: new Date().toISOString(),
+            lastPurchase: session.id,
+          });
+          console.log(`⭐ Upgraded user ${buyerEmail} to premium`);
+        } else {
+          console.warn(`⚠️ No user found for ${buyerEmail} - creating user record`);
+          // Create user record if it doesn't exist
+          await usersRef.add({
+            email: buyerEmail,
+            premium: true,
+            premiumActivatedAt: new Date().toISOString(),
+            lastPurchase: session.id,
+            createdAt: new Date().toISOString(),
+          });
+          console.log(`✅ Created premium user record for ${buyerEmail}`);
         }
-
-        // Send email receipt using new email service
-        if (buyerEmail !== 'anonymous') {
-          try {
-            await sendReceiptEmail(buyerEmail, productName, amount, session.id);
-          } catch (emailError) {
-            console.error('❌ Failed to send receipt email:', emailError);
-          }
-        }
-      } catch (err) {
-        console.error('❌ Firestore write failed:', err);
       }
-    }
 
-    res.json({ received: true });
+      // Send email receipt using new email service
+      if (buyerEmail !== 'anonymous') {
+        try {
+          await sendReceiptEmail(buyerEmail, productName, amount, session.id);
+        } catch (emailError) {
+          console.error('❌ Failed to send receipt email:', emailError);
+        }
+      }
+    } catch (err) {
+      console.error('❌ Firestore write failed:', err);
+    }
   }
-);
+
+  res.json({ received: true });
+});
 
 // Get all orders (admin/seller view)
 app.get('/api/orders', authMiddleware, async (req, res) => {
   try {
     const userEmail = req.user.email;
-    
+
     // Get orders where user is the seller
     const snapshot = await db
       .collection('orders')
@@ -1711,7 +1743,7 @@ app.post('/admin/publish-my-products', authMiddleware, async (req, res) => {
   try {
     const userEmail = req.user.email;
     console.log(`📤 Manual publish triggered by ${userEmail}`);
-    
+
     const result = await publishPendingProducts(userEmail);
     res.json(result);
   } catch (error) {
@@ -1749,7 +1781,7 @@ app.post('/admin/publish-all-pending', async (req, res) => {
 app.get('/admin/publish-config', authMiddleware, async (req, res) => {
   try {
     const userEmail = req.user.email;
-    
+
     // Count unpublished products
     const snapshot = await db
       .collection('users')
@@ -1778,15 +1810,16 @@ app.get('/admin/publish-config', authMiddleware, async (req, res) => {
 app.post('/api/publish/pending', async (req, res) => {
   try {
     console.log('⏰ Cloud Scheduler triggered auto-publish');
-    
+
     // Call the global publish function
     const result = await publishAllPending();
-    
+
     if (result.success) {
       res.json({
-        message: result.totalPublished > 0 
-          ? `Successfully published ${result.totalPublished} products` 
-          : 'No new products to publish.',
+        message:
+          result.totalPublished > 0
+            ? `Successfully published ${result.totalPublished} products`
+            : 'No new products to publish.',
         published: result.totalPublished,
         errors: result.totalErrors,
       });
@@ -1873,17 +1906,17 @@ app.post('/refresh', (req, res) => {
   try {
     const user = jwt.verify(token, JWT_SECRET);
     const { accessToken, refreshToken: newRefreshToken } = issueTokens(user);
-    
+
     // Replace old refresh token
     REFRESH_TOKENS.delete(token);
-    
+
     res.cookie('refresh_token', newRefreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    
+
     res.json({ token: accessToken });
   } catch (err) {
     return res.status(401).json({ error: 'Expired refresh token' });
@@ -1891,10 +1924,7 @@ app.post('/refresh', (req, res) => {
 });
 
 // Google OAuth login
-app.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Google OAuth callback
 app.get(
@@ -1904,14 +1934,14 @@ app.get(
   }),
   (req, res) => {
     const { accessToken, refreshToken } = issueTokens(req.user);
-    
+
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    
+
     res.redirect(`/dashboard?token=${accessToken}`);
   }
 );
@@ -1930,16 +1960,16 @@ app.get('/logout', (req, res) => {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy', 
+  res.json({
+    status: 'healthy',
     timestamp: new Date().toISOString(),
     service: 'Photo2Profit API',
     project: PROJECT_ID,
     features: {
       stripe: stripe !== null,
       ai: true,
-      crossPost: true
-    }
+      crossPost: true,
+    },
   });
 });
 
@@ -1949,18 +1979,18 @@ app.get('/health', (req, res) => {
 app.post('/api/create-checkout-session', async (req, res) => {
   try {
     if (!stripe) {
-      return res.status(503).json({ 
+      return res.status(503).json({
         error: 'Billing service unavailable',
-        message: 'Stripe not configured' 
+        message: 'Stripe not configured',
       });
     }
 
     const { priceId, userId, plan } = req.body;
-    
+
     // Validate required fields
     if (!priceId || !userId) {
-      return res.status(400).json({ 
-        error: 'Missing required fields: priceId, userId' 
+      return res.status(400).json({
+        error: 'Missing required fields: priceId, userId',
       });
     }
 
@@ -1978,20 +2008,19 @@ app.post('/api/create-checkout-session', async (req, res) => {
       client_reference_id: userId,
       metadata: {
         userId: userId,
-        plan: plan || 'premium'
-      }
+        plan: plan || 'premium',
+      },
     });
 
-    res.json({ 
+    res.json({
       url: session.url,
-      sessionId: session.id 
+      sessionId: session.id,
     });
-
   } catch (error) {
     console.error('Stripe checkout error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to create checkout session',
-      message: error.message 
+      message: error.message,
     });
   }
 });
@@ -2000,16 +2029,16 @@ app.post('/api/create-checkout-session', async (req, res) => {
 app.post('/api/create-portal-session', async (req, res) => {
   try {
     if (!stripe) {
-      return res.status(503).json({ 
-        error: 'Billing service unavailable' 
+      return res.status(503).json({
+        error: 'Billing service unavailable',
       });
     }
 
     const { customerId } = req.body;
-    
+
     if (!customerId) {
-      return res.status(400).json({ 
-        error: 'Missing customerId' 
+      return res.status(400).json({
+        error: 'Missing customerId',
       });
     }
 
@@ -2019,12 +2048,11 @@ app.post('/api/create-portal-session', async (req, res) => {
     });
 
     res.json({ url: portalSession.url });
-
   } catch (error) {
     console.error('Stripe portal error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to create portal session',
-      message: error.message 
+      message: error.message,
     });
   }
 });
@@ -2038,9 +2066,9 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
 
     const sig = req.headers['stripe-signature'];
     const webhookSecret = await getSecret('stripe-webhook-secret');
-    
+
     let event;
-    
+
     if (webhookSecret) {
       event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
     } else {
@@ -2052,15 +2080,18 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
       case 'checkout.session.completed':
         const session = event.data.object;
         console.log('✅ Subscription created:', session.client_reference_id);
-        
+
         // Update user subscription status in Firestore
         if (session.client_reference_id) {
-          await db.collection('users').doc(session.client_reference_id).update({
-            stripeCustomerId: session.customer,
-            subscriptionStatus: 'active',
-            plan: session.metadata?.plan || 'premium',
-            subscriptionStart: admin.firestore.FieldValue.serverTimestamp()
-          });
+          await db
+            .collection('users')
+            .doc(session.client_reference_id)
+            .update({
+              stripeCustomerId: session.customer,
+              subscriptionStatus: 'active',
+              plan: session.metadata?.plan || 'premium',
+              subscriptionStart: admin.firestore.FieldValue.serverTimestamp(),
+            });
         }
         break;
 
@@ -2071,16 +2102,18 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
       case 'customer.subscription.deleted':
         const subscription = event.data.object;
         console.log('❌ Subscription cancelled:', subscription.customer);
-        
+
         // Update user subscription status
-        const userQuery = await db.collection('users')
+        const userQuery = await db
+          .collection('users')
           .where('stripeCustomerId', '==', subscription.customer)
-          .limit(1).get();
-          
+          .limit(1)
+          .get();
+
         if (!userQuery.empty) {
           await userQuery.docs[0].ref.update({
             subscriptionStatus: 'cancelled',
-            subscriptionEnd: admin.firestore.FieldValue.serverTimestamp()
+            subscriptionEnd: admin.firestore.FieldValue.serverTimestamp(),
           });
         }
         break;
@@ -2090,7 +2123,6 @@ app.post('/api/stripe-webhook', express.raw({ type: 'application/json' }), async
     }
 
     res.json({ received: true });
-
   } catch (error) {
     console.error('Webhook error:', error);
     res.status(400).json({ error: 'Webhook handler failed' });
@@ -2104,8 +2136,8 @@ app.post('/api/analyze-product', upload.single('image'), async (req, res) => {
     const imageFile = req.file;
 
     // Get Vertex AI model
-    const model = vertex.preview.getGenerativeModel({ 
-      model: 'gemini-1.5-flash' 
+    const model = vertex.preview.getGenerativeModel({
+      model: 'gemini-1.5-flash',
     });
 
     let analysisPrompt = `You are an expert reseller analyzing a product for Photo2Profit. 
@@ -2148,8 +2180,8 @@ Format the response as JSON with these fields:
       parts.push({
         inlineData: {
           data: optimizedImage.toString('base64'),
-          mimeType: 'image/jpeg'
-        }
+          mimeType: 'image/jpeg',
+        },
       });
     }
 
@@ -2164,23 +2196,22 @@ Format the response as JSON with these fields:
     } catch {
       parsedAnalysis = {
         raw: analysis,
-        title: "Product Analysis Generated",
-        description: analysis
+        title: 'Product Analysis Generated',
+        description: analysis,
       };
     }
 
     res.json({
       success: true,
       analysis: parsedAnalysis,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error('Product analysis error:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to analyze product',
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -2188,21 +2219,13 @@ Format the response as JSON with these fields:
 // Cross-posting automation endpoint
 app.post('/api/cross-post', async (req, res) => {
   try {
-    const { 
-      listingId, 
-      title, 
-      description, 
-      price, 
-      images, 
-      platforms,
-      userId 
-    } = req.body;
+    const { listingId, title, description, price, images, platforms, userId } = req.body;
 
     // Validate required fields
     if (!listingId || !title || !price || !userId) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: listingId, title, price, userId'
+        error: 'Missing required fields: listingId, title, price, userId',
       });
     }
 
@@ -2217,13 +2240,13 @@ app.post('/api/cross-post', async (req, res) => {
       userId,
       status: 'pending',
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      crossPostResults: {}
+      crossPostResults: {},
     });
 
     // Cross-post to different platforms with real API integration
     const results = {};
-    
-    for (const platform of (platforms || [])) {
+
+    for (const platform of platforms || []) {
       try {
         switch (platform.toLowerCase()) {
           case 'ebay':
@@ -2248,22 +2271,21 @@ app.post('/api/cross-post', async (req, res) => {
     await listingRef.update({
       crossPostResults: results,
       status: 'completed',
-      completedAt: admin.firestore.FieldValue.serverTimestamp()
+      completedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
     res.json({
       success: true,
       listingId,
       results,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error('Cross-posting error:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to cross-post listing',
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -2272,27 +2294,26 @@ app.post('/api/cross-post', async (req, res) => {
 app.get('/api/listing/:listingId', async (req, res) => {
   try {
     const { listingId } = req.params;
-    
+
     const listingDoc = await db.collection('listings').doc(listingId).get();
-    
+
     if (!listingDoc.exists) {
       return res.status(404).json({
         success: false,
-        error: 'Listing not found'
+        error: 'Listing not found',
       });
     }
 
     res.json({
       success: true,
-      listing: listingDoc.data()
+      listing: listingDoc.data(),
     });
-
   } catch (error) {
     console.error('Get listing error:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to get listing',
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -2300,41 +2321,41 @@ app.get('/api/listing/:listingId', async (req, res) => {
 // Simulate platform posting (replace with real API calls)
 async function _simulateEbayPost({ price }) {
   // Simulate API call delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   return {
     success: true,
     platform: 'eBay',
     listingId: `ebay_${Date.now()}`,
     url: `https://www.ebay.com/itm/${Date.now()}`,
     fees: price * 0.12, // 12% eBay fees
-    estimatedViews: Math.floor(Math.random() * 1000) + 100
+    estimatedViews: Math.floor(Math.random() * 1000) + 100,
   };
 }
 
 async function _simulateFacebookPost({ _price }) {
-  await new Promise(resolve => setTimeout(resolve, 800));
-  
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
   return {
     success: true,
     platform: 'Facebook Marketplace',
     listingId: `fb_${Date.now()}`,
     url: `https://facebook.com/marketplace/item/${Date.now()}`,
     fees: 0, // Facebook Marketplace is free
-    estimatedViews: Math.floor(Math.random() * 500) + 50
+    estimatedViews: Math.floor(Math.random() * 500) + 50,
   };
 }
 
 async function simulateMercariPost({ price }) {
-  await new Promise(resolve => setTimeout(resolve, 1200));
-  
+  await new Promise((resolve) => setTimeout(resolve, 1200));
+
   return {
     success: true,
     platform: 'Mercari',
     listingId: `mercari_${Date.now()}`,
     url: `https://mercari.com/item/${Date.now()}`,
-    fees: price * 0.10, // 10% Mercari fees
-    estimatedViews: Math.floor(Math.random() * 300) + 25
+    fees: price * 0.1, // 10% Mercari fees
+    estimatedViews: Math.floor(Math.random() * 300) + 25,
   };
 }
 
@@ -2346,12 +2367,12 @@ async function crossPostToEbay({ _title, _description, price }) {
     const ebayClientId = await getSecret('ebay-client-id');
     const ebayClientSecret = await getSecret('ebay-client-secret');
     const ebayAccessToken = await getSecret('ebay-access-token');
-    
+
     if (!ebayClientId || !ebayClientSecret || !ebayAccessToken) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: 'eBay API credentials not configured',
-        platform: 'eBay'
+        platform: 'eBay',
       };
     }
 
@@ -2362,20 +2383,19 @@ async function crossPostToEbay({ _title, _description, price }) {
       platform: 'eBay',
       listingId: `ebay_${Date.now()}`,
       url: `https://www.ebay.com/itm/${Date.now()}`,
-      fees: (parseFloat(price) * 0.10).toFixed(2), // 10% eBay fee
+      fees: (parseFloat(price) * 0.1).toFixed(2), // 10% eBay fee
       estimatedViews: Math.floor(Math.random() * 500) + 100,
-      message: 'Listed successfully on eBay'
+      message: 'Listed successfully on eBay',
     };
 
     console.log('✅ eBay cross-post simulated:', simulatedResponse.listingId);
     return simulatedResponse;
-
   } catch (error) {
     console.error('eBay cross-post error:', error);
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error.message,
-      platform: 'eBay'
+      platform: 'eBay',
     };
   }
 }
@@ -2385,12 +2405,12 @@ async function crossPostToFacebook({ _title, _description, _price }) {
   try {
     const fbCatalogId = await getSecret('facebook-catalog-id');
     const fbAccessToken = await getSecret('facebook-access-token');
-    
+
     if (!fbCatalogId || !fbAccessToken) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: 'Facebook API credentials not configured',
-        platform: 'Facebook Shop'
+        platform: 'Facebook Shop',
       };
     }
 
@@ -2403,18 +2423,17 @@ async function crossPostToFacebook({ _title, _description, _price }) {
       url: `https://www.facebook.com/marketplace/item/${Date.now()}`,
       fees: '0.00', // Facebook Marketplace is typically free
       estimatedViews: Math.floor(Math.random() * 200) + 50,
-      message: 'Listed successfully on Facebook Shop'
+      message: 'Listed successfully on Facebook Shop',
     };
 
     console.log('✅ Facebook cross-post simulated:', simulatedResponse.listingId);
     return simulatedResponse;
-
   } catch (error) {
     console.error('Facebook cross-post error:', error);
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error.message,
-      platform: 'Facebook Shop'
+      platform: 'Facebook Shop',
     };
   }
 }
@@ -2425,21 +2444,21 @@ async function crossPostToFacebook({ _title, _description, _price }) {
 app.post('/api/process-listing', async (req, res) => {
   try {
     const { listingId, listingData } = req.body;
-    
+
     if (!listingId || !listingData) {
       return res.status(400).json({
         success: false,
-        error: 'Missing listingId or listingData'
+        error: 'Missing listingId or listingData',
       });
     }
 
     console.log(`🔄 Processing listing: ${listingId}`);
-    
+
     // Analyze product with AI
     const aiAnalysis = await analyzeWithVertex({
       title: listingData.title,
       description: listingData.description,
-      category: listingData.category || 'general'
+      category: listingData.category || 'general',
     });
 
     // Auto cross-post if enabled
@@ -2462,21 +2481,20 @@ app.post('/api/process-listing', async (req, res) => {
       aiAnalysis,
       crossPostResults,
       processedAt: admin.firestore.FieldValue.serverTimestamp(),
-      status: 'completed'
+      status: 'completed',
     });
 
     res.json({
       success: true,
       listingId,
       aiAnalysis,
-      crossPostResults
+      crossPostResults,
     });
-
   } catch (error) {
     console.error('Listing processing error:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -2489,7 +2507,7 @@ async function analyzeWithVertex({ title, description, category }) {
       generationConfig: {
         maxOutputTokens: 1000,
         temperature: 0.7,
-      }
+      },
     });
 
     const prompt = `Analyze this product for optimal resale:
@@ -2507,7 +2525,7 @@ Provide JSON response with:
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    
+
     try {
       return JSON.parse(response.text());
     } catch {
@@ -2517,16 +2535,15 @@ Provide JSON response with:
         competitorAnalysis: response.text(),
         optimizedTitle: title,
         tags: [],
-        bestPlatforms: ['ebay', 'facebook']
+        bestPlatforms: ['ebay', 'facebook'],
       };
     }
-
   } catch (error) {
     console.error('AI analysis error:', error);
     return {
       error: error.message,
       suggestedPrice: 0,
-      marketDemand: 'unknown'
+      marketDemand: 'unknown',
     };
   }
 }
@@ -2537,7 +2554,7 @@ app.use((error, req, res, _next) => {
   res.status(500).json({
     success: false,
     error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? error.message : undefined
+    message: process.env.NODE_ENV === 'development' ? error.message : undefined,
   });
 });
 
@@ -2554,8 +2571,8 @@ app.use((req, res) => {
       'POST /api/create-checkout-session',
       'POST /api/create-portal-session',
       'POST /api/stripe-webhook',
-      'GET /api/listing/:listingId'
-    ]
+      'GET /api/listing/:listingId',
+    ],
   });
 });
 

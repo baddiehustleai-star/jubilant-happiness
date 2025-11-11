@@ -5,6 +5,7 @@ author: Photo2Profit
 # Welcome to Photo2Profit 💎
 
 This interactive Cloud Shell tutorial will help you:
+
 1. Set your Google Cloud project
 2. Enable required services
 3. Seed placeholder secrets
@@ -12,24 +13,30 @@ This interactive Cloud Shell tutorial will help you:
 5. Run the API + frontend
 
 ---
+
 ## 1. Set Project
+
 Run (replace with your project):
+
 ```bash
 export PROJECT_ID=YOUR_PROJECT_ID
 gcloud config set project "$PROJECT_ID"
 ```
 
 ## 2. Enable Services
+
 ```bash
 gcloud services enable secretmanager.googleapis.com aiplatform.googleapis.com firestore.googleapis.com run.googleapis.com
 ```
 
 ## 3. Firestore DB (Ignore errors if exists)
+
 ```bash
 gcloud alpha firestore databases create --location=us-central --type=firestore-native || true
 ```
 
 ## 4. Placeholder Secrets
+
 ```bash
 for s in stripe-secret-key:sk_test_placeholder \
           stripe-webhook-secret:whsec_placeholder \
@@ -44,12 +51,14 @@ done
 ```
 
 ## 5. Install Dependencies
+
 ```bash
 npm install
 pushd api && npm install && popd
 ```
 
 ## 6. Create .env (Demo)
+
 ```bash
 cat > .env <<EOF
 VITE_FIREBASE_API_KEY=demo
@@ -64,11 +73,13 @@ EOF
 ```
 
 ## 7. Start API (Tab 1)
+
 ```bash
 node api/server.js
 ```
 
 ## 8. Start Frontend (Tab 2)
+
 ```bash
 npm run dev
 ```
@@ -76,11 +87,13 @@ npm run dev
 Use Web Preview → 5173.
 
 ## 9. Health Check
+
 ```bash
 curl -s http://localhost:8080/health | jq
 ```
 
 ## 10. Sample AI Call
+
 ```bash
 curl -X POST http://localhost:8080/api/analyze-product \
   -H 'Content-Type: application/json' \
@@ -88,11 +101,13 @@ curl -X POST http://localhost:8080/api/analyze-product \
 ```
 
 ## 11. Run Tests
+
 ```bash
 npm test
 ```
 
 ## Next Steps
+
 - Replace placeholder secrets with real credentials.
 - Deploy API to Cloud Run for a managed endpoint.
 - Point frontend to Cloud Run URL using a VITE_API_BASE variable.

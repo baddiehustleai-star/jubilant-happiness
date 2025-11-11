@@ -9,7 +9,7 @@ export const logger = {
   error: (...args) => console.error(`[ERROR ${ts()}]`, ...args),
   debug: (...args) => {
     if (process.env.DEBUG) console.debug(`[DEBUG ${ts()}]`, ...args);
-  }
+  },
 };
 
 export default logger;

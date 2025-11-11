@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'api/**'
+      - '.github/workflows/deploy-cloudrun.yml'
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -18,17 +22,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Verify build
-        run: npm run build --if-present
-
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -39,7 +32,8 @@ jobs:
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
-          source: .
+          source: ./api
+          flags: '--port=8080 --memory=1Gi --cpu=1 --max-instances=10 --set-env-vars=NODE_ENV=production'
 
       - name: Trigger SEO Refresh (optional)
         if: success()
@@ -83,6 +77,52 @@ jobs:
               ]
             }]
           }'
+
+      - name: Send Email Notification on Success
+        if: success() && secrets.NOTIFICATION_EMAIL != ''
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: '✅ Cloud Run Deployment Successful - ${{ env.SERVICE }}'
+          to: ${{ secrets.NOTIFICATION_EMAIL }}
+          from: Photo2Profit CI/CD <${{ secrets.SMTP_USERNAME }}>
+          body: |
+            Cloud Run deployment completed successfully!
+            
+            Service: ${{ env.SERVICE }}
+            Region: ${{ env.REGION }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Commit Message: ${{ github.event.head_commit.message }}
+            Deployed By: ${{ github.actor }}
+            
+            View deployment: https://console.cloud.google.com/run/detail/${{ env.REGION }}/${{ env.SERVICE }}
+          
+      - name: Send Email Notification on Failure
+        if: failure() && secrets.NOTIFICATION_EMAIL != ''
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: '❌ Cloud Run Deployment Failed - ${{ env.SERVICE }}'
+          to: ${{ secrets.NOTIFICATION_EMAIL }}
+          from: Photo2Profit CI/CD <${{ secrets.SMTP_USERNAME }}>
+          body: |
+            Cloud Run deployment failed!
+            
+            Service: ${{ env.SERVICE }}
+            Region: ${{ env.REGION }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Commit Message: ${{ github.event.head_commit.message }}
+            Deployed By: ${{ github.actor }}
+            
+            View logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Summary
         run: echo "✅ Deployment complete for $SERVICE in $REGION"

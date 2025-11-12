@@ -1,7 +1,51 @@
-This PR adds two automated deployment workflows: backend → Cloud Run and frontend → Firebase Hosting. Frontend fetches Cloud Run URL and verifies backend health before build; both have optional Slack notifications. Required secrets are below.
+This PR adds comprehensive service account setup documentation and deployment readiness validation for the Photo2Profit application.
 
-Required secrets (Settings → Secrets → Actions):
-- GOOGLE_APPLICATION_CREDENTIALS_JSON (Cloud Run / gcloud auth)
-- FIREBASE_SERVICE_ACCOUNT (Firebase Hosting)
-- SLACK_WEBHOOK_URL (optional)
-- CRON_SECRET (optional)
+## 📚 What's Included
+
+### New Documentation
+- **SERVICE_ACCOUNT_SETUP.md** - Complete guide for setting up Google Cloud and Firebase service accounts
+  - Step-by-step instructions for creating service accounts
+  - Required IAM roles and permissions
+  - GitHub secrets configuration
+  - Testing and verification procedures
+  - Troubleshooting guide
+  - Security best practices
+
+- **DEPLOYMENT_READINESS.md** - Comprehensive deployment readiness checklist
+  - Pre-deployment validation steps
+  - Testing procedures for backend and frontend
+  - Deployment workflow verification
+  - Post-deployment monitoring checklist
+  - Rollback procedures
+
+### Deployment Workflows (Existing)
+This repository includes two automated deployment workflows:
+- **Backend** → Google Cloud Run (`.github/workflows/deploy.yml`)
+- **Frontend** → Firebase Hosting (`.github/workflows/frontend-deploy.yml`)
+
+## 🔐 Required GitHub Secrets
+
+Configure these in **Settings → Secrets and variables → Actions**:
+- `GOOGLE_APPLICATION_CREDENTIALS_JSON` - Google Cloud service account (required)
+- `FIREBASE_SERVICE_ACCOUNT` - Firebase service account (required)
+- `SLACK_WEBHOOK_URL` - Slack notifications (optional)
+- `CRON_SECRET` - API cron endpoint authentication (optional)
+
+## ✅ Before Merging
+
+Please ensure:
+- [ ] All documentation has been reviewed for accuracy
+- [ ] Service accounts are properly configured with required permissions
+- [ ] All GitHub secrets are added to the repository
+- [ ] Backend deployment workflow runs successfully on main branch
+- [ ] Frontend deployment workflow runs successfully on main branch
+- [ ] Backend health check endpoint returns 200 OK
+- [ ] Frontend site loads correctly and connects to backend API
+- [ ] No secrets are exposed in code or logs
+
+## 📖 Quick Start
+
+For complete setup instructions, see:
+1. [SERVICE_ACCOUNT_SETUP.md](./SERVICE_ACCOUNT_SETUP.md) - Service account configuration
+2. [DEPLOYMENT_READINESS.md](./DEPLOYMENT_READINESS.md) - Deployment checklist
+3. [README-DEPLOY.md](./README-DEPLOY.md) - Quick deployment guide

@@ -33,7 +33,27 @@ npm run preview
 
 ## 🔐 Environment variables
 
-Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):
+### For Development (`.env.local`)
+
+Create a `.env.local` file for local development:
+
+```env
+# Backend API URL (defaults to localhost:8080 if not set)
+VITE_API_URL=http://localhost:8080
+```
+
+### For Production (`.env`)
+
+Create a `.env` file for production builds:
+
+```env
+# Backend API URL (Cloud Run or your production backend)
+VITE_API_URL=https://photo2profit-api-758851214311.us-west2.run.app
+```
+
+### Additional Variables (Optional)
+
+Copy `.env.example` to `.env` and add any additional values you need:
 
 ```env
 # Firebase
@@ -58,6 +78,8 @@ EBAY_OAUTH_TOKEN=
 # SendGrid (for weekly emails in Cloud Functions)
 SENDGRID_API_KEY=
 ```
+
+> **Note:** The Vite dev server automatically proxies `/api` requests to your backend URL. In development, requests to `/api/*` will be sent to `http://localhost:8080` (or your `VITE_API_URL`). In production, they'll use your deployed backend URL.
 
 ### 3️⃣ Firebase Setup
 

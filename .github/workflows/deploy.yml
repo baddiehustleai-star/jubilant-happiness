@@ -20,6 +20,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Authenticate with Google Cloud using service account credentials from GitHub Secrets
+      # SECURITY: Never commit service account JSON files to the repository
+      # The GOOGLE_APPLICATION_CREDENTIALS_JSON secret should contain the full service account JSON
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:

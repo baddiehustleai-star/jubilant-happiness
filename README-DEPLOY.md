@@ -1,5 +1,14 @@
 # Deploy & Quickstart (Photo2Profit)
 
+## Automated Deployment Prerequisites
+
+For automated deployments via GitHub Actions, first set up service accounts:
+
+- 📘 See **[SERVICE_ACCOUNT_SETUP.md](./SERVICE_ACCOUNT_SETUP.md)** for complete setup instructions
+- Required for Google Cloud Run (backend) and Firebase Hosting (frontend) deployments
+
+## Local Development Setup
+
 1. Backup and apply changes (if using provided patches).
 
 2. Environment variables (required)

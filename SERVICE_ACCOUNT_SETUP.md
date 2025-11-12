@@ -67,21 +67,25 @@ Click **CONTINUE** then **DONE**.
 Add the following secrets:
 
 #### GOOGLE_APPLICATION_CREDENTIALS_JSON
+
 - **Name**: `GOOGLE_APPLICATION_CREDENTIALS_JSON`
 - **Value**: Copy the entire contents of the Google Cloud service account JSON key file
 - **Usage**: Used for authenticating with Google Cloud Run
 
 #### FIREBASE_SERVICE_ACCOUNT
+
 - **Name**: `FIREBASE_SERVICE_ACCOUNT`
 - **Value**: Copy the entire contents of the Firebase service account JSON key file
 - **Usage**: Used for deploying to Firebase Hosting
 
 #### SLACK_WEBHOOK_URL (Optional)
+
 - **Name**: `SLACK_WEBHOOK_URL`
 - **Value**: Your Slack incoming webhook URL (e.g., `https://hooks.slack.com/services/...`)
 - **Usage**: Sends deployment notifications to Slack
 
 #### CRON_SECRET (Optional)
+
 - **Name**: `CRON_SECRET`
 - **Value**: A secure random string for authenticating cron endpoints
 - **Usage**: Protects cron endpoints from unauthorized access
@@ -101,6 +105,7 @@ Add the following secrets:
 ### 4.2 Verify Deployments
 
 #### Backend (Cloud Run)
+
 ```bash
 # Get the Cloud Run service URL
 gcloud run services describe photo2profit-api \
@@ -112,6 +117,7 @@ curl https://your-service-url.run.app/api/health
 ```
 
 #### Frontend (Firebase Hosting)
+
 ```bash
 # Visit your Firebase Hosting URL
 # https://photo2profitbaddie.web.app (or your custom domain)
@@ -185,6 +191,7 @@ When rotating keys:
 ### Monitoring Deployments
 
 Set up monitoring for:
+
 - Deployment success/failure rates
 - Cloud Run service health
 - Firebase Hosting availability

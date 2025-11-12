@@ -1,6 +1,8 @@
 # 💎 Photo2Profit — AI-Powered Resale Automation Platform
 
 [![CI](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml)
+[![Backend Deploy](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deploy.yml)
+[![Frontend Deploy](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/frontend-deploy.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/frontend-deploy.yml)
 
 > Note for automated contributors: see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and guidance for Copilot coding agents.
 
@@ -58,6 +60,36 @@ EBAY_OAUTH_TOKEN=
 # SendGrid (for weekly emails in Cloud Functions)
 SENDGRID_API_KEY=
 ```
+
+## 🔒 Required GitHub Secrets for Deployment
+
+For automated deployments to work correctly, the following secrets **must** be configured in your GitHub repository settings (Settings → Secrets and variables → Actions):
+
+| Secret Name                           | Required    | Purpose                                 | Where to Get It                                                                   |
+| ------------------------------------- | ----------- | --------------------------------------- | --------------------------------------------------------------------------------- |
+| `GOOGLE_APPLICATION_CREDENTIALS_JSON` | ✅ Yes      | Authenticates Cloud Run deployments     | Google Cloud Console → IAM & Admin → Service Accounts → Create key (JSON format)  |
+| `FIREBASE_SERVICE_ACCOUNT`            | ✅ Yes      | Deploys frontend to Firebase Hosting    | Firebase Console → Project Settings → Service Accounts → Generate new private key |
+| `SLACK_WEBHOOK_URL`                   | ⚠️ Optional | Sends deployment notifications to Slack | Slack App settings → Incoming Webhooks                                            |
+| `CRON_SECRET`                         | ⚠️ Optional | Secures the SEO refresh endpoint        | Generate a random string (e.g., `openssl rand -hex 32`)                           |
+
+### Validating Your Secrets
+
+Before merging to main, verify all required secrets are set:
+
+1. Go to your repository on GitHub
+2. Navigate to **Settings** → **Secrets and variables** → **Actions**
+3. Confirm both `GOOGLE_APPLICATION_CREDENTIALS_JSON` and `FIREBASE_SERVICE_ACCOUNT` exist
+4. Optionally add `SLACK_WEBHOOK_URL` and `CRON_SECRET` for enhanced features
+
+### Testing Deployment
+
+After setting up secrets, you can test the deployment pipeline:
+
+1. Push a small change to the `main` branch (e.g., update a comment in `/api/health.js`)
+2. Check GitHub Actions logs for successful deployment
+3. Visit the deployed Cloud Run URL and hit `/api/health` to verify backend
+4. Check Firebase Hosting URL to verify frontend deployment
+5. If configured, check Slack for deployment notifications
 
 ### 3️⃣ Firebase Setup
 

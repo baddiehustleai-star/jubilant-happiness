@@ -65,11 +65,13 @@ jobs:
           fi
 
       - name: Notify Slack (optional)
-        if: secrets.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ env.SLACK_WEBHOOK_URL }}
         run: |
           DEPLOY_URL=$(gcloud run services describe photo2profit-api \
             --region us-west2 \
             --format='value(status.url)')
           curl -X POST -H 'Content-type: application/json' \
           --data "{\"text\":\"🚀 *Backend deployed successfully!* \n🌐 <${DEPLOY_URL}|View Cloud Run Service> • ✅ SEO refresh verified • 🔥 Project: photo2profitbaddie\"}" \
-          "${{ secrets.SLACK_WEBHOOK_URL }}"
+          "$SLACK_WEBHOOK_URL"

@@ -88,11 +88,27 @@ Visit: **[http://localhost:5173](http://localhost:5173)**
 
 ## 🌐 Deployment
 
-Deploy your frontend with **Vercel** or **Firebase Hosting**:
+This project uses **automated deployments** via GitHub Actions:
 
-- Connect your GitHub repo
-- Add your `.env` variables
-- Deploy the main branch
+- **Backend**: Auto-deploys to Google Cloud Run when `api/**` changes
+- **Frontend**: Auto-deploys to Firebase Hosting when `src/**` changes
+- **CI**: Runs linting, tests, and builds on every PR and push to `main`
+
+### 📋 Deployment Documentation
+
+- **[GitHub Actions Review](./GITHUB-ACTIONS-REVIEW.md)** - Complete review of deployment workflows and what happens after merge
+- **[Post-Deployment Checklist](./POST-DEPLOYMENT-CHECKLIST.md)** - Comprehensive checklist to verify deployment success and test all features
+- **[Deployment Guide](./README-DEPLOY.md)** - Quick start deployment guide
+
+### ⚙️ Required Setup
+
+1. Configure GitHub Secrets (Settings → Secrets → Actions):
+   - `GOOGLE_APPLICATION_CREDENTIALS_JSON` (Cloud Run deployment)
+   - `FIREBASE_SERVICE_ACCOUNT` (Firebase Hosting deployment)
+   - `SLACK_WEBHOOK_URL` (optional - deployment notifications)
+   - `CRON_SECRET` (optional - SEO refresh endpoint)
+
+2. Merge to `main` branch - deployments are automatic!
 
 Your weekly scheduler runs automatically from Firebase Cloud Functions.
 

@@ -36,27 +36,50 @@ npm run preview
 Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):
 
 ```env
-# Firebase
-FIREBASE_API_KEY=
-FIREBASE_AUTH_DOMAIN=
-FIREBASE_PROJECT_ID=
-FIREBASE_STORAGE_BUCKET=
-FIREBASE_MESSAGING_SENDER_ID=
-FIREBASE_APP_ID=
+# Firebase (client-safe)
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
 
-# Stripe (optional)
+# Stripe (client-safe - publishable key only)
+VITE_STRIPE_PUBLISHABLE_KEY=
+VITE_STRIPE_PRICE_ID=
+
+# Stripe Secret (SERVER-SIDE ONLY)
 STRIPE_SECRET_KEY=
-STRIPE_PRICE_ID=
 
-# APIs (optional)
-REMOVEBG_API_KEY=
-EBAY_APP_ID=
-EBAY_CERT_ID=
-EBAY_DEV_ID=
-EBAY_OAUTH_TOKEN=
+# APIs (client-safe)
+VITE_REMOVEBG_API_KEY=
+VITE_EBAY_APP_ID=
+VITE_EBAY_CERT_ID=
+VITE_EBAY_DEV_ID=
+VITE_EBAY_OAUTH_TOKEN=
 
-# SendGrid (for weekly emails in Cloud Functions)
+# SendGrid (SERVER-SIDE ONLY)
 SENDGRID_API_KEY=
+```
+
+**Important Security Note:**
+
+- Variables prefixed with `VITE_` are exposed to the frontend and should only contain client-safe keys.
+- `STRIPE_SECRET_KEY` and `SENDGRID_API_KEY` do NOT have the `VITE_` prefix and are only available server-side (e.g., in Firebase Functions or backend APIs).
+
+The client-safe API keys are managed centrally in `src/config/apiKeys.js` and can be imported throughout the frontend application:
+
+```javascript
+import apiKeys from './config/apiKeys';
+
+// Use Firebase config
+const firebaseConfig = apiKeys.firebase;
+
+// Use Stripe publishable key (safe for frontend)
+const stripeKey = apiKeys.stripe.publishableKey;
+
+// Use specific API keys
+const removeBgKey = apiKeys.removeBg.apiKey;
 ```
 
 ### 3️⃣ Firebase Setup

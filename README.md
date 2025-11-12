@@ -6,6 +6,17 @@
 
 A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring rose-gold branding and elegant typography.
 
+## 🌐 Standalone Landing Page
+
+The `index.html` file in the root is a **standalone landing page** that works without any build process:
+
+- **To view:** Simply open `index.html` in your browser (double-click or right-click → Open with Browser)
+- **No dependencies:** All styles are inline, no JavaScript frameworks required
+- **Rose-gold theme:** Beautiful pink gradient background with Poppins font
+- **Responsive:** Works on mobile, tablet, and desktop
+
+This landing page is perfect for quick previews, static hosting, or as a starting point for customization.
+
 ## ✨ Features
 
 - 🎨 **Rose-Gold Theme** - Custom color palette with blush, rose, and gold tones

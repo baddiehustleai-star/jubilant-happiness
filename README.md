@@ -14,6 +14,8 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 - ⚛️ **React 18** - Modern React with hooks
 - 🎯 **TailwindCSS** - Utility-first styling with custom configuration
 - 📱 **Responsive** - Mobile-first design approach
+- 💳 **Stripe Integration** - Checkout sessions and webhook payment processing
+- 📧 **Email Confirmations** - Automatic SendGrid emails on successful payment
 
 ## 🚀 Quick Start
 
@@ -47,6 +49,10 @@ FIREBASE_APP_ID=
 # Stripe (optional)
 STRIPE_SECRET_KEY=
 STRIPE_PRICE_ID=
+STRIPE_WEBHOOK_SECRET=
+
+# Database (for payment tracking)
+DATABASE_URL=
 
 # APIs (optional)
 REMOVEBG_API_KEY=

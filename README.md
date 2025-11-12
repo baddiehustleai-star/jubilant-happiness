@@ -98,6 +98,64 @@ Your weekly scheduler runs automatically from Firebase Cloud Functions.
 
 ---
 
+## 🔗 CORS Testing & Backend API
+
+The Photo2Profit backend API runs on Google Cloud Run and requires proper CORS configuration to accept requests from the Firebase frontend.
+
+### Testing CORS Connection
+
+#### 🧠 Option 1: Browser Console Test
+
+1. Open your Firebase frontend: https://photo2profitbaddie.web.app
+2. Press **F12** to open **DevTools → Console**
+3. Paste and run:
+
+```javascript
+fetch('https://photo2profit-api-758851214311.us-west2.run.app/api', {
+  method: 'GET',
+  headers: { 'Content-Type': 'application/json' },
+})
+  .then((res) => res.text())
+  .then((data) => console.log('✅ Success:', data))
+  .catch((err) => console.error('❌ Error:', err));
+```
+
+**If CORS is working:**
+
+- You'll see `✅ Success: {"message":"Photo2Profit API is alive!",...}`
+- No red CORS warnings in console
+
+**If it's not working:**
+
+- You'll get `❌ Error: TypeError: Failed to fetch` plus CORS error
+- Your Firebase domain isn't in the allowedOrigins list
+
+#### ⚙️ Option 2: curl Test (Terminal/Cloud Shell)
+
+Test CORS headers from command line:
+
+```bash
+curl -I -X GET \
+  -H "Origin: https://photo2profitbaddie.web.app" \
+  https://photo2profit-api-758851214311.us-west2.run.app/api
+```
+
+**Expected response includes:**
+
+```
+Access-Control-Allow-Origin: https://photo2profitbaddie.web.app
+```
+
+#### 🖥️ Option 3: Interactive Testing Page
+
+Open `cors-test.html` in your browser for an interactive CORS testing interface with detailed diagnostics.
+
+### Backend Deployment
+
+See [`backend/README.md`](backend/README.md) for complete deployment instructions to Google Cloud Run.
+
+---
+
 ## 🧩 Cross-Posting Supported Platforms
 
 | Platform                 | Method                |

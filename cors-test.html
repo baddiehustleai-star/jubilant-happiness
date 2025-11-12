@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CORS Testing - Photo2Profit</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #ffeef8 0%, #fff5f8 100%);
+      }
+      .container {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #c7417b;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        color: #666;
+        margin-bottom: 30px;
+      }
+      button {
+        background: linear-gradient(135deg, #c7417b 0%, #d4a5c0 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+        transition: transform 0.2s;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(199, 65, 123, 0.3);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      .result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 6px;
+        font-family: monospace;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .success {
+        background: #e8f5e9;
+        border-left: 4px solid #4caf50;
+      }
+      .error {
+        background: #ffebee;
+        border-left: 4px solid #f44336;
+      }
+      .info {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+      }
+      .code-block {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 6px;
+        margin: 15px 0;
+        overflow-x: auto;
+      }
+      .code-block code {
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+      }
+      .test-section {
+        margin: 30px 0;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+      }
+      .test-section h2 {
+        color: #c7417b;
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔗 CORS Testing Tool</h1>
+      <p class="subtitle">
+        Test CORS configuration between Firebase Frontend and Cloud Run Backend
+      </p>
+
+      <div class="test-section">
+        <h2>Quick Tests</h2>
+        <button onclick="testBasicConnection()">Test Basic Connection</button>
+        <button onclick="testHealthEndpoint()">Test Health Endpoint</button>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <div id="result"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>🧠 Option 1: Browser Console Test</h2>
+        <p>Copy and paste this code into your browser's console (F12):</p>
+        <div class="code-block">
+          <code
+            >fetch('https://photo2profit-api-758851214311.us-west2.run.app/api', { method: 'GET',
+            headers: { 'Content-Type': 'application/json' }, }) .then(res => res.text()) .then(data
+            => console.log('✅ Success:', data)) .catch(err => console.error('❌ Error:',
+            err));</code
+          >
+        </div>
+        <p>
+          <strong>Expected:</strong>
+          <code>✅ Success: {"message":"Photo2Profit API is alive!",...}</code>
+        </p>
+        <p>
+          <strong>If failed:</strong> You'll see
+          <code>❌ Error: TypeError: Failed to fetch</code> with a CORS error
+        </p>
+      </div>
+
+      <div class="test-section">
+        <h2>⚙️ Option 2: curl Test (Terminal/Cloud Shell)</h2>
+        <p>Test CORS headers from your terminal:</p>
+        <div class="code-block">
+          <code
+            >curl -I -X GET \ -H "Origin: https://photo2profitbaddie.web.app" \
+            https://photo2profit-api-758851214311.us-west2.run.app/api</code
+          >
+        </div>
+        <p><strong>Expected header:</strong></p>
+        <div class="code-block">
+          <code>Access-Control-Allow-Origin: https://photo2profitbaddie.web.app</code>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>✅ What Success Looks Like</h2>
+        <ul>
+          <li>✅ No red CORS warnings in the browser console</li>
+          <li>✅ Response includes <code>Access-Control-Allow-Origin</code> header</li>
+          <li>✅ API returns JSON with "Photo2Profit API is alive!" message</li>
+          <li>✅ Fetch promise resolves successfully</li>
+        </ul>
+      </div>
+
+      <div class="test-section">
+        <h2>❌ Troubleshooting</h2>
+        <ul>
+          <li>
+            <strong>CORS Error:</strong> Your Firebase domain isn't in the allowedOrigins list
+          </li>
+          <li><strong>404 Error:</strong> Check the API endpoint URL</li>
+          <li><strong>Network Error:</strong> Backend might not be deployed or running</li>
+          <li>
+            <strong>Timeout:</strong> Cloud Run service might be cold starting (wait 10-15 seconds)
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = 'https://photo2profit-api-758851214311.us-west2.run.app';
+      const resultDiv = document.getElementById('result');
+
+      function displayResult(message, type = 'info') {
+        resultDiv.innerHTML = `<div class="result ${type}">${message}</div>`;
+      }
+
+      async function testBasicConnection() {
+        displayResult('🧪 Testing basic connection...', 'info');
+        try {
+          const response = await fetch(`${API_URL}/api`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          displayResult(
+            `✅ Success!\n\nResponse:\n${JSON.stringify(data, null, 2)}\n\nCORS is working correctly!`,
+            'success'
+          );
+        } catch (error) {
+          displayResult(
+            `❌ Error: ${error.message}\n\nThis likely means CORS is not configured correctly.\nCheck the browser console for more details.`,
+            'error'
+          );
+        }
+      }
+
+      async function testHealthEndpoint() {
+        displayResult('🏥 Testing health endpoint...', 'info');
+        try {
+          const response = await fetch(`${API_URL}/api/health`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          displayResult(
+            `✅ Health check passed!\n\nResponse:\n${JSON.stringify(data, null, 2)}`,
+            'success'
+          );
+        } catch (error) {
+          displayResult(`❌ Health check failed: ${error.message}`, 'error');
+        }
+      }
+
+      async function runAllTests() {
+        displayResult('🚀 Running all tests...', 'info');
+
+        const tests = [
+          { name: 'Basic Connection', fn: testBasicConnection },
+          { name: 'Health Endpoint', fn: testHealthEndpoint },
+        ];
+
+        let results = [];
+        for (const test of tests) {
+          try {
+            await test.fn();
+            results.push(`✅ ${test.name}: PASSED`);
+          } catch (error) {
+            results.push(`❌ ${test.name}: FAILED - ${error.message}`);
+          }
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+
+        displayResult(
+          `📊 Test Results:\n\n${results.join('\n')}\n\n${
+            results.every((r) => r.includes('✅'))
+              ? '🎉 All tests passed!'
+              : '⚠️  Some tests failed. Check CORS configuration.'
+          }`,
+          results.every((r) => r.includes('✅')) ? 'success' : 'error'
+        );
+      }
+
+      // Auto-run tests on page load
+      window.addEventListener('load', () => {
+        console.log('💡 CORS Testing Tool loaded!');
+        console.log('Click buttons to test CORS configuration.');
+      });
+    </script>
+  </body>
+</html>

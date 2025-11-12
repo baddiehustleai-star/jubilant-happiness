@@ -1,5 +1,5 @@
 /* eslint-env browser */
-/* global URL, Image, fetch */
+/* global URL, Image */
 import React, { useState } from 'react';
 import { createCheckout } from '../lib/stripe';
 

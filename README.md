@@ -130,10 +130,11 @@ Your weekly scheduler runs automatically from Firebase Cloud Functions.
 
 ### 🚀 Deployment Status Check
 
-Verify your deployment status anytime:
+Verify your deployment readiness and status:
 
-- **Automated:** Trigger the [Deployment Status Check workflow](../../actions/workflows/deployment-status.yml) or comment `@github-actions deployment status` on any issue
-- **Manual:** See [DEPLOYMENT-STATUS.md](./DEPLOYMENT-STATUS.md) for detailed verification steps
+- **Before pushing (Recommended):** Run `npm run verify:deploy` locally to catch issues early
+- **After pushing:** Trigger the [Deployment Status Check workflow](../../actions/workflows/deployment-status.yml) or comment `@github-actions deployment status` on any issue
+- **Manual verification:** See [DEPLOYMENT-STATUS.md](./DEPLOYMENT-STATUS.md) for detailed steps
 
 For full deployment documentation, see [README-DEPLOY.md](./README-DEPLOY.md).
 

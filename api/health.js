@@ -1,5 +1,4 @@
 /* eslint-env node */
-/* eslint-disable no-undef */
 // Health check endpoint for Cloud Run
 // This endpoint is used by the frontend-deploy workflow to verify the backend is running
 

@@ -4,9 +4,38 @@ This guide explains how to check the deployment status of `photo2profit.online` 
 
 ## Quick Status Check
 
-### Method 1: Automated Workflow (Recommended)
+### Method 1: Local Pre-Deployment Check (Recommended)
 
-Trigger the automated deployment status check workflow:
+Before pushing your changes, verify your project is ready for deployment:
+
+```bash
+# Run the local deployment verification script
+npm run verify:deploy
+```
+
+This script will check:
+
+- ✅ Dependencies are installed
+- ✅ Linting passes
+- ✅ Code formatting is correct
+- ✅ All tests pass
+- ✅ Project builds successfully
+- ✅ Environment configuration files exist
+- ✅ GitHub workflow files are present
+- ✅ Deployment configuration is valid
+- ✅ Required secrets are documented
+- ✅ Git status (warns about uncommitted changes)
+
+**Benefits:**
+
+- Catches issues before pushing to GitHub
+- Saves CI/CD minutes
+- Faster feedback loop
+- Reduces failed deployments
+
+### Method 2: Automated Workflow (Post-Deployment)
+
+After pushing changes, trigger the automated deployment status check workflow:
 
 1. **Via GitHub UI:**
    - Navigate to [Actions → Deployment Status Check](../../actions/workflows/deployment-status.yml)
@@ -19,7 +48,7 @@ Trigger the automated deployment status check workflow:
    - Mention `@github-actions deployment status`
    - The bot will reply with a comprehensive status report
 
-### Method 2: Manual Verification
+### Method 3: Manual Verification
 
 Check each component individually:
 
@@ -85,6 +114,125 @@ gcloud logging read "resource.type=cloud_run_revision \
 
 - Check deployment history: `firebase hosting:channel:list`
 - View logs in Firebase Console
+
+## Local Pre-Deployment Verification
+
+### Using the Verification Script
+
+Run the local verification script before pushing changes:
+
+```bash
+npm run verify:deploy
+```
+
+This comprehensive check ensures your project is ready for deployment by verifying:
+
+**📦 Dependencies**
+
+- `node_modules` directory exists
+- `package.json` is valid and parseable
+
+**🔍 Code Quality**
+
+- ESLint passes with no errors
+- Prettier formatting is correct
+- All tests pass
+- Project builds without errors
+
+**🔐 Configuration**
+
+- `.env.example` exists and contains required variables
+- GitHub workflow files are present and valid
+- Deployment configuration files exist (firebase.json, api/)
+- Health check endpoints are configured
+
+**📋 Documentation**
+
+- Required GitHub secrets are documented in README
+- Deployment guides reference necessary credentials
+
+**🌳 Git Status**
+
+- Shows any uncommitted changes
+- Warns if working directory is not clean
+
+### Script Output
+
+The script provides clear, color-coded output:
+
+- ✅ **Green**: Check passed
+- ⚠️ **Yellow**: Warning (non-blocking)
+- ❌ **Red**: Check failed (must fix before deployment)
+- ℹ️ **Blue**: Informational message
+
+### Exit Codes
+
+- `0`: All critical checks passed, ready for deployment
+- `1`: One or more critical checks failed, fix issues before deploying
+
+### Example Output
+
+```
+============================================================
+🚀 Photo2Profit Deployment Readiness Check
+============================================================
+
+Running pre-deployment verification...
+
+📦 Checking Dependencies
+------------------------
+✅ node_modules directory exists
+✅ package.json is valid
+
+🔍 Running Linter
+-----------------
+✅ Linting passed
+
+💅 Checking Code Formatting
+---------------------------
+✅ Code formatting is correct
+
+🧪 Running Tests
+----------------
+✅ All tests passed
+
+🏗️  Building Project
+---------------------
+✅ Build completed successfully
+
+[... more checks ...]
+
+📊 Summary
+----------
+
+Total checks: 17
+Passed: 16
+Warnings: 1
+Failed: 0
+
+✅ All critical checks passed! Ready for deployment.
+
+Next steps:
+  1. Commit and push your changes
+  2. Monitor GitHub Actions workflows
+  3. Check deployment status with: @github-actions deployment status
+```
+
+### When to Use
+
+**Always run before:**
+
+- Pushing to main branch
+- Creating a pull request
+- Triggering manual deployments
+- After making significant changes
+
+**Benefits:**
+
+- **Catch issues early** - Fix problems before CI/CD runs
+- **Save time** - Faster feedback than waiting for GitHub Actions
+- **Save costs** - Reduce unnecessary CI/CD minutes
+- **Confidence** - Know your changes will deploy successfully
 
 ## What Gets Checked
 

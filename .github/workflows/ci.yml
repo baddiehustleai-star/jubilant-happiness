@@ -33,3 +33,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Local Deployment Verification
+        run: npm run verify:deploy

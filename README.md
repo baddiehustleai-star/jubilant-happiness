@@ -3,6 +3,7 @@
 [![CI](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml)
 [![Backend Deploy](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deploy.yml)
 [![Frontend Deploy](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/frontend-deploy.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/frontend-deploy.yml)
+[![Deployment Status](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deployment-status.yml/badge.svg)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deployment-status.yml)
 
 > Note for automated contributors: see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and guidance for Copilot coding agents.
 
@@ -31,7 +32,27 @@ npm run build
 
 # Preview the production build
 npm run preview
+
+# Verify deployment readiness (recommended before deploying)
+npm run verify:deploy
 ```
+
+### 🔍 Pre-Deployment Verification
+
+Before deploying to production, run the comprehensive deployment verification:
+
+```bash
+npm run verify:deploy
+```
+
+This command performs all pre-deployment checks:
+
+- ✅ Linting (ESLint)
+- ✅ Code formatting (Prettier)
+- ✅ Unit tests (Vitest)
+- ✅ Production build
+
+The script provides colored output and a summary report. All checks must pass before deployment.
 
 ## 🔐 Environment variables
 

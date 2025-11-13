@@ -29,6 +29,21 @@ export default [
     },
   },
   {
+    // Node.js environment for scripts and api directories
+    files: ['scripts/**/*.js', 'api/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        Buffer: 'readonly',
+      },
+    },
+  },
+  {
     ignores: ['dist/**'],
   },
 ];

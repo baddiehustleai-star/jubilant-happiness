@@ -1,5 +1,5 @@
 /* eslint-env node */
-/* eslint-disable no-undef */
+ 
 // Vercel / Netlify-style serverless function to create a Stripe Checkout session.
 // Requires: environment variable STRIPE_SECRET_KEY
 

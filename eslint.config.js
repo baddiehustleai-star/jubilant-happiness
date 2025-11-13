@@ -14,6 +14,8 @@ export default [
         window: 'readonly',
         document: 'readonly',
         console: 'readonly',
+        process: 'readonly',
+        fetch: 'readonly',
       },
     },
     plugins: { react: reactPlugin },

@@ -1,0 +1,86 @@
+name: Deploy to Google Cloud
+
+on:
+  push:
+    branches:
+      - main # Triggers on push to main branch
+  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+
+env:
+  PROJECT_ID: photo2profitbaddie # Your GCP Project ID
+  REGION: us-west2 # GCP region for deployment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      # Example: Deploy to App Engine
+      # Uncomment and configure if using App Engine
+      # - name: Deploy to App Engine
+      #   run: |
+      #     gcloud app deploy --quiet --project=${{ env.PROJECT_ID }}
+
+      # Example: Deploy to Cloud Run
+      # Uncomment and configure if using Cloud Run
+      # - name: Deploy to Cloud Run
+      #   run: |
+      #     gcloud run deploy YOUR-SERVICE-NAME \
+      #       --source . \
+      #       --region ${{ env.REGION }} \
+      #       --platform managed \
+      #       --allow-unauthenticated
+
+      # Example: Deploy to Cloud Functions
+      # Uncomment and configure if using Cloud Functions
+      # - name: Deploy to Cloud Functions
+      #   run: |
+      #     gcloud functions deploy YOUR-FUNCTION-NAME \
+      #       --runtime nodejs20 \
+      #       --trigger-http \
+      #       --allow-unauthenticated \
+      #       --region ${{ env.REGION }}
+
+      # Example: Deploy to GKE (Google Kubernetes Engine)
+      # Uncomment and configure if using GKE
+      # - name: Deploy to GKE
+      #   run: |
+      #     gcloud container clusters get-credentials YOUR-CLUSTER-NAME \
+      #       --region ${{ env.REGION }}
+      #     kubectl apply -f k8s/
+
+      # Placeholder deployment step - customize based on your service
+      - name: Deployment placeholder
+        run: |
+          echo "✅ GCP authentication successful!"
+          echo "📝 Configure the deployment steps above for your target GCP service:"
+          echo "   - App Engine: gcloud app deploy"
+          echo "   - Cloud Run: gcloud run deploy"
+          echo "   - Cloud Functions: gcloud functions deploy"
+          echo "   - GKE: kubectl apply"
+          echo "   - Cloud Storage: gsutil rsync"
+          echo ""
+          echo "🔑 Required GitHub Secret: GCP_SA_KEY"
+          echo "   Add your GCP service account JSON key in:"
+          echo "   Settings → Secrets and variables → Actions → New repository secret"
+
+      - name: Verify gcloud configuration
+        run: |
+          echo "Current GCP project: $(gcloud config get-value project)"
+          echo "Current GCP region: ${{ env.REGION }}"
+          gcloud --version

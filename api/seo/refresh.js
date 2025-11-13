@@ -1,5 +1,4 @@
 /* eslint-env node */
-/* eslint-disable no-undef */
 // SEO refresh endpoint for Cloud Run
 // This endpoint is triggered after deployment to refresh SEO-related caches
 

@@ -17,6 +17,14 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 - 🎯 **TailwindCSS** - Utility-first styling with custom configuration
 - 📱 **Responsive** - Mobile-first design approach
 
+### 🚀 New Developer Tools
+
+- 🔗 **Deep Link Validator** - Instantly validate marketplace URLs for eBay, Poshmark, Mercari, and more
+- 🌍 **Gemini-Powered Translation** - AI-powered localization for listing descriptions in 8+ languages
+- 📊 **AI-Powered Dashboard** - Personalized insights and performance analytics with automated summaries
+- 💎 **Rewards System** - Track points and unlock premium features through engagement
+- 📈 **Chart Summaries** - Get faster insights with Gemini-powered analysis
+
 ## 🚀 Quick Start
 
 ```bash

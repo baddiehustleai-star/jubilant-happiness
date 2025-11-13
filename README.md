@@ -3,6 +3,7 @@
 [![CI](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/ci.yml)
 [![Backend Deploy](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deploy.yml)
 [![Frontend Deploy](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/frontend-deploy.yml/badge.svg?branch=main)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/frontend-deploy.yml)
+[![Deployment Status](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deployment-status.yml/badge.svg)](https://github.com/baddiehustleai-star/jubilant-happiness/actions/workflows/deployment-status.yml)
 
 > Note for automated contributors: see `/.github/COPILOT_CODING_AGENT.md` for repository-specific onboarding and guidance for Copilot coding agents.
 

@@ -32,7 +32,27 @@ npm run build
 
 # Preview the production build
 npm run preview
+
+# Verify deployment readiness (recommended before deploying)
+npm run verify:deploy
 ```
+
+### 🔍 Pre-Deployment Verification
+
+Before deploying to production, run the comprehensive deployment verification:
+
+```bash
+npm run verify:deploy
+```
+
+This command performs all pre-deployment checks:
+
+- ✅ Linting (ESLint)
+- ✅ Code formatting (Prettier)
+- ✅ Unit tests (Vitest)
+- ✅ Production build
+
+The script provides colored output and a summary report. All checks must pass before deployment.
 
 ## 🔐 Environment variables
 

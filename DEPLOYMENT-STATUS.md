@@ -4,7 +4,24 @@ This guide explains how to check the deployment status of `photo2profit.online` 
 
 ## Quick Status Check
 
-### Method 1: Automated Workflow (Recommended)
+### Method 1: Local Pre-Deployment Verification (Fastest)
+
+Before deploying or creating a PR, run the local deployment verification:
+
+```bash
+npm run verify:deploy
+```
+
+This performs comprehensive checks locally:
+
+- ✅ Linting (ESLint)
+- ✅ Code formatting (Prettier)
+- ✅ Unit tests (Vitest)
+- ✅ Production build
+
+The script provides colored output and must pass before deployment. This is the fastest way to catch issues before pushing to CI.
+
+### Method 2: Automated Workflow (Recommended for Production Status)
 
 Trigger the automated deployment status check workflow:
 
@@ -19,7 +36,7 @@ Trigger the automated deployment status check workflow:
    - Mention `@github-actions deployment status`
    - The bot will reply with a comprehensive status report
 
-### Method 2: Manual Verification
+### Method 3: Manual Verification
 
 Check each component individually:
 

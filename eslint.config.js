@@ -29,6 +29,14 @@ export default [
     },
   },
   {
+    files: ['tests/**/*.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+      },
+    },
+  },
+  {
     ignores: ['dist/**'],
   },
 ];

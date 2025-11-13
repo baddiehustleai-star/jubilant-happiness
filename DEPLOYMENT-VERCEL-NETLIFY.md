@@ -181,7 +181,15 @@ If you're using Google login or Google APIs:
 1. Visit [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing: `photo2profitbaddie`
 
-### Step 2: Configure OAuth Consent Screen
+### Step 2: Enable Required APIs
+
+1. Go to [APIs & Services → Library](https://console.cloud.google.com/apis/library)
+2. Search for and enable:
+   - **Google Identity Services**
+
+> **Important:** Without enabling this API, OAuth authentication will fail with a 403 error even if credentials are correctly configured.
+
+### Step 3: Configure OAuth Consent Screen
 
 1. Go to **APIs & Services** → **OAuth consent screen**
 2. Select **External** user type
@@ -193,35 +201,54 @@ If you're using Google login or Google APIs:
    - `photo2profit.online`
    - `vercel.app` (if using Vercel)
    - `netlify.app` (if using Netlify)
+5. Under **Scopes**, add the following required scopes:
+   - `profile` - Access basic profile information
+   - `email` - Access user email address
 
-### Step 3: Create OAuth Credentials
+> **Note:** These scopes are essential for Google login to return usable identity and email data for user authentication, opt-ins, Stripe sync, and personalization.
+
+### Step 4: Create OAuth Credentials
 
 1. Go to **APIs & Services** → **Credentials**
 2. Click **Create Credentials** → **OAuth 2.0 Client ID**
 3. Application type: **Web application**
-4. Add **Authorized JavaScript origins:**
+4. Name: `Photo2Profit OAuth`
+5. Add **Authorized JavaScript origins:**
    - `https://photo2profit.online`
-   - `http://localhost:5173` (for local dev)
-5. Add **Authorized redirect URIs:**
-   - `https://photo2profit.online/auth/callback`
-   - `http://localhost:5173/auth/callback`
-6. Save and copy your **Client ID** and **Client Secret**
+   - `http://localhost:3000` (for local dev)
+6. Add **Authorized redirect URIs:**
+   - `https://photo2profit.online/api/auth/callback/google`
+   - `http://localhost:3000/api/auth/callback/google`
+7. Save and copy your **Client ID** and **Client Secret**
 
-### Step 4: Add to Environment Variables
+> **Important:** The redirect URI paths must exactly match your authentication handler routes. Using `/api/auth/callback/google` assumes your app uses API route handlers (common in Next.js or custom API setups). If your routes differ, adjust accordingly.
 
-Add to Vercel/Netlify:
+### Step 5: Add to Environment Variables
 
-```bash
-VITE_GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
-```
+Add to Vercel/Netlify (or your `.env` file):
 
-If you have a backend, also add:
+**Server-side variables (backend/API):**
 
 ```bash
-GOOGLE_CLIENT_SECRET=xxx
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-client-secret
 ```
 
-> **Security:** Never expose `GOOGLE_CLIENT_SECRET` in frontend code!
+**Client-side variables (frontend - if needed):**
+
+```bash
+VITE_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+```
+
+> **Security:** `GOOGLE_CLIENT_SECRET` must only be used server-side. Never expose it in frontend code or commit it to version control. The `VITE_` prefix makes variables accessible in the browser, so only use it for the Client ID, not the secret.
+
+**Example `.env.example` entry:**
+
+```bash
+# Google OAuth (if using Google login)
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
 
 ---
 

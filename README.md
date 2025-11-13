@@ -16,6 +16,7 @@ A modern, luxe-themed React starter built with **Vite + TailwindCSS** featuring 
 - ⚛️ **React 18** - Modern React with hooks
 - 🎯 **TailwindCSS** - Utility-first styling with custom configuration
 - 📱 **Responsive** - Mobile-first design approach
+- 🚀 **Marketing Agent** - Automated content generation for launches and campaigns
 
 ## 🚀 Quick Start
 
@@ -32,6 +33,70 @@ npm run build
 # Preview the production build
 npm run preview
 ```
+
+## 🎯 Marketing Agent
+
+Photo2Profit includes a powerful marketing automation system for generating launch content and marketing materials. The marketing agent helps automate content creation for various platforms.
+
+### Available Functions
+
+```javascript
+import {
+  brand,
+  generateTweetThread,
+  generateLaunchEmail,
+  generateSEOPage,
+  generateNewsletter,
+  createBrandPost,
+  renderInstagramVisual,
+} from './src/lib/marketingAgent.js';
+
+// Generate a Twitter thread for launch
+const tweets = generateTweetThread();
+tweets.forEach(tweet => console.log(tweet));
+
+// Generate launch email content
+const email = generateLaunchEmail();
+console.log(email.subject);
+console.log(email.body);
+
+// Generate SEO-optimized page content
+const seoPage = generateSEOPage();
+console.log(seoPage.title);
+console.log(seoPage.metaDescription);
+
+// Generate newsletter content
+const newsletter = generateNewsletter();
+console.log(newsletter.sections);
+
+// Create platform-specific brand posts
+const instagramPost = createBrandPost('instagram');
+const facebookPost = createBrandPost('facebook');
+const linkedinPost = createBrandPost('linkedin');
+
+// Generate Instagram visual specifications
+const visual = renderInstagramVisual();
+console.log(visual.elements);
+```
+
+### Marketing Tools
+
+- ✅ **Copywriter** - Generate compelling copy
+- ✅ **Tweet Thread Writer** - Create engaging Twitter threads
+- ✅ **Email Writer** - Craft launch and marketing emails
+- ✅ **Newsletter Generator** - Build recurring newsletters
+- ✅ **SEO Page Generator** - Create optimized landing pages
+- ✅ **Brand Post Creator** - Multi-platform social posts
+- ✅ **Visual Spec Generator** - Instagram post specifications
+
+### Brand Configuration
+
+All marketing content uses consistent branding:
+- **Name**: Photo2Profit
+- **Domain**: photo2profit.online
+- **Tagline**: Turn your camera roll into cashflow.
+- **CTA**: Upload photos. Earn daily.
+- **Tone**: Confident, clever, baddie-energy, founder-forward
 
 ## 🔐 Environment variables
 

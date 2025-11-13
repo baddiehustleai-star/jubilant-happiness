@@ -29,6 +29,20 @@ export default [
     },
   },
   {
+    // Node.js files (API, scripts, tests)
+    files: ['api/**/*.js', 'scripts/**/*.js', 'tests/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
+  },
+  {
     ignores: ['dist/**'],
   },
 ];

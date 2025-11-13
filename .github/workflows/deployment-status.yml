@@ -1,0 +1,322 @@
+name: 🚀 Deployment Status Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain to check (default: photo2profit.online)'
+        required: false
+        default: 'photo2profit.online'
+  issue_comment:
+    types: [created]
+
+env:
+  PROJECT_ID: photo2profitbaddie
+  REGION: us-west2
+  SERVICE_NAME: photo2profit-api
+
+jobs:
+  check-trigger:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && 
+       contains(github.event.comment.body, '@github-actions') &&
+       contains(github.event.comment.body, 'deployment status'))
+    permissions: {}
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - name: Check if workflow should run
+        id: check
+        run: echo "should_run=true" >> $GITHUB_OUTPUT
+
+  deployment-status:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+
+      - name: Get latest commit info
+        id: commit
+        run: |
+          COMMIT_SHA=$(git rev-parse HEAD)
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+          COMMIT_DATE=$(git log -1 --pretty=%cd --date=iso)
+          echo "sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "message=$COMMIT_MSG" >> $GITHUB_OUTPUT
+          echo "author=$COMMIT_AUTHOR" >> $GITHUB_OUTPUT
+          echo "date=$COMMIT_DATE" >> $GITHUB_OUTPUT
+          echo "short_sha=${COMMIT_SHA:0:7}" >> $GITHUB_OUTPUT
+
+      - name: Check CI workflow status
+        id: ci-status
+        run: |
+          echo "Checking CI workflow for latest commit..."
+          WORKFLOW_RUNS=$(gh api \
+            "/repos/${{ github.repository }}/actions/workflows/ci.yml/runs?per_page=5" \
+            --jq '.workflow_runs[] | select(.head_sha == "${{ steps.commit.outputs.sha }}") | {conclusion: .conclusion, status: .status, html_url: .html_url}' \
+            | head -1)
+
+          if [ -z "$WORKFLOW_RUNS" ]; then
+            echo "status=not_found" >> $GITHUB_OUTPUT
+            echo "conclusion=not_found" >> $GITHUB_OUTPUT
+            echo "url=N/A" >> $GITHUB_OUTPUT
+          else
+            echo "status=$(echo $WORKFLOW_RUNS | jq -r '.status')" >> $GITHUB_OUTPUT
+            echo "conclusion=$(echo $WORKFLOW_RUNS | jq -r '.conclusion')" >> $GITHUB_OUTPUT
+            echo "url=$(echo $WORKFLOW_RUNS | jq -r '.html_url')" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Check backend deployment status
+        id: backend-status
+        run: |
+          echo "Checking backend deployment..."
+          WORKFLOW_RUNS=$(gh api \
+            "/repos/${{ github.repository }}/actions/workflows/deploy.yml/runs?per_page=5" \
+            --jq '.workflow_runs[] | select(.head_sha == "${{ steps.commit.outputs.sha }}") | {conclusion: .conclusion, status: .status, html_url: .html_url}' \
+            | head -1)
+
+          if [ -z "$WORKFLOW_RUNS" ]; then
+            echo "status=not_triggered" >> $GITHUB_OUTPUT
+            echo "conclusion=not_triggered" >> $GITHUB_OUTPUT
+            echo "url=N/A" >> $GITHUB_OUTPUT
+          else
+            echo "status=$(echo $WORKFLOW_RUNS | jq -r '.status')" >> $GITHUB_OUTPUT
+            echo "conclusion=$(echo $WORKFLOW_RUNS | jq -r '.conclusion')" >> $GITHUB_OUTPUT
+            echo "url=$(echo $WORKFLOW_RUNS | jq -r '.html_url')" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Check frontend deployment status
+        id: frontend-status
+        run: |
+          echo "Checking frontend deployment..."
+          WORKFLOW_RUNS=$(gh api \
+            "/repos/${{ github.repository }}/actions/workflows/frontend-deploy.yml/runs?per_page=5" \
+            --jq '.workflow_runs[] | select(.head_sha == "${{ steps.commit.outputs.sha }}") | {conclusion: .conclusion, status: .status, html_url: .html_url}' \
+            | head -1)
+
+          if [ -z "$WORKFLOW_RUNS" ]; then
+            echo "status=not_triggered" >> $GITHUB_OUTPUT
+            echo "conclusion=not_triggered" >> $GITHUB_OUTPUT
+            echo "url=N/A" >> $GITHUB_OUTPUT
+          else
+            echo "status=$(echo $WORKFLOW_RUNS | jq -r '.status')" >> $GITHUB_OUTPUT
+            echo "conclusion=$(echo $WORKFLOW_RUNS | jq -r '.conclusion')" >> $GITHUB_OUTPUT
+            echo "url=$(echo $WORKFLOW_RUNS | jq -r '.html_url')" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Get Cloud Run service info
+        id: cloud-run
+        run: |
+          echo "Getting Cloud Run service information..."
+          SERVICE_URL=$(gcloud run services describe $SERVICE_NAME \
+            --region $REGION \
+            --format='value(status.url)' 2>/dev/null || echo "N/A")
+
+          LATEST_REVISION=$(gcloud run services describe $SERVICE_NAME \
+            --region $REGION \
+            --format='value(status.latestReadyRevisionName)' 2>/dev/null || echo "N/A")
+
+          echo "url=$SERVICE_URL" >> $GITHUB_OUTPUT
+          echo "revision=$LATEST_REVISION" >> $GITHUB_OUTPUT
+
+      - name: Check backend health
+        id: backend-health
+        run: |
+          if [ "${{ steps.cloud-run.outputs.url }}" != "N/A" ]; then
+            echo "Checking backend health endpoint..."
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ steps.cloud-run.outputs.url }}/api/health" || echo "000")
+            echo "status=$HTTP_STATUS" >> $GITHUB_OUTPUT
+            if [ "$HTTP_STATUS" = "200" ]; then
+              echo "healthy=true" >> $GITHUB_OUTPUT
+            else
+              echo "healthy=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "status=N/A" >> $GITHUB_OUTPUT
+            echo "healthy=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check live domain
+        id: domain-check
+        run: |
+          DOMAIN="${{ github.event.inputs.domain || 'photo2profit.online' }}"
+          echo "Checking domain: $DOMAIN"
+
+          # Check if domain resolves
+          if host $DOMAIN > /dev/null 2>&1; then
+            echo "resolves=true" >> $GITHUB_OUTPUT
+            
+            # Try to get HTTP status
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN" || echo "000")
+            echo "status=$HTTP_STATUS" >> $GITHUB_OUTPUT
+            
+            if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "301" ] || [ "$HTTP_STATUS" = "302" ]; then
+              echo "accessible=true" >> $GITHUB_OUTPUT
+            else
+              echo "accessible=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "resolves=false" >> $GITHUB_OUTPUT
+            echo "status=N/A" >> $GITHUB_OUTPUT
+            echo "accessible=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check environment variables status
+        id: env-check
+        run: |
+          echo "Checking environment configuration..."
+
+          # Check if required secrets are configured
+          MISSING_SECRETS=""
+
+          if [ -z "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}" ]; then
+            MISSING_SECRETS="${MISSING_SECRETS}- GOOGLE_APPLICATION_CREDENTIALS_JSON\n"
+          fi
+
+          if [ -z "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
+            MISSING_SECRETS="${MISSING_SECRETS}- FIREBASE_SERVICE_ACCOUNT\n"
+          fi
+
+          if [ -z "$MISSING_SECRETS" ]; then
+            echo "all_configured=true" >> $GITHUB_OUTPUT
+            echo "missing=None" >> $GITHUB_OUTPUT
+          else
+            echo "all_configured=false" >> $GITHUB_OUTPUT
+            echo "missing<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$MISSING_SECRETS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate status report
+        id: report
+        run: |
+          cat << 'EOF' > status-report.md
+          # 🚀 Deployment Status Report
+
+          **Generated:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          **Repository:** ${{ github.repository }}
+          **Branch:** ${{ github.ref_name }}
+
+          ---
+
+          ## 📊 Latest Commit
+
+          - **SHA:** ${{ steps.commit.outputs.short_sha }} ([view](${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.commit.outputs.sha }}))
+          - **Author:** ${{ steps.commit.outputs.author }}
+          - **Date:** ${{ steps.commit.outputs.date }}
+          - **Message:** ${{ steps.commit.outputs.message }}
+
+          ---
+
+          ## ✅ GitHub Actions Status
+
+          ### CI Workflow
+          - **Status:** ${{ steps.ci-status.outputs.status }}
+          - **Conclusion:** ${{ steps.ci-status.outputs.conclusion }}
+          - **URL:** ${{ steps.ci-status.outputs.url }}
+          - **Result:** ${{ steps.ci-status.outputs.conclusion == 'success' && '✅ Passed' || steps.ci-status.outputs.conclusion == 'failure' && '❌ Failed' || steps.ci-status.outputs.conclusion == 'not_found' && '⚠️ Not Run' || '⏳ In Progress' }}
+
+          ### Backend Deployment (Cloud Run)
+          - **Status:** ${{ steps.backend-status.outputs.status }}
+          - **Conclusion:** ${{ steps.backend-status.outputs.conclusion }}
+          - **URL:** ${{ steps.backend-status.outputs.url }}
+          - **Result:** ${{ steps.backend-status.outputs.conclusion == 'success' && '✅ Deployed' || steps.backend-status.outputs.conclusion == 'failure' && '❌ Failed' || steps.backend-status.outputs.conclusion == 'not_triggered' && '⚠️ Not Triggered' || '⏳ In Progress' }}
+
+          ### Frontend Deployment (Firebase Hosting)
+          - **Status:** ${{ steps.frontend-status.outputs.status }}
+          - **Conclusion:** ${{ steps.frontend-status.outputs.conclusion }}
+          - **URL:** ${{ steps.frontend-status.outputs.url }}
+          - **Result:** ${{ steps.frontend-status.outputs.conclusion == 'success' && '✅ Deployed' || steps.frontend-status.outputs.conclusion == 'failure' && '❌ Failed' || steps.frontend-status.outputs.conclusion == 'not_triggered' && '⚠️ Not Triggered' || '⏳ In Progress' }}
+
+          ---
+
+          ## 🌐 Live Services Status
+
+          ### Cloud Run API
+          - **URL:** ${{ steps.cloud-run.outputs.url }}
+          - **Latest Revision:** ${{ steps.cloud-run.outputs.revision }}
+          - **Health Check:** ${{ steps.backend-health.outputs.healthy == 'true' && '✅ Healthy (HTTP ' || '❌ Unhealthy (HTTP ' }}${{ steps.backend-health.outputs.status }})
+
+          ### Production Domain
+          - **Domain:** ${{ github.event.inputs.domain || 'photo2profit.online' }}
+          - **DNS Resolution:** ${{ steps.domain-check.outputs.resolves == 'true' && '✅ Resolving' || '❌ Not Resolving' }}
+          - **HTTP Status:** ${{ steps.domain-check.outputs.status }}
+          - **Accessible:** ${{ steps.domain-check.outputs.accessible == 'true' && '✅ Yes' || '❌ No' }}
+
+          ---
+
+          ## 🔐 Environment Variables & Secrets
+
+          - **Configuration Status:** ${{ steps.env-check.outputs.all_configured == 'true' && '✅ All Required Secrets Configured' || '⚠️ Missing Required Secrets' }}
+
+          ${{ steps.env-check.outputs.all_configured == 'false' && format('**Missing Secrets:**\n{0}', steps.env-check.outputs.missing) || '' }}
+
+          ---
+
+          ## 📋 Summary
+
+          ${{ steps.ci-status.outputs.conclusion == 'success' && steps.backend-health.outputs.healthy == 'true' && steps.domain-check.outputs.accessible == 'true' && '✅ **All systems operational!** Latest commit has been successfully deployed and is live.' || '⚠️ **Issues detected.** Please review the status above and take appropriate action.' }}
+
+          ---
+
+          **Need to trigger a manual deployment?**
+          - Backend: [Trigger Cloud Run Deploy](${{ github.server_url }}/${{ github.repository }}/actions/workflows/deploy.yml)
+          - Frontend: [Trigger Firebase Deploy](${{ github.server_url }}/${{ github.repository }}/actions/workflows/frontend-deploy.yml)
+
+          EOF
+
+          cat status-report.md
+
+      - name: Post comment on issue (if triggered from issue)
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('status-report.md', 'utf8');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: report
+            });
+
+      - name: Upload status report
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-status-report
+          path: status-report.md
+
+      - name: Display summary
+        run: |
+          cat status-report.md >> $GITHUB_STEP_SUMMARY

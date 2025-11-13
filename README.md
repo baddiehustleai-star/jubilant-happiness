@@ -96,6 +96,15 @@ Deploy your frontend with **Vercel** or **Firebase Hosting**:
 
 Your weekly scheduler runs automatically from Firebase Cloud Functions.
 
+### 🚀 Deployment Status Check
+
+Verify your deployment status anytime:
+
+- **Automated:** Trigger the [Deployment Status Check workflow](../../actions/workflows/deployment-status.yml) or comment `@github-actions deployment status` on any issue
+- **Manual:** See [DEPLOYMENT-STATUS.md](./DEPLOYMENT-STATUS.md) for detailed verification steps
+
+For full deployment documentation, see [README-DEPLOY.md](./README-DEPLOY.md).
+
 ---
 
 ## 🧩 Cross-Posting Supported Platforms

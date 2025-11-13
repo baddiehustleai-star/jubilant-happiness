@@ -1,5 +1,7 @@
 # 🚀 Deployment Status Check Guide
 
+> **👋 New User?** Check out the [User-Friendly Guide](./DEPLOYMENT-STATUS-GUIDE.md) for a quick start!
+
 This guide explains how to check the deployment status of `photo2profit.online` and verify that your latest changes have been deployed successfully.
 
 ## Quick Status Check

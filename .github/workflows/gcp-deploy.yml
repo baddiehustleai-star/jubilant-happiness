@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write # Required for Workload Identity Federation
 
     steps:
       - name: Checkout code
@@ -23,7 +24,11 @@ jobs:
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          # Workload Identity Federation (recommended):
+          workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.GCP_WORKLOAD_IDENTITY_POOL }}/providers/${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}'
+          # Alternative: Service Account Key JSON (less secure, consider Workload Identity Federation):
+          # credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
@@ -75,8 +80,16 @@ jobs:
           echo "   - GKE: kubectl apply"
           echo "   - Cloud Storage: gsutil rsync"
           echo ""
-          echo "🔑 Required GitHub Secret: GCP_SA_KEY"
-          echo "   Add your GCP service account JSON key in:"
+          echo "🔑 Required GitHub Secrets for Workload Identity Federation (Recommended):"
+          echo "   - GCP_PROJECT_NUMBER: Your GCP project number"
+          echo "   - GCP_WORKLOAD_IDENTITY_POOL: Workload Identity Pool name"
+          echo "   - GCP_WORKLOAD_IDENTITY_PROVIDER: Workload Identity Provider name"
+          echo "   - GCP_SERVICE_ACCOUNT_EMAIL: Service account email"
+          echo ""
+          echo "🔑 Alternative: Service Account Key JSON (Less Secure):"
+          echo "   - GCP_SA_KEY: Service account JSON key"
+          echo ""
+          echo "   Add these secrets in:"
           echo "   Settings → Secrets and variables → Actions → New repository secret"
 
       - name: Verify gcloud configuration

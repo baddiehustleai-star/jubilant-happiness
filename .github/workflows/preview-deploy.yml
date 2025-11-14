@@ -1,0 +1,131 @@
+name: Preview Deployment
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'vite.config.js'
+      - 'package.json'
+
+env:
+  PROJECT_ID: photo2profitbaddie
+  REGION: us-west2
+  SERVICE_NAME: photo2profit-api
+
+jobs:
+  preview:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set up Google Cloud SDK (for fetching Cloud Run URL)
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+
+      - name: Get Cloud Run API URL
+        id: get-url
+        run: |
+          API_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --region ${{ env.REGION }} \
+            --format='value(status.url)')
+          echo "API_URL=$API_URL" >> $GITHUB_ENV
+          echo "✅ Found API URL: $API_URL"
+
+      - name: Create preview .env
+        run: |
+          echo "VITE_API_BASE_URL=${{ env.API_URL }}" > .env.production
+          echo "NODE_ENV=production" >> .env.production
+          cat .env.production
+
+      - name: Build production site
+        run: npm run build
+
+      - name: Deploy to Firebase Preview Channel
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        id: firebase-preview
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: photo2profitbaddie
+          expires: 7d
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
+
+      - name: Comment PR with Preview URL
+        uses: actions/github-script@v7
+        if: success()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const previewUrl = '${{ steps.firebase-preview.outputs.details_url }}';
+            const expireTime = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString();
+            
+            const comment = `## 🚀 Preview Deployment Ready!
+
+            ✅ Your preview deployment is ready at:
+            
+            🔗 **Preview URL:** ${previewUrl}
+            
+            📅 **Expires:** ${expireTime} (7 days)
+            
+            ### What's included:
+            - 🎨 Latest UI changes from this PR
+            - 🔌 Connected to production API (\`api.photo2profit.app\`)
+            - 🔒 HTTPS enabled
+            
+            ### How to test:
+            1. Click the preview URL above
+            2. Test your changes thoroughly
+            3. Check console for any errors
+            4. Verify API connectivity
+            
+            ---
+            
+            💡 **Tip:** This preview will automatically expire in 7 days. A new preview will be created for each new commit to this PR.`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Update check status
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure';
+            const previewUrl = '${{ steps.firebase-preview.outputs.details_url }}' || 'Not available';
+            
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Preview Deployment',
+              head_sha: context.payload.pull_request.head.sha,
+              status: 'completed',
+              conclusion: conclusion,
+              output: {
+                title: conclusion === 'success' ? '✅ Preview deployed successfully' : '❌ Preview deployment failed',
+                summary: conclusion === 'success' 
+                  ? `Preview URL: ${previewUrl}`
+                  : 'Failed to deploy preview. Check logs for details.'
+              }
+            });

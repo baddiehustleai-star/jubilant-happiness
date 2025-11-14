@@ -139,15 +139,48 @@ Visit: **[http://localhost:5173](http://localhost:5173)**
 
 ---
 
-## 🌐 Deployment
+## 🌐 Deployment Architecture
 
-Deploy your frontend with **Vercel** or **Firebase Hosting**:
+Photo2Profit uses a modern subdomain-based deployment architecture:
 
-- Connect your GitHub repo
-- Add your `.env` variables
-- Deploy the main branch
+### Production URLs
 
-Your weekly scheduler runs automatically from Firebase Cloud Functions.
+| Component | URL | Platform | Description |
+|-----------|-----|----------|-------------|
+| **Frontend** | [`photo2profit.app`](https://photo2profit.app) | Firebase Hosting | React app served via global CDN |
+| **Backend API** | [`api.photo2profit.app`](https://api.photo2profit.app) | Google Cloud Run | Serverless Node.js API |
+
+### Automated Deployments
+
+The repository includes GitHub Actions workflows for continuous deployment:
+
+- **Frontend**: Deploys to Firebase Hosting on changes to `src/**`, `public/**`
+- **Backend**: Deploys to Cloud Run on changes to `api/**`
+
+Both deployments:
+- ✅ Run automatically on push to `main` branch
+- ✅ Include health checks and verification
+- ✅ Support HTTPS with automatic SSL certificates
+- ✅ Feature optional Slack notifications
+
+### Quick Deploy
+
+1. **Push to main branch** - Automatic deployment via GitHub Actions
+2. **Manual deployment**:
+   ```bash
+   # Frontend (Firebase Hosting)
+   npm run build
+   firebase deploy --only hosting
+   
+   # Backend (Cloud Run)
+   gcloud run deploy photo2profit-api --source . --region us-west2
+   ```
+
+### Setup Guides
+
+- **Firebase Hosting**: See [FIREBASE-SETUP.md](./FIREBASE-SETUP.md) for detailed setup
+- **Cloud Run Backend**: See [README-DEPLOY.md](./README-DEPLOY.md) for backend configuration
+- **DNS Configuration**: See deployment guides for subdomain DNS setup
 
 ### 🚀 Deployment Status Check
 
@@ -155,8 +188,6 @@ Verify your deployment status anytime:
 
 - **Automated:** Trigger the [Deployment Status Check workflow](../../actions/workflows/deployment-status.yml) or comment `@github-actions deployment status` on any issue
 - **Manual:** See [DEPLOYMENT-STATUS.md](./DEPLOYMENT-STATUS.md) for detailed verification steps
-
-For full deployment documentation, see [README-DEPLOY.md](./README-DEPLOY.md).
 
 ---
 

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>500 - Server Error | Photo2Profit</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #FAF6F2 0%, #B76E79 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        color: #3D2B2B;
+      }
+      
+      .container {
+        text-align: center;
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+      }
+      
+      .error-code {
+        font-family: 'Cinzel Decorative', serif;
+        font-size: 8rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #B76E79, #E6A4A4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+      }
+      
+      h1 {
+        font-family: 'Cinzel Decorative', serif;
+        color: #B76E79;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      
+      p {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+      
+      .btn {
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #B76E79, #E6A4A4);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(183, 110, 121, 0.3);
+      }
+      
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(183, 110, 121, 0.4);
+      }
+      
+      .status {
+        margin-top: 2rem;
+        padding: 1rem;
+        background: #FFF5F5;
+        border-left: 4px solid #E6A4A4;
+        border-radius: 8px;
+        text-align: left;
+      }
+      
+      .status h3 {
+        color: #B76E79;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+      
+      .status p {
+        font-size: 0.9rem;
+        margin: 0;
+      }
+      
+      .links {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+      }
+      
+      .links a {
+        color: #B76E79;
+        text-decoration: none;
+        margin: 0 1rem;
+        transition: color 0.3s ease;
+      }
+      
+      .links a:hover {
+        color: #E6A4A4;
+      }
+      
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="error-code">500</div>
+      <h1>Server Error</h1>
+      <p>
+        Something went wrong on our end. Our team has been notified and is working on fixing the issue.
+        Please try again in a few moments.
+      </p>
+      <a href="/" class="btn">Return Home</a>
+      
+      <div class="status">
+        <h3>What can you do?</h3>
+        <p>
+          • Try refreshing the page<br>
+          • Check our <a href="https://api.photo2profit.app/api/health" style="color: #B76E79;">API status</a><br>
+          • Contact <a href="mailto:support@photo2profit.app" style="color: #B76E79;">support@photo2profit.app</a> if the issue persists
+        </p>
+      </div>
+      
+      <div class="links">
+        <a href="/">Home</a>
+        <a href="https://api.photo2profit.app/api/health">API Status</a>
+        <a href="mailto:support@photo2profit.app">Support</a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,6 +1,17 @@
 # 🚀 Deployment Status Check Guide
 
-This guide explains how to check the deployment status of `photo2profit.online` and verify that your latest changes have been deployed successfully.
+This guide explains how to check the deployment status of Photo2Profit and verify that your latest changes have been deployed successfully.
+
+## 🌐 Deployment Architecture
+
+Photo2Profit uses a subdomain-based architecture for clean separation:
+
+| Component | URL | Platform | Purpose |
+|-----------|-----|----------|---------|
+| **Frontend** | `photo2profit.app` | Firebase Hosting | React/Vite static site served via global CDN |
+| **Backend API** | `api.photo2profit.app` | Google Cloud Run | Node.js serverless API endpoints |
+
+Both domains are secured with automatic HTTPS and SSL certificates.
 
 ## Quick Status Check
 
@@ -28,7 +39,7 @@ Trigger the automated deployment status check workflow:
 1. **Via GitHub UI:**
    - Navigate to [Actions → Deployment Status Check](../../actions/workflows/deployment-status.yml)
    - Click "Run workflow"
-   - Optionally specify a custom domain (defaults to `photo2profit.online`)
+   - Optionally specify a custom domain (defaults to `photo2profit.app`)
    - Click "Run workflow" button
 
 2. **Via Issue Comment:**
@@ -54,7 +65,7 @@ Verify all workflows are passing:
 
 ```bash
 # Check API health
-curl https://YOUR-CLOUD-RUN-URL/api/health
+curl https://api.photo2profit.app/api/health
 
 # Expected response: {"status": "ok"}
 ```
@@ -63,7 +74,7 @@ curl https://YOUR-CLOUD-RUN-URL/api/health
 
 ```bash
 # Check if site is accessible
-curl -I https://photo2profit.online
+curl -I https://photo2profit.app
 
 # Expected: HTTP 200 OK
 ```

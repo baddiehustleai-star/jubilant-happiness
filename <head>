@@ -1,10 +1,13 @@
 <!doctype html>
 <html lang="en">
   <head>
+<Analytics />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Photo2Profit 💎</title>
-
+import { Analytics } from '@vercel/analytics/react';
+// ...
+<Analytics />
     <!-- Google Analytics 4 (replace G-XXXXXXX) -->
     <!-- Paste your GA4 measurement ID into the src below -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>

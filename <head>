@@ -5,9 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Photo2Profit 💎</title>
-import { Analytics } from '@vercel/analytics/react';
-// ...
-<Analytics />
+<!-- Vercel Web Analytics -->
+<script defer src="https://vercel.com/analytics/script.js"></script>
     <!-- Google Analytics 4 (replace G-XXXXXXX) -->
     <!-- Paste your GA4 measurement ID into the src below -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>

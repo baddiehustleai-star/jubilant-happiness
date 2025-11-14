@@ -1,56 +1,58 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Photo2Profit 💎</title>
+Here’s your corrected `<head>` section for your HTML file, ready to use.  
+**Just follow these steps:**  
+- Replace all instances of `G-XXXXXXXXXX` with your real GA4 ID (example: `G-7ABC123XYZ`).  
+- Remove any stray code outside the `<head></head>` tags (like the last line in your original paste).
 
-    <!-- ✅ Vercel Web Analytics -->
-    <script defer src="https://vercel.com/analytics/script.js"></script>
+**Cleaned & Correct Example:**
 
-    <!-- ✅ Google Analytics 4 (optional: update your ID) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX'); // Replace with your actual GA4 ID
-    </script>
+```html
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo2Profit 💎</title>
 
-    <!-- ✅ Sentry (optional: crash reporting) -->
-    <script>
-      const SENTRY_DSN = 'REPLACE_WITH_SENTRY_DSN'; // Optional
-      if (SENTRY_DSN && SENTRY_DSN !== 'REPLACE_WITH_SENTRY_DSN') {
-        (function (c, o, n, s, e, r) {
-          c.Sentry = e;
-          c[e] =
-            c[e] ||
-            function () {
-              (c[e].q = c[e].q || []).push(arguments);
-            };
-          var d = o.createElement(n),
-            f = o.getElementsByTagName(n)[0];
-          d.async = 1;
-          d.src = s;
-          f.parentNode.insertBefore(d, f);
-        })(
-          window,
-          document,
-          'script',
-          'https://browser.sentry-cdn.com/7.59.0/bundle.tracing.min.js',
-          'Sentry'
-        );
-        Sentry.init({
-          dsn: SENTRY_DSN,
-          integrations: [new Sentry.BrowserTracing()],
-          tracesSampleRate: 1.0,
-        });
-      }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
-</html>
+  <!-- ✅ Vercel Web Analytics -->
+  <script defer src="https://vercel.com/analytics/script.js"></script>
+
+  <!-- ✅ Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ABC123XYZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-7ABC123XYZ'); // ✅ Your real GA4 ID goes here
+  </script>
+
+  <!-- ✅ Sentry (optional: crash reporting) -->
+  <script>
+    const SENTRY_DSN = 'REPLACE_WITH_SENTRY_DSN'; // Optional
+    if (SENTRY_DSN && SENTRY_DSN !== 'REPLACE_WITH_SENTRY_DSN') {
+      (function (c, o, n, s, e, r) {
+        c.Sentry = e;
+        c[e] =
+          c[e] ||
+          function () {
+            (c[e].q = c[e].q || []).push(arguments);
+          };
+        var d = o.createElement(n),
+          f = o.getElementsByTagName(n)[0];
+        d.async = 1;
+        d.src = s;
+        f.parentNode.insertBefore(d, f);
+      })(
+        window,
+        document,
+        'script',
+        'https://browser.sentry-cdn.com/7.59.0/bundle.tracing.min.js',
+        'Sentry'
+      );
+      Sentry.init({
+        dsn: SENTRY_DSN,
+        integrations: [new Sentry.BrowserTracing()],
+        tracesSampleRate: 1.0,
+      });
+    }
+  </script>
+</head>

@@ -1,11 +1,5 @@
-Here’s your corrected `<head>` section for your HTML file, ready to use.  
-**Just follow these steps:**  
-- Replace all instances of `G-XXXXXXXXXX` with your real GA4 ID (example: `G-7ABC123XYZ`).  
-- Remove any stray code outside the `<head></head>` tags (like the last line in your original paste).
-
-**Cleaned & Correct Example:**
-
-```html
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -1,0 +1,6 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" rx="20" fill="#FAF6F2"/>
+  <circle cx="96" cy="80" r="30" fill="#E6A4A4"/>
+  <path d="M66 110 L96 140 L126 110" stroke="#B76E79" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="96" y="170" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#3D2B2B" text-anchor="middle">P2P 💎</text>
+</svg>

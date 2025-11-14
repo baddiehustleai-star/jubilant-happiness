@@ -29,8 +29,8 @@ export default [
     },
   },
   {
-    // Node.js environment for scripts and api directories
-    files: ['scripts/**/*.js', 'api/**/*.js'],
+    // Node.js environment for scripts, api directories, and server.js
+    files: ['scripts/**/*.js', 'api/**/*.js', 'server.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',

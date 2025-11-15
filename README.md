@@ -86,6 +86,24 @@ SENDGRID_API_KEY=
 
 For automated deployments to work correctly, the following secrets **must** be configured in your GitHub repository settings (Settings → Secrets and variables → Actions):
 
+### Authentication Method 1: Workload Identity Federation (Recommended)
+
+This is the more secure authentication method that eliminates the need for long-lived service account keys.
+
+| Secret Name                           | Required    | Purpose                                 | Where to Get It                                                                   |
+| ------------------------------------- | ----------- | --------------------------------------- | --------------------------------------------------------------------------------- |
+| `GCP_PROJECT_NUMBER`                  | ✅ Yes      | Your GCP project number                 | Google Cloud Console → Project Dashboard → Project Info                           |
+| `GCP_WORKLOAD_IDENTITY_POOL`          | ✅ Yes      | Workload Identity Pool name             | Google Cloud Console → IAM & Admin → Workload Identity Federation                 |
+| `GCP_WORKLOAD_IDENTITY_PROVIDER`      | ✅ Yes      | Workload Identity Provider name         | Google Cloud Console → IAM & Admin → Workload Identity Federation                 |
+| `GCP_SERVICE_ACCOUNT_EMAIL`           | ✅ Yes      | Service account email address           | Google Cloud Console → IAM & Admin → Service Accounts                             |
+| `FIREBASE_SERVICE_ACCOUNT`            | ✅ Yes      | Deploys frontend to Firebase Hosting    | Firebase Console → Project Settings → Service Accounts → Generate new private key |
+| `SLACK_WEBHOOK_URL`                   | ⚠️ Optional | Sends deployment notifications to Slack | Slack App settings → Incoming Webhooks                                            |
+| `CRON_SECRET`                         | ⚠️ Optional | Secures the SEO refresh endpoint        | Generate a random string (e.g., `openssl rand -hex 32`)                           |
+
+### Authentication Method 2: Service Account Key JSON (Alternative, Less Secure)
+
+If you cannot use Workload Identity Federation, you can fall back to using service account keys:
+
 | Secret Name                           | Required    | Purpose                                 | Where to Get It                                                                   |
 | ------------------------------------- | ----------- | --------------------------------------- | --------------------------------------------------------------------------------- |
 | `GOOGLE_APPLICATION_CREDENTIALS_JSON` | ✅ Yes      | Authenticates Cloud Run deployments     | Google Cloud Console → IAM & Admin → Service Accounts → Create key (JSON format)  |
@@ -93,14 +111,20 @@ For automated deployments to work correctly, the following secrets **must** be c
 | `SLACK_WEBHOOK_URL`                   | ⚠️ Optional | Sends deployment notifications to Slack | Slack App settings → Incoming Webhooks                                            |
 | `CRON_SECRET`                         | ⚠️ Optional | Secures the SEO refresh endpoint        | Generate a random string (e.g., `openssl rand -hex 32`)                           |
 
+**Note:** Workload Identity Federation is the recommended method as it provides better security by eliminating the need to manage and rotate long-lived service account keys.
+
 ### Validating Your Secrets
 
 Before merging to main, verify all required secrets are set:
 
 1. Go to your repository on GitHub
 2. Navigate to **Settings** → **Secrets and variables** → **Actions**
-3. Confirm both `GOOGLE_APPLICATION_CREDENTIALS_JSON` and `FIREBASE_SERVICE_ACCOUNT` exist
-4. Optionally add `SLACK_WEBHOOK_URL` and `CRON_SECRET` for enhanced features
+3. **For Workload Identity Federation (Recommended):**
+   - Confirm `GCP_PROJECT_NUMBER`, `GCP_WORKLOAD_IDENTITY_POOL`, `GCP_WORKLOAD_IDENTITY_PROVIDER`, and `GCP_SERVICE_ACCOUNT_EMAIL` exist
+   - Confirm `FIREBASE_SERVICE_ACCOUNT` exists
+4. **For Service Account Key JSON (Alternative):**
+   - Confirm `GOOGLE_APPLICATION_CREDENTIALS_JSON` and `FIREBASE_SERVICE_ACCOUNT` exist
+5. Optionally add `SLACK_WEBHOOK_URL` and `CRON_SECRET` for enhanced features
 
 ### Testing Deployment
 

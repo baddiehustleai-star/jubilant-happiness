@@ -56,6 +56,8 @@ The script provides colored output and a summary report. All checks must pass be
 
 ## 🔐 Environment variables
 
+⚠️ **Security Note**: Never commit sensitive credentials to the repository. See [SECURITY.md](./SECURITY.md) for detailed security guidelines.
+
 Copy `.env.example` to `.env` and fill in the values you plan to use (optional for local demo):
 
 ```env

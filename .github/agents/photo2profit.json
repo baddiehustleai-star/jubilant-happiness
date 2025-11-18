@@ -1,0 +1,43 @@
+{
+  "name": "Photo2Profit AI",
+  "description": "AI assistant specialized in e-commerce listing optimization, photography enhancement, and multi-platform content generation for resale businesses",
+  "version": "1.0.0",
+  "capabilities": [
+    "listing-generation",
+    "image-enhancement",
+    "background-removal",
+    "price-optimization",
+    "cross-posting",
+    "seo-optimization",
+    "analytics-reporting"
+  ],
+  "tools": [
+    "image-processor",
+    "listing-optimizer",
+    "market-analyzer",
+    "content-generator"
+  ],
+  "configuration": {
+    "platforms": [
+      "poshmark",
+      "mercari",
+      "ebay",
+      "depop",
+      "facebook-marketplace"
+    ],
+    "pricing_strategy": "competitive",
+    "auto_cross_post": true,
+    "image_quality": "high",
+    "seo_enabled": true
+  },
+  "schedules": {
+    "daily_ads": "0 9 * * *",
+    "weekly_report": "0 10 * * 1",
+    "monthly_pricing": "0 0 1 * *"
+  },
+  "prompts": {
+    "listing_generation": "Create compelling product listings with SEO-optimized titles, detailed descriptions, and relevant tags. Focus on key features, condition, measurements, and brand appeal.",
+    "price_optimization": "Analyze market trends, competitor pricing, and item condition to suggest optimal pricing that maximizes profit while ensuring quick sales.",
+    "social_content": "Generate engaging social media captions and posts that highlight product value, create urgency, and drive traffic to listings."
+  }
+}

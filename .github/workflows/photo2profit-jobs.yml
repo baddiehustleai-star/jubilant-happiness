@@ -1,0 +1,132 @@
+name: Photo2Profit Automation
+
+on:
+  schedule:
+    # Daily ads at 9 AM UTC
+    - cron: '0 9 * * *'
+    # Weekly report every Monday at 10 AM UTC
+    - cron: '0 10 * * 1'
+    # Monthly pricing refresh on the 1st at midnight UTC
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+    inputs:
+      job_type:
+        description: 'Type of job to run'
+        required: true
+        type: choice
+        options:
+          - daily-ads
+          - weekly-report
+          - monthly-pricing
+          - all
+
+jobs:
+  daily-ads:
+    name: Generate Daily Ads
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    if: github.event.schedule == '0 9 * * *' || github.event.inputs.job_type == 'daily-ads' || github.event.inputs.job_type == 'all'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate daily ads and social posts
+        run: node scripts/generate-daily-ads.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload ad artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-ads-${{ github.run_number }}
+          path: output/daily-ads/
+          retention-days: 30
+
+  weekly-report:
+    name: Generate Weekly Report
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    if: github.event.schedule == '0 10 * * 1' || github.event.inputs.job_type == 'weekly-report' || github.event.inputs.job_type == 'all'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate weekly analytics report
+        run: node scripts/generate-weekly-report.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload report artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-report-${{ github.run_number }}
+          path: output/reports/
+          retention-days: 90
+
+  monthly-pricing:
+    name: Monthly Pricing Refresh
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    if: github.event.schedule == '0 0 1 * *' || github.event.inputs.job_type == 'monthly-pricing' || github.event.inputs.job_type == 'all'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh pricing data
+        run: node scripts/monthly-pricing-refresh.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload pricing data
+        uses: actions/upload-artifact@v4
+        with:
+          name: pricing-refresh-${{ github.run_number }}
+          path: output/pricing/
+          retention-days: 90
+
+      - name: Create pricing update PR
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: monthly pricing refresh'
+          title: 'Monthly Pricing Update - ${{ github.run_number }}'
+          body: |
+            Automated monthly pricing refresh completed.
+            
+            This PR contains updated pricing data based on current market analysis.
+            
+            Please review the changes before merging.
+          branch: pricing-update-${{ github.run_number }}
+          delete-branch: true

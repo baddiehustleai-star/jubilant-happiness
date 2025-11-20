@@ -141,7 +141,18 @@ Visit: **[http://localhost:5173](http://localhost:5173)**
 
 ## 🌐 Deployment
 
-Deploy your frontend with **Vercel** or **Firebase Hosting**:
+This project includes automated deployment workflows for:
+
+- **Backend**: Google Cloud Run (via `.github/workflows/deploy.yml`)
+- **Frontend**: Firebase Hosting (via `.github/workflows/frontend-deploy.yml`)
+
+### Prerequisites
+
+Before automated deployments work, you need to set up service accounts and GitHub secrets. See **[SERVICE_ACCOUNT_SETUP.md](./SERVICE_ACCOUNT_SETUP.md)** for detailed instructions.
+
+### Manual Deployment
+
+Alternatively, deploy your frontend with **Vercel** or **Firebase Hosting**:
 
 - Connect your GitHub repo
 - Add your `.env` variables

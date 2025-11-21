@@ -16,6 +16,7 @@ try {
   });
 } catch (error) {
   // App already initialized
+  console.log('Firebase initialization:', error.message);
   app = initializeApp();
 }
 
@@ -78,6 +79,8 @@ export default async function handler(req, res) {
 async function handleCheckoutCompleted(session) {
   const userId = session.metadata?.userId;
   const planType = session.metadata?.planType || 'subscription';
+
+  console.log('Processing checkout for plan:', planType);
 
   if (!userId || userId === 'anonymous') {
     console.log('No user ID in checkout session metadata');

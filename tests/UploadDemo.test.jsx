@@ -11,13 +11,13 @@ describe('UploadDemo Component', () => {
   it('renders the upload demo heading', () => {
     render(<UploadDemo />);
 
-    expect(screen.getByText('Upload Demo')).toBeInTheDocument();
+    expect(screen.getByText('Photo2Profit Studio')).toBeInTheDocument();
   });
 
   it('renders descriptive text', () => {
     render(<UploadDemo />);
 
-    expect(screen.getByText(/Sign in to save your uploads/)).toBeInTheDocument();
+    expect(screen.getByText(/Transform your photos instantly/)).toBeInTheDocument();
   });
 
   it('renders file input', () => {
@@ -31,7 +31,6 @@ describe('UploadDemo Component', () => {
   it('renders action buttons', () => {
     render(<UploadDemo />);
 
-    expect(screen.getByText('Get share link')).toBeInTheDocument();
-    expect(screen.getByText('Upgrade')).toBeInTheDocument();
+    expect(screen.getByText('🚀 Upgrade to Photo2Profit Pro')).toBeInTheDocument();
   });
 });

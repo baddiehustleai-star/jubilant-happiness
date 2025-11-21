@@ -45,7 +45,7 @@ class RemoveBgService {
   }
 
   /**
-   * Remove background from image file
+   * Remove background from an image file
    * @param {File} imageFile - The image file to process
    * @param {Object} options - Processing options
    */
@@ -62,6 +62,52 @@ class RemoveBgService {
 
     const startTime = performance.now();
 
+    // Try server-side API first, fallback to client-side
+    try {
+      return await this.removeBackgroundServerSide(imageFile, options, startTime);
+    } catch (serverError) {
+      console.warn('Server-side processing failed, trying client-side:', serverError.message);
+      return await this.removeBackgroundClientSide(imageFile, options, startTime);
+    }
+  }
+
+  /**
+   * Remove background using server-side API
+   */
+  async removeBackgroundServerSide(imageFile, options = {}, startTime) {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const response = await fetch('/api/images/remove-background', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `Server error: ${response.status}`);
+    }
+
+    const blob = await response.blob();
+    const processingTime = performance.now() - startTime;
+
+    // Track analytics
+    analytics.track('background_removed', {
+      file_size: imageFile.size,
+      file_type: imageFile.type,
+      processing_time: processingTime,
+      output_size: blob.size,
+      method: 'server',
+      options: options,
+    });
+
+    return blob;
+  }
+
+  /**
+   * Remove background using client-side API call
+   */
+  async removeBackgroundClientSide(imageFile, options = {}, startTime) {
     try {
       const formData = new FormData();
       formData.append('image_file', imageFile);

@@ -1,15 +1,26 @@
 /* eslint-env browser */
-/* global URL, Image, fetch */
 import React, { useState } from 'react';
 import { createCheckout } from '../lib/stripe';
+import { usePageTracking, useAnalytics, useErrorTracking } from '../hooks/useAnalytics.js';
+import { removeBgService } from '../services/removebg.js';
 
 export default function UploadDemo() {
   const [preview, setPreview] = useState(null);
+  const [processedImage, setProcessedImage] = useState(null);
   const [message, setMessage] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { trackInteraction, trackFileUpload } = useAnalytics();
+  const { captureError } = useErrorTracking();
+
+  // Track page view
+  usePageTracking('upload_demo');
 
   async function handleFile(e) {
     const f = e.target.files[0];
     if (!f) return;
+
+    // Track file upload
+    trackFileUpload(f.type, f.size);
     setMessage('Generating preview...');
 
     // Simple client-side preview: createObjectURL + attempt simple canvas resize to webp
@@ -32,11 +43,53 @@ export default function UploadDemo() {
       setMessage('Preview ready (optimized)');
     } catch (err) {
       console.warn('Preview optimization failed', err);
+      captureError(err, { context: 'file_preview_optimization' });
       setMessage('Preview ready (original)');
     }
   }
 
+  async function handleRemoveBackground() {
+    if (!preview) return;
+
+    setIsProcessing(true);
+    setMessage('Removing background...');
+
+    try {
+      // Convert data URL to blob if needed
+      let blob;
+      if (preview.startsWith('data:')) {
+        const response = await fetch(preview);
+        blob = await response.blob();
+      } else {
+        const response = await fetch(preview);
+        blob = await response.blob();
+      }
+
+      // Create file from blob
+      const file = new File([blob], 'image.jpg', { type: blob.type });
+
+      if (!removeBgService.isConfigured()) {
+        throw new Error('Background removal service not configured');
+      }
+
+      const result = await removeBgService.removeBackground(file);
+      const processedUrl = URL.createObjectURL(result);
+
+      setProcessedImage(processedUrl);
+      setMessage('Background removed successfully!');
+      trackInteraction('background_removal', 'success');
+    } catch (error) {
+      console.error('Background removal failed:', error);
+      captureError(error, { context: 'background_removal' });
+      setMessage(`Background removal failed: ${error.message}`);
+      trackInteraction('background_removal', 'error');
+    } finally {
+      setIsProcessing(false);
+    }
+  }
+
   function handleShare() {
+    trackInteraction('share_button', 'click');
     setMessage('Shareable link: (demo) paste image into your app or upload to a server.');
   }
 
@@ -55,12 +108,36 @@ export default function UploadDemo() {
       {message && <div className="mb-4 text-sm text-gray-700">{message}</div>}
 
       {preview && (
-        <div className="mb-4">
-          <img src={preview} alt="preview" className="rounded shadow max-w-full h-auto" />
+        <div className="mb-4 space-y-4">
+          <div>
+            <h3 className="text-lg font-medium mb-2">Original Image</h3>
+            <img src={preview} alt="preview" className="rounded shadow max-w-full h-auto" />
+          </div>
+
+          {processedImage && (
+            <div>
+              <h3 className="text-lg font-medium mb-2">Background Removed</h3>
+              <img
+                src={processedImage}
+                alt="processed"
+                className="rounded shadow max-w-full h-auto"
+              />
+            </div>
+          )}
         </div>
       )}
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
+        {preview && (
+          <button
+            className="cta bg-rose hover:bg-rose-dark"
+            onClick={handleRemoveBackground}
+            disabled={isProcessing}
+          >
+            {isProcessing ? 'Removing Background...' : 'Remove Background'}
+          </button>
+        )}
+
         <button className="cta" onClick={handleShare}>
           Get share link
         </button>

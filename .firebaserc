@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "photo2profit-prod",
+    "production": "photo2profit-prod",
+    "staging": "photo2profit-staging"
+  },
+  "targets": {
+    "photo2profit-prod": {
+      "hosting": {
+        "web": [
+          "photo2profit-web"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

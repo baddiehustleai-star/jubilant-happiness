@@ -20,7 +20,7 @@ describe('Landing Component', () => {
 
     const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent('PHOTO2PROFIT');
+    expect(heading).toHaveTextContent('Photo2Profit');
   });
 
   it('displays the logo image', () => {
@@ -34,7 +34,7 @@ describe('Landing Component', () => {
   it('shows the description text', () => {
     render(<Landing />);
 
-    const description = screen.getByText(/Turn your photos into profit/i);
+    const description = screen.getByText(/Transform Your Photos Into Profit/i);
     expect(description).toBeInTheDocument();
   });
 

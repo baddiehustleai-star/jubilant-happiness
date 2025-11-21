@@ -6,21 +6,33 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        blush: '#FAF6F2',
+        // Static fallback colors (Photo2Profit rose-gold theme)
+        blush: '#F5E6D3',
         rose: {
           light: '#FCE9E9',
-          DEFAULT: '#E6A4A4',
+          DEFAULT: '#E8B4B8',
           dark: '#B76E79',
         },
         gold: {
           soft: '#FBE8C4',
-          DEFAULT: '#F5C26B',
+          DEFAULT: '#D4A574',
         },
-        dark: '#3D2B2B',
+        dark: '#2D3748',
+
+        // Dynamic CSS custom property colors for branding API
+        'brand-primary': 'var(--color-primary, #E8B4B8)',
+        'brand-secondary': 'var(--color-secondary, #F5E6D3)',
+        'brand-accent': 'var(--color-accent, #D4A574)',
+        'brand-dark': 'var(--color-dark, #2D3748)',
+        'brand-light': 'var(--color-light, #FFFFFF)',
       },
       fontFamily: {
-        diamond: ["'Cinzel Decorative'", 'serif'],
-        sans: ["'Montserrat'", 'sans-serif'],
+        diamond: ["'Playfair Display'", 'serif'],
+        sans: ["'Inter'", 'sans-serif'],
+
+        // Dynamic font families from branding API
+        'brand-heading': 'var(--font-heading, "Playfair Display", serif)',
+        'brand-body': 'var(--font-body, "Inter", sans-serif)',
       },
     },
   },

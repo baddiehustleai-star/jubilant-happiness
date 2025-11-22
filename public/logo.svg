@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <!-- Rose Gold Gradient -->
+    <linearGradient id="roseGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8B4B8;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D4A574;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F5C26B;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Champagne Foil Gradient -->
+    <radialGradient id="champagneFoil" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#F5E6D3;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FBE8C4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4A574;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- Rose Quartz Gradient for Lens -->
+    <radialGradient id="roseQuartz" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FCE9E9;stop-opacity:0.9" />
+      <stop offset="50%" style="stop-color:#E8B4B8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B76E79;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- Glitter Pattern -->
+    <pattern id="glitter" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#FBE8C4" opacity="0.8"/>
+      <circle cx="10" cy="5" r="0.8" fill="#F5E6D3" opacity="0.6"/>
+      <circle cx="15" cy="12" r="1.2" fill="#D4A574" opacity="0.9"/>
+      <circle cx="6" cy="15" r="0.7" fill="#E8B4B8" opacity="0.7"/>
+      <circle cx="18" cy="8" r="0.9" fill="#F5C26B" opacity="0.8"/>
+    </pattern>
+    
+    <!-- Metallic Shine Effect -->
+    <filter id="metallic">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Light Pink Background -->
+  <rect width="400" height="400" fill="#FAF6F2"/>
+  
+  <!-- Camera Body with Rose Gold Glitter -->
+  <g filter="url(#metallic)">
+    <!-- Camera main body -->
+    <rect x="120" y="140" width="160" height="120" rx="15" 
+          fill="url(#roseGold)" stroke="url(#champagneFoil)" stroke-width="4"/>
+    <rect x="120" y="140" width="160" height="120" rx="15" 
+          fill="url(#glitter)" opacity="0.4"/>
+    
+    <!-- Camera lens mount -->
+    <circle cx="200" cy="200" r="45" 
+            fill="url(#roseGold)" stroke="url(#champagneFoil)" stroke-width="3"/>
+    <circle cx="200" cy="200" r="45" 
+            fill="url(#glitter)" opacity="0.3"/>
+    
+    <!-- Rose Quartz Lens with Champagne Starburst -->
+    <circle cx="200" cy="200" r="35" fill="url(#roseQuartz)"/>
+    
+    <!-- Champagne Foil Starburst -->
+    <g opacity="0.8">
+      <line x1="200" y1="165" x2="200" y2="235" stroke="url(#champagneFoil)" stroke-width="2"/>
+      <line x1="165" y1="200" x2="235" y2="200" stroke="url(#champagneFoil)" stroke-width="2"/>
+      <line x1="175" y1="175" x2="225" y2="225" stroke="url(#champagneFoil)" stroke-width="1.5"/>
+      <line x1="175" y1="225" x2="225" y2="175" stroke="url(#champagneFoil)" stroke-width="1.5"/>
+      <line x1="182" y1="168" x2="218" y2="232" stroke="url(#champagneFoil)" stroke-width="1"/>
+      <line x1="168" y1="182" x2="232" y2="218" stroke="url(#champagneFoil)" stroke-width="1"/>
+      <line x1="168" y1="218" x2="232" y2="182" stroke="url(#champagneFoil)" stroke-width="1"/>
+      <line x1="182" y1="232" x2="218" y2="168" stroke="url(#champagneFoil)" stroke-width="1"/>
+    </g>
+    
+    <!-- Camera viewfinder -->
+    <rect x="150" y="120" width="30" height="20" rx="3" 
+          fill="url(#roseGold)" stroke="url(#champagneFoil)" stroke-width="2"/>
+    
+    <!-- Camera flash -->
+    <circle cx="250" cy="130" r="8" 
+            fill="url(#champagneFoil)" stroke="url(#roseGold)" stroke-width="2"/>
+    
+    <!-- Shutter button -->
+    <circle cx="270" cy="155" r="6" 
+            fill="url(#roseGold)" stroke="url(#champagneFoil)" stroke-width="2"/>
+  </g>
+  
+  <!-- Money Symbol integrated with rose gold glitter -->
+  <g filter="url(#metallic)" transform="translate(300, 180)">
+    <!-- Dollar sign with rose gold -->
+    <text x="0" y="0" font-family="Georgia, serif" font-size="60" font-weight="bold" 
+          fill="url(#roseGold)" stroke="url(#champagneFoil)" stroke-width="2">$</text>
+    <text x="0" y="0" font-family="Georgia, serif" font-size="60" font-weight="bold" 
+          fill="url(#glitter)" opacity="0.5">$</text>
+  </g>
+  
+  <!-- "Photo2Profit" Text with Rose Gold & Glitter -->
+  <g filter="url(#metallic)">
+    <text x="200" y="310" font-family="'Playfair Display', serif" font-size="42" font-weight="bold" 
+          text-anchor="middle" fill="url(#roseGold)" stroke="url(#champagneFoil)" stroke-width="2">
+      Photo2Profit
+    </text>
+    <text x="200" y="310" font-family="'Playfair Display', serif" font-size="42" font-weight="bold" 
+          text-anchor="middle" fill="url(#glitter)" opacity="0.4">
+      Photo2Profit
+    </text>
+  </g>
+  
+  <!-- Sparkle Effects around logo -->
+  <g fill="url(#champagneFoil)" opacity="0.6">
+    <polygon points="100,100 102,105 107,107 102,109 100,114 98,109 93,107 98,105" />
+    <polygon points="320,100 322,105 327,107 322,109 320,114 318,109 313,107 318,105" />
+    <polygon points="100,300 102,305 107,307 102,309 100,314 98,309 93,307 98,305" />
+    <polygon points="320,300 322,305 327,307 322,309 320,314 318,309 313,307 318,305" />
+  </g>
+</svg>

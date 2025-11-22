@@ -36,8 +36,8 @@ export default async function handler(req, res) {
       description: 'Professional photo editing and cross-platform social media automation',
 
       // Visual Assets
-      logoUrl: 'https://www.photo2profit.online/logo.png', // Will be added to public assets
-      faviconUrl: 'https://www.photo2profit.online/favicon.ico',
+      logoUrl: 'https://www.photo2profit.online/logo.svg',
+      faviconUrl: 'https://www.photo2profit.online/favicon.svg',
 
       // Rose-Gold Color Palette
       colors: {

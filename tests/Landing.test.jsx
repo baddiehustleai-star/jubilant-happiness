@@ -20,7 +20,7 @@ describe('Landing Component', () => {
 
     const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent('Photo2Profit');
+    expect(heading).toHaveTextContent('PHOTO2PROFIT');
   });
 
   it('displays the logo image', () => {
@@ -34,22 +34,22 @@ describe('Landing Component', () => {
   it('shows the description text', () => {
     render(<Landing />);
 
-    const description = screen.getByText(/Transform Your Photos Into Profit/i);
+    const description = screen.getByText(/Your Photos. Your Empire. Your Profit/i);
     expect(description).toBeInTheDocument();
   });
 
   it('renders the Get Started button', () => {
     render(<Landing />);
 
-    const button = screen.getByRole('button', { name: /get started/i });
+    const button = screen.getByRole('button', { name: /Start Earning Now/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('cta');
+    expect(button).toHaveClass('gem-button-primary');
   });
 
   it('switches to UploadDemo component when Try Demo is clicked', async () => {
     render(<Landing />);
 
-    const button = screen.getByRole('button', { name: /try demo/i });
+    const button = screen.getByRole('button', { name: /Watch the Magic/i });
     fireEvent.click(button);
 
     // Wait for lazy loading and check for loading spinner first, then UploadDemo
@@ -64,7 +64,7 @@ describe('Landing Component', () => {
     render(<Landing />);
 
     const main = screen.getByRole('main');
-    expect(main).toHaveClass('bg-blush', 'text-dark');
+    expect(main).toHaveClass('bg-gradient-to-b from-blush via-rose-light to-blush text-dark');
 
     const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toHaveClass('font-diamond');

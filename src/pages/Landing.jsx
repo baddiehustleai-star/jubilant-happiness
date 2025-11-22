@@ -4,7 +4,7 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import AuthModal from '../components/AuthModal.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { usePageTracking, useAnalytics } from '../hooks/useAnalytics.js';
-import { useBranding } from '../lib/useBranding.js';
+import { useBranding } from '../contexts/BrandingContext.jsx';
 
 // Lazy load UploadDemo for better performance
 const UploadDemo = lazy(() => import('./UploadDemo.jsx'));
@@ -14,7 +14,7 @@ export default function Landing() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useAuth();
   const { trackInteraction } = useAnalytics();
-  const { branding, loading: brandingLoading } = useBranding();
+  const branding = useBranding();
 
   // Track page view
   usePageTracking('landing');
@@ -28,24 +28,38 @@ export default function Landing() {
   }
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-blush text-dark text-center px-6">
+    <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blush via-rose-light to-blush text-dark text-center px-6">
+      {/* Sparkle effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="sparkle sparkle-1"></div>
+        <div className="sparkle sparkle-2"></div>
+        <div className="sparkle sparkle-3"></div>
+      </div>
+
       <img
-        src={logo}
+        src={branding?.logoUrl || logo}
         alt={`${branding?.companyName || 'Photo2Profit'} Logo`}
-        className="w-48 mb-6 drop-shadow-xl"
+        className="w-64 mb-8 drop-shadow-2xl animate-float"
       />
-      <h1 className="text-5xl font-diamond mb-2 tracking-wide">
+      <h1
+        className="text-6xl md:text-7xl font-diamond mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-rose-dark via-rose to-gold"
+        style={{ fontFamily: branding?.fontFamily }}
+      >
         {branding?.companyName || 'PHOTO2PROFIT'}
       </h1>
-      <p className="text-lg mb-8 max-w-md">
-        {branding?.tagline ||
-          'Turn your photos into profit — AI-powered listings, background removal, and instant cross-posting'}{' '}
-        💎
+      <p className="text-2xl md:text-3xl font-semibold mb-3 text-rose-dark">
+        Your Photos. Your Empire. Your Profit. 💎
+      </p>
+      <p className="text-lg mb-10 max-w-2xl text-dark opacity-90 leading-relaxed">
+        Stop hustling for pennies. Turn your camera roll into cold, hard cash with AI-powered
+        automation.
+        <br />
+        <span className="text-rose-dark font-semibold">List. Sell. Profit. Repeat.</span>
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row gap-6 mb-12">
         <button
-          className="cta"
+          className="gem-button gem-button-primary group relative overflow-hidden"
           onClick={() => {
             trackInteraction('cta_button', 'click');
             if (user) {
@@ -55,18 +69,26 @@ export default function Landing() {
             }
           }}
         >
-          {user ? 'Go to Dashboard' : 'Get Started'}
+          <span className="relative z-10 flex items-center gap-2">
+            ✨ {user ? '💎 Enter Your Empire' : '💰 Start Earning Now'}
+          </span>
         </button>
 
         <button
-          className="btn-secondary"
+          className="gem-button gem-button-secondary group relative overflow-hidden"
           onClick={() => {
             trackInteraction('demo_button', 'click');
             setShowDemo(true);
           }}
         >
-          Try Demo
+          <span className="relative z-10 flex items-center gap-2">🎥 Watch the Magic</span>
         </button>
+      </div>
+
+      {/* Social Proof */}
+      <div className="text-sm text-rose-dark opacity-75 mb-4">
+        <span className="font-semibold">Join 10,000+ Boss Babes</span> turning photos into paychecks
+        💅
       </div>
 
       {user && (

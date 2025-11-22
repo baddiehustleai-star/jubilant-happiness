@@ -5,6 +5,7 @@ import './index.css';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import LoadingSpinner from './components/LoadingSpinner.jsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
+import { BrandingProvider } from './contexts/BrandingContext.jsx';
 
 // Lazy load components for better performance
 const Landing = React.lazy(() => import('./pages/Landing.jsx'));
@@ -40,34 +41,36 @@ function PublicRoute({ children }) {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <AuthProvider>
-        <BrowserRouter>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <PublicRoute>
-                    <Landing />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-            <Suspense fallback={null}>
-              <Analytics />
+      <BrandingProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <PublicRoute>
+                      <Landing />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+              <Suspense fallback={null}>
+                <Analytics />
+              </Suspense>
             </Suspense>
-          </Suspense>
-        </BrowserRouter>
-      </AuthProvider>
+          </BrowserRouter>
+        </AuthProvider>
+      </BrandingProvider>
     </ErrorBoundary>
   </React.StrictMode>
 );

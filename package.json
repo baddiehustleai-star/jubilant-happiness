@@ -19,6 +19,7 @@
   "dependencies": {
     "@stripe/stripe-js": "^8.5.2",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "cross-fetch": "^4.1.0",
     "firebase": "^12.5.0",
     "react": "^18.3.1",

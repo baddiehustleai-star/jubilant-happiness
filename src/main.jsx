@@ -15,6 +15,11 @@ const Analytics = React.lazy(() =>
     default: module.Analytics,
   }))
 );
+const SpeedInsights = React.lazy(() =>
+  import('@vercel/speed-insights/react').then((module) => ({
+    default: module.SpeedInsights,
+  }))
+);
 
 // Protected Route component
 function ProtectedRoute({ children }) {
@@ -66,6 +71,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               </Routes>
               <Suspense fallback={null}>
                 <Analytics />
+                <SpeedInsights />
               </Suspense>
             </Suspense>
           </BrowserRouter>

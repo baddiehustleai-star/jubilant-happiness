@@ -39,16 +39,16 @@ export default async function handler(req, res) {
       logoUrl: 'https://www.photo2profit.online/logo.svg',
       faviconUrl: 'https://www.photo2profit.online/favicon.svg',
 
-      // Rose-Gold Color Palette
+      // Soft Pink Blush Palette
       colors: {
-        primary: '#E8B4B8', // Rose - main brand color
-        secondary: '#F5E6D3', // Blush - light accent
-        accent: '#D4A574', // Gold - luxury accent
-        dark: '#2D3748', // Dark text
-        light: '#FFFFFF', // Pure white
-        success: '#48BB78', // Success green
-        warning: '#ED8936', // Warning orange
-        error: '#E53E3E', // Error red
+        primary: '#E8C4B8', // Soft pink - main brand color
+        secondary: '#F5E6EE', // Light pink cream
+        accent: '#D4A8B8', // Dusty rose
+        dark: '#6B4A54', // Warm brown-pink text
+        light: '#FFF8FA', // Pink-tinted white
+        success: '#B8D4A8', // Soft sage green
+        warning: '#F5C78E', // Soft peach accent
+        error: '#E8A8B8', // Soft rose red
       },
 
       // Typography

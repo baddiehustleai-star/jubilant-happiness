@@ -27,8 +27,8 @@ export const BrandingProvider = ({ children }) => {
         setBranding({
           companyName: 'Photo2Profit',
           logoUrl: '/logo.png',
-          primaryColor: '#E8B4B8',
-          secondaryColor: '#F5E6D3',
+          primaryColor: '#E8B4C8',
+          secondaryColor: '#F5E6EE',
           fontFamily: "'Playfair Display', serif",
           tagline: 'Transform Your Photos Into Profit',
           contactEmail: 'support@photo2profit.online',

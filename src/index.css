@@ -5,12 +5,12 @@
 @tailwind utilities;
 
 :root {
-  --rose-light: #fce9e9;
-  --rose: #e6a4a4;
-  --rose-dark: #b76e79;
-  --gold: #f5c26b;
-  --blush: #faf6f2;
-  --text-dark: #3d2b2b;
+  --rose-light: #f5eae6;
+  --rose: #e8c4b8;
+  --rose-dark: #d4a89e;
+  --gold: #f5c78e;
+  --blush: #fffbf8;
+  --text-dark: #6b4e4a;
 }
 
 body {
@@ -42,13 +42,12 @@ h1,
 }
 
 .gem-button-primary {
-  background: linear-gradient(135deg, #e8b4b8 0%, #d4a574 50%, #f5c26b 100%);
+  background: linear-gradient(135deg, #e8c4b8 0%, #f5c78e 50%, #f5dbc4 100%);
   box-shadow:
-    0 8px 25px rgba(230, 164, 164, 0.5),
-    0 0 40px rgba(212, 165, 116, 0.3),
+    0 8px 25px rgba(232, 196, 184, 0.5),
+    0 0 40px rgba(245, 199, 142, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
-
 .gem-button-primary::before {
   content: '';
   position: absolute;
@@ -69,14 +68,13 @@ h1,
 }
 
 .gem-button-secondary {
-  background: linear-gradient(135deg, #f5e6d3 0%, #faf6f2 50%, #fce9e9 100%);
+  background: linear-gradient(135deg, #f5eae6 0%, #fffbf8 50%, #fbe8c4 100%);
   color: var(--rose-dark);
   box-shadow:
-    0 6px 20px rgba(183, 110, 121, 0.3),
+    0 6px 20px rgba(212, 168, 158, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   border: 2px solid var(--rose);
 }
-
 .gem-button:hover {
   transform: scale(1.08) translateY(-2px);
   box-shadow:

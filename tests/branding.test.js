@@ -38,9 +38,9 @@ describe('Branding API', () => {
     expect(responseData).toHaveProperty('contact');
 
     // Verify color palette
-    expect(responseData.colors).toHaveProperty('primary', '#E8B4B8');
-    expect(responseData.colors).toHaveProperty('secondary', '#F5E6D3');
-    expect(responseData.colors).toHaveProperty('accent', '#D4A574');
+    expect(responseData.colors).toHaveProperty('primary', '#E8C4B8');
+    expect(responseData.colors).toHaveProperty('secondary', '#F5E6EE');
+    expect(responseData.colors).toHaveProperty('accent', '#D4A8B8');
 
     // Verify fonts
     expect(responseData.fonts).toHaveProperty('heading');

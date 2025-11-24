@@ -6,18 +6,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Static fallback colors (Photo2Profit rose-gold theme)
-        blush: '#F5E6D3',
+        // Static fallback colors (Photo2Profit peachy blush theme)
+        blush: '#FFFBF8',
         rose: {
-          light: '#FCE9E9',
-          DEFAULT: '#E8B4B8',
-          dark: '#B76E79',
+          light: '#F5EAE6',
+          DEFAULT: '#E8C4B8',
+          dark: '#D4A89E',
         },
         gold: {
           soft: '#FBE8C4',
-          DEFAULT: '#D4A574',
+          DEFAULT: '#F5C78E',
         },
-        dark: '#2D3748',
+        dark: '#6B4E4A',
 
         // Dynamic CSS custom property colors for branding API
         'brand-primary': 'var(--color-primary, #E8B4B8)',

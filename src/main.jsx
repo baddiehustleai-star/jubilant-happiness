@@ -42,41 +42,51 @@ function PublicRoute({ children }) {
   return user ? <Navigate to="/dashboard" replace /> : children;
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <BrandingProvider>
-        <AuthProvider>
-          <BrowserRouter>
-            <Suspense fallback={<LoadingSpinner />}>
-              <Routes>
-                <Route
-                  path="/app"
-                  element={
-                    <PublicRoute>
-                      <Landing />
-                    </PublicRoute>
-                  }
-                />
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route path="/" element={<Navigate to="/app" replace />} />
-                <Route path="*" element={<Navigate to="/app" replace />} />
-              </Routes>
-              <Suspense fallback={null}>
-                <Analytics />
-                <SpeedInsights />
+// Only initialize React app on /app or /dashboard routes
+const path = window.location.pathname;
+const shouldInitReact = path.startsWith('/app') || path.startsWith('/dashboard');
+
+if (shouldInitReact) {
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+      <ErrorBoundary>
+        <BrandingProvider>
+          <AuthProvider>
+            <BrowserRouter>
+              <Suspense fallback={<LoadingSpinner />}>
+                <Routes>
+                  <Route
+                    path="/app"
+                    element={
+                      <PublicRoute>
+                        <Landing />
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="/" element={<Navigate to="/app" replace />} />
+                  <Route path="*" element={<Navigate to="/app" replace />} />
+                </Routes>
+                <Suspense fallback={null}>
+                  <Analytics />
+                  <SpeedInsights />
+                </Suspense>
               </Suspense>
-            </Suspense>
-          </BrowserRouter>
-        </AuthProvider>
-      </BrandingProvider>
-    </ErrorBoundary>
-  </React.StrictMode>
-);
+            </BrowserRouter>
+          </AuthProvider>
+        </BrandingProvider>
+      </ErrorBoundary>
+    </React.StrictMode>
+  );
+} else {
+  // Hide root element on static landing page
+  const root = document.getElementById('root');
+  if (root) root.style.display = 'none';
+}

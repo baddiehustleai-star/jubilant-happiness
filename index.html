@@ -497,16 +497,6 @@
     <!-- React App Mount Point -->
     <div id="root"></div>
 
-    <!-- Conditional React Loading -->
-    <script type="module">
-      // Only load React app on /app or /dashboard routes
-      const path = window.location.pathname;
-      if (path.startsWith('/app') || path.startsWith('/dashboard')) {
-        import('/src/main.jsx');
-      } else {
-        // Hide the root div on the landing page
-        document.getElementById('root').style.display = 'none';
-      }
-    </script>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

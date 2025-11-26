@@ -1,6 +1,5 @@
-const axios = require('axios');
-const FormData = require('form-data');
-const { TwitterApi } = require('twitter-api-v2');
+import axios from 'axios';
+import { TwitterApi } from 'twitter-api-v2';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

@@ -16,7 +16,7 @@ try {
     api_secret: process.env.CLOUDINARY_SECRET,
   });
 } catch (error) {
-  console.warn('Cloudinary not configured, will require imageUrl in request');
+  console.warn('Cloudinary not configured, will require imageUrl in request:', error.message);
 }
 
 // Upload buffer to Cloudinary and return public URL

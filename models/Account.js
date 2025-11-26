@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const AccountSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -54,4 +54,5 @@ AccountSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('Account', AccountSchema);
+const Account = mongoose.model('Account', AccountSchema);
+export default Account;

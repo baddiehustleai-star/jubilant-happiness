@@ -51,7 +51,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
                 <Route
-                  path="/"
+                  path="/app"
                   element={
                     <PublicRoute>
                       <Landing />
@@ -66,7 +66,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     </ProtectedRoute>
                   }
                 />
-                <Route path="*" element={<Navigate to="/" replace />} />
+                <Route path="/" element={<Navigate to="/app" replace />} />
+                <Route path="*" element={<Navigate to="/app" replace />} />
               </Routes>
               <Suspense fallback={null}>
                 <Analytics />

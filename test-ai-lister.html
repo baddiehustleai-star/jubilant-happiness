@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Listing Generator Test | Photo2Profit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+      body {
+        font-family: 'Montserrat', sans-serif;
+      }
+      h1,
+      h2 {
+        font-family: 'Cinzel Decorative', serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-pink-50 via-rose-50 to-amber-50 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1
+          class="text-5xl font-bold bg-gradient-to-r from-rose-400 via-pink-500 to-amber-400 bg-clip-text text-transparent mb-4"
+        >
+          💎 Photo2Profit AI Lister
+        </h1>
+        <p class="text-gray-600 text-lg">
+          Upload a product photo and watch GPT-4 Vision generate your listing data automatically
+        </p>
+      </div>
+
+      <!-- Upload Form -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <h2 class="text-2xl font-bold text-rose-600 mb-6">📸 Step 1: Upload Product Image</h2>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-2">
+            Image URL (Use Cloudinary, Imgur, or background-removed image)
+          </label>
+          <input
+            type="text"
+            id="imageUrl"
+            placeholder="https://example.com/product-image.png"
+            class="w-full px-4 py-3 border-2 border-rose-200 rounded-lg focus:border-rose-400 focus:outline-none"
+          />
+        </div>
+
+        <div class="mb-6">
+          <p class="text-sm text-gray-500 mb-2">Or try a sample image:</p>
+          <div class="flex gap-2 flex-wrap">
+            <button
+              onclick="loadSampleImage('https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600')"
+              class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm"
+            >
+              Sample Shoes
+            </button>
+            <button
+              onclick="loadSampleImage('https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600')"
+              class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm"
+            >
+              Sample Clothing
+            </button>
+          </div>
+        </div>
+
+        <button
+          onclick="generateListing()"
+          class="w-full bg-gradient-to-r from-rose-400 via-pink-500 to-amber-400 text-white font-bold py-4 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
+        >
+          🧠 Generate Listing with AI
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading" class="hidden bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <div class="flex items-center justify-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500"></div>
+          <span class="ml-4 text-lg text-gray-600">AI is analyzing your product...</span>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="results" class="hidden bg-white rounded-2xl shadow-xl p-8">
+        <h2 class="text-2xl font-bold text-green-600 mb-6">✅ Generated Listing Data</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input
+              id="result-title"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Brand</label>
+            <input
+              id="result-brand"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Size</label>
+            <input
+              id="result-size"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Color</label>
+            <input
+              id="result-color"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Category</label>
+            <input
+              id="result-category"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Condition</label>
+            <input
+              id="result-condition"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Suggested Price</label>
+            <input
+              id="result-price"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Tokens Used</label>
+            <input
+              id="result-tokens"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              readonly
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Description</label>
+          <textarea
+            id="result-description"
+            rows="5"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            readonly
+          ></textarea>
+        </div>
+
+        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+          <p class="text-sm text-gray-600 mb-2">Raw JSON Response:</p>
+          <pre
+            id="raw-json"
+            class="text-xs bg-gray-800 text-green-400 p-4 rounded overflow-x-auto"
+          ></pre>
+        </div>
+      </div>
+
+      <!-- Error Display -->
+      <div id="error" class="hidden bg-red-50 border-2 border-red-300 rounded-2xl p-8">
+        <h2 class="text-2xl font-bold text-red-600 mb-4">❌ Error</h2>
+        <p id="error-message" class="text-red-700"></p>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE =
+        window.location.hostname === 'localhost' ? 'http://localhost:5173/api' : '/api';
+
+      function loadSampleImage(url) {
+        document.getElementById('imageUrl').value = url;
+      }
+
+      async function generateListing() {
+        const imageUrl = document.getElementById('imageUrl').value;
+
+        if (!imageUrl) {
+          alert('Please enter an image URL');
+          return;
+        }
+
+        // Show loading, hide results/error
+        document.getElementById('loading').classList.remove('hidden');
+        document.getElementById('results').classList.add('hidden');
+        document.getElementById('error').classList.add('hidden');
+
+        try {
+          const response = await fetch(`${API_BASE}/ai/generate-listing`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageUrl }),
+          });
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(result.error || 'Failed to generate listing');
+          }
+
+          // Populate results
+          document.getElementById('result-title').value = result.data.title || 'N/A';
+          document.getElementById('result-brand').value = result.data.brand || 'N/A';
+          document.getElementById('result-size').value = result.data.size || 'N/A';
+          document.getElementById('result-color').value = result.data.color || 'N/A';
+          document.getElementById('result-category').value = result.data.category || 'N/A';
+          document.getElementById('result-condition').value = result.data.condition || 'N/A';
+          document.getElementById('result-price').value = result.data.suggestedPrice
+            ? `$${result.data.suggestedPrice}`
+            : 'N/A';
+          document.getElementById('result-tokens').value = result.tokensUsed || 'N/A';
+          document.getElementById('result-description').value = result.data.description || 'N/A';
+          document.getElementById('raw-json').textContent = JSON.stringify(result, null, 2);
+
+          // Show results
+          document.getElementById('loading').classList.add('hidden');
+          document.getElementById('results').classList.remove('hidden');
+        } catch (error) {
+          document.getElementById('loading').classList.add('hidden');
+          document.getElementById('error').classList.remove('hidden');
+          document.getElementById('error-message').textContent = error.message;
+        }
+      }
+    </script>
+  </body>
+</html>

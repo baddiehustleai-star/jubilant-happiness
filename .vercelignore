@@ -1,0 +1,7 @@
+# Vercel
+.vercel
+
+# Firebase (no longer needed)
+.firebase
+firebase.json
+.firebaserc

@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photo2Profit – From Thrift Haul to Sold Listings in Seconds</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              blush: '#FFF5F5',
+              rose: {
+                DEFAULT: '#E8B4B8',
+                dark: '#C89FA3',
+              },
+              gold: '#D4AF37',
+              dark: '#2D2D2D',
+            },
+            fontFamily: {
+              serif: ['Playfair Display', 'serif'],
+              sans: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: 'Playfair Display', serif;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-dark">
+    <!-- Hero Section -->
+    <section
+      class="relative min-h-screen flex items-center justify-center px-6 py-20 bg-gradient-to-br from-blush via-white to-rose/10"
+    >
+      <div class="max-w-4xl mx-auto text-center space-y-8">
+        <h1 class="text-6xl md:text-7xl font-serif font-bold text-dark leading-tight">
+          From Thrift Haul to<br />Sold Listings in Seconds
+        </h1>
+        <p class="text-xl md:text-2xl text-dark/70 font-light max-w-2xl mx-auto leading-relaxed">
+          AI-powered product photography and copywriting that turns your resale inventory into
+          compelling listings across all platforms—instantly.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
+          <a
+            href="/app"
+            class="px-10 py-4 bg-dark text-white rounded-none hover:bg-dark/90 transition text-lg font-medium tracking-wide"
+          >
+            Start Your $1 Trial
+          </a>
+          <a
+            href="#pricing"
+            class="px-10 py-4 border-2 border-dark text-dark rounded-none hover:bg-dark hover:text-white transition text-lg font-medium tracking-wide"
+          >
+            View Pricing
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flow Bar -->
+    <section class="bg-dark text-white py-6 border-t-2 border-gold">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="flex justify-around items-center text-center space-x-8 overflow-x-auto">
+          <div class="flex-1 min-w-[150px]">
+            <div class="text-3xl mb-2">📸</div>
+            <p class="text-sm font-medium">Upload Photos</p>
+          </div>
+          <div class="text-gold text-2xl">→</div>
+          <div class="flex-1 min-w-[150px]">
+            <div class="text-3xl mb-2">✨</div>
+            <p class="text-sm font-medium">AI Enhancement</p>
+          </div>
+          <div class="text-gold text-2xl">→</div>
+          <div class="flex-1 min-w-[150px]">
+            <div class="text-3xl mb-2">📝</div>
+            <p class="text-sm font-medium">Smart Copywriting</p>
+          </div>
+          <div class="text-gold text-2xl">→</div>
+          <div class="flex-1 min-w-[150px]">
+            <div class="text-3xl mb-2">🚀</div>
+            <p class="text-sm font-medium">Cross-Post & Sell</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section - Zig-Zag Layout -->
+    <section class="py-24 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-5xl font-serif font-bold text-center mb-20 text-dark">
+          Built for Serious Resellers
+        </h2>
+
+        <!-- Feature 1 - Image Left -->
+        <div class="grid md:grid-cols-2 gap-16 items-center mb-24">
+          <div
+            class="bg-gradient-to-br from-rose/20 to-blush p-12 rounded-lg aspect-square flex items-center justify-center"
+          >
+            <div class="text-center">
+              <div class="text-6xl mb-4">🤖</div>
+              <p class="text-2xl font-serif text-dark/70">AI Copywriting Engine</p>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <h3 class="text-4xl font-serif font-bold text-dark">Listings That Actually Sell</h3>
+            <p class="text-lg text-dark/70 leading-relaxed">
+              Our GPT-4 Vision AI reads tags, identifies brands, and generates SEO-optimized titles
+              and descriptions that capture buyer attention. No more writer's block—just compelling
+              copy that converts.
+            </p>
+            <ul class="space-y-3 text-dark/80">
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>Brand & tag recognition from photos</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>Platform-specific optimization (eBay, Poshmark, Mercari)</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>Suggested pricing based on market data</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feature 2 - Image Right -->
+        <div class="grid md:grid-cols-2 gap-16 items-center mb-24">
+          <div class="space-y-6 md:order-1 order-2">
+            <h3 class="text-4xl font-serif font-bold text-dark">Instant Studio-Quality Photos</h3>
+            <p class="text-lg text-dark/70 leading-relaxed">
+              Background removal, professional white backgrounds, and perfect 1080x1080 sizing—all
+              automated. Transform cluttered thrift store snapshots into polished product photos in
+              seconds.
+            </p>
+            <ul class="space-y-3 text-dark/80">
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>One-click background removal powered by Remove.bg</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>Multi-angle carousel support for Instagram & eBay</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>Batch processing for entire hauls</span>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="bg-gradient-to-br from-gold/10 to-rose/20 p-12 rounded-lg aspect-square flex items-center justify-center md:order-2 order-1"
+          >
+            <div class="text-center">
+              <div class="text-6xl mb-4">📷</div>
+              <p class="text-2xl font-serif text-dark/70">Professional Polish</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3 - Image Left -->
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+          <div
+            class="bg-gradient-to-br from-blush to-rose/30 p-12 rounded-lg aspect-square flex items-center justify-center"
+          >
+            <div class="text-center">
+              <div class="text-6xl mb-4">🔄</div>
+              <p class="text-2xl font-serif text-dark/70">Multi-Market Sync</p>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <h3 class="text-4xl font-serif font-bold text-dark">List Everywhere, Manage Once</h3>
+            <p class="text-lg text-dark/70 leading-relaxed">
+              Cross-post to eBay, Instagram, Twitter, LinkedIn, and Pinterest with a single click.
+              Automated token refresh keeps your accounts connected without manual
+              re-authentication.
+            </p>
+            <ul class="space-y-3 text-dark/80">
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>Direct eBay Inventory API integration</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>Social media scheduling & analytics</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-xl">✓</span>
+                <span>Automatic token refresh (no more OAuth headaches)</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 px-6 bg-blush">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-5xl font-serif font-bold text-center mb-6 text-dark">
+          Simple, Transparent Pricing
+        </h2>
+        <p class="text-xl text-center text-dark/70 mb-16 max-w-2xl mx-auto">
+          Start with our $1 trial, then choose the plan that scales with your resale business.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <!-- Starter Plan -->
+          <div
+            class="bg-white p-10 rounded-lg shadow-sm border border-dark/10 hover:shadow-md transition"
+          >
+            <div class="mb-8">
+              <h3 class="text-2xl font-serif font-bold text-dark mb-2">Starter</h3>
+              <div class="flex items-baseline">
+                <span class="text-5xl font-bold text-dark">$9.99</span>
+                <span class="text-dark/60 ml-2">/month</span>
+              </div>
+              <p class="text-dark/70 mt-4">Perfect for casual resellers testing the waters.</p>
+            </div>
+            <ul class="space-y-4 mb-8 text-dark/80">
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span>50 listings/month</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span>Background removal</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span>AI copywriting</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span>2 platform connections</span>
+              </li>
+            </ul>
+            <a
+              href="/app?plan=starter"
+              class="block text-center px-8 py-4 border-2 border-dark text-dark rounded-none hover:bg-dark hover:text-white transition font-medium"
+            >
+              Get Started
+            </a>
+          </div>
+
+          <!-- Professional Plan - Inverted -->
+          <div
+            class="bg-dark text-white p-10 rounded-lg shadow-lg border-2 border-gold relative transform md:scale-105"
+          >
+            <div
+              class="absolute top-0 right-0 bg-gold text-dark px-6 py-2 text-sm font-bold tracking-wide"
+            >
+              MOST POPULAR
+            </div>
+            <div class="mb-8 mt-6">
+              <h3 class="text-2xl font-serif font-bold mb-2">Professional</h3>
+              <div class="flex items-baseline">
+                <span class="text-5xl font-bold">$29.99</span>
+                <span class="text-white/60 ml-2">/month</span>
+              </div>
+              <p class="text-white/70 mt-4">For serious resellers ready to scale.</p>
+              <p class="text-gold font-semibold mt-2">First month just $1 – Try it risk-free!</p>
+            </div>
+            <ul class="space-y-4 mb-8 text-white/90">
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span><strong>Unlimited listings</strong></span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span>Priority background removal</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span>Advanced AI copywriting</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span><strong>Unlimited platform connections</strong></span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span>Batch processing</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-gold mr-3 text-lg">✓</span>
+                <span>Analytics & reporting</span>
+              </li>
+            </ul>
+            <a
+              href="/app?plan=professional"
+              class="block text-center px-8 py-4 bg-gold text-dark rounded-none hover:bg-gold/90 transition font-bold tracking-wide"
+            >
+              Start $1 Trial
+            </a>
+          </div>
+        </div>
+
+        <p class="text-center text-dark/60 mt-12 text-sm">
+          All plans include 14-day money-back guarantee. Cancel anytime.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 px-6">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-5xl font-serif font-bold text-center mb-16 text-dark">
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-8">
+          <details class="group border-b border-dark/10 pb-6">
+            <summary
+              class="text-xl font-semibold text-dark cursor-pointer list-none flex justify-between items-center"
+            >
+              <span>Do I need technical skills to use Photo2Profit?</span>
+              <span class="text-gold text-2xl group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="text-dark/70 mt-4 leading-relaxed">
+              Not at all. Photo2Profit is designed for resellers, not developers. Upload your
+              photos, and our AI handles the rest—no coding or technical knowledge required.
+            </p>
+          </details>
+
+          <details class="group border-b border-dark/10 pb-6">
+            <summary
+              class="text-xl font-semibold text-dark cursor-pointer list-none flex justify-between items-center"
+            >
+              <span>Which platforms can I cross-post to?</span>
+              <span class="text-gold text-2xl group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="text-dark/70 mt-4 leading-relaxed">
+              We support eBay, Instagram, Twitter, LinkedIn, and Pinterest. Our direct API
+              integrations ensure your listings go live instantly without copy-pasting or manual
+              uploads.
+            </p>
+          </details>
+
+          <details class="group border-b border-dark/10 pb-6">
+            <summary
+              class="text-xl font-semibold text-dark cursor-pointer list-none flex justify-between items-center"
+            >
+              <span>How does the $1 trial work?</span>
+              <span class="text-gold text-2xl group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="text-dark/70 mt-4 leading-relaxed">
+              Pay just $1 to unlock full Professional plan features for 30 days. After the trial,
+              you'll be charged $29.99/month. Cancel anytime before the trial ends—no questions
+              asked.
+            </p>
+          </details>
+
+          <details class="group border-b border-dark/10 pb-6">
+            <summary
+              class="text-xl font-semibold text-dark cursor-pointer list-none flex justify-between items-center"
+            >
+              <span>Can I process photos in bulk?</span>
+              <span class="text-gold text-2xl group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="text-dark/70 mt-4 leading-relaxed">
+              Yes! Professional plan users get batch processing. Upload entire thrift hauls at once,
+              and our system will generate listings for all items simultaneously—saving hours of
+              manual work.
+            </p>
+          </details>
+
+          <details class="group border-b border-dark/10 pb-6">
+            <summary
+              class="text-xl font-semibold text-dark cursor-pointer list-none flex justify-between items-center"
+            >
+              <span>What happens to my photos and data?</span>
+              <span class="text-gold text-2xl group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="text-dark/70 mt-4 leading-relaxed">
+              Your photos are stored securely on Cloudinary with encrypted connections. We never
+              sell or share your data. You own your listings and can export them anytime.
+            </p>
+          </details>
+
+          <details class="group border-b border-dark/10 pb-6">
+            <summary
+              class="text-xl font-semibold text-dark cursor-pointer list-none flex justify-between items-center"
+            >
+              <span>Do I need to reconnect my accounts every time?</span>
+              <span class="text-gold text-2xl group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p class="text-dark/70 mt-4 leading-relaxed">
+              No! Our automated token refresh system keeps your platform connections active
+              indefinitely. Connect once, and we handle the rest—no more OAuth errors or
+              re-authentication hassles.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bg-dark text-white py-20 px-6">
+      <div class="max-w-4xl mx-auto text-center space-y-8">
+        <h2 class="text-5xl font-serif font-bold leading-tight">Ready to 10x Your Resale Game?</h2>
+        <p class="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+          Join hundreds of resellers who've automated their listing workflow and increased sales by
+          10x. Start your $1 trial today—no credit card tricks, just results.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
+          <a
+            href="/app?plan=professional"
+            class="px-12 py-5 bg-gold text-dark rounded-none hover:bg-gold/90 transition text-lg font-bold tracking-wide"
+          >
+            Start $1 Trial Now
+          </a>
+          <a
+            href="mailto:support@photo2profit.online"
+            class="px-12 py-5 border-2 border-white text-white rounded-none hover:bg-white hover:text-dark transition text-lg font-medium tracking-wide"
+          >
+            Contact Sales
+          </a>
+        </div>
+        <p class="text-white/60 text-sm mt-8">
+          Have questions? Email us at
+          <a href="mailto:support@photo2profit.online" class="text-gold hover:underline"
+            >support@photo2profit.online</a
+          >
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white/70 py-12 px-6 border-t border-gold/30">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <h4 class="font-serif text-white text-lg font-bold mb-4">Photo2Profit</h4>
+            <p class="text-sm leading-relaxed">
+              AI-powered resale automation for the modern entrepreneur.
+            </p>
+          </div>
+          <div>
+            <h5 class="text-white font-semibold mb-4">Product</h5>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#pricing" class="hover:text-gold transition">Pricing</a></li>
+              <li><a href="/app" class="hover:text-gold transition">Get Started</a></li>
+              <li><a href="/docs" class="hover:text-gold transition">Documentation</a></li>
+              <li><a href="/api" class="hover:text-gold transition">API Reference</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="text-white font-semibold mb-4">Support</h5>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/help" class="hover:text-gold transition">Help Center</a></li>
+              <li>
+                <a href="mailto:support@photo2profit.online" class="hover:text-gold transition"
+                  >Contact Us</a
+                >
+              </li>
+              <li><a href="/status" class="hover:text-gold transition">System Status</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="text-white font-semibold mb-4">Legal</h5>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/privacy" class="hover:text-gold transition">Privacy Policy</a></li>
+              <li><a href="/terms" class="hover:text-gold transition">Terms of Service</a></li>
+              <li><a href="/refund" class="hover:text-gold transition">Refund Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-white/10 pt-8 text-center text-sm">
+          <p>&copy; 2025 Photo2Profit. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- React App Mount Point -->
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

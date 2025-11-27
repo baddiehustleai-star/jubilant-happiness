@@ -1,10 +1,92 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './index.css';
-import Landing from './pages/Landing.jsx';
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Landing />
-    <Analytics />
-  </React.StrictMode>
+import ErrorBoundary from './components/ErrorBoundary.jsx';
+import LoadingSpinner from './components/LoadingSpinner.jsx';
+import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
+import { BrandingProvider } from './contexts/BrandingContext.jsx';
+
+// Lazy load components for better performance
+const Landing = React.lazy(() => import('./pages/Landing.jsx'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard.jsx'));
+const Analytics = React.lazy(() =>
+  import('@vercel/analytics/react').then((module) => ({
+    default: module.Analytics,
+  }))
 );
+const SpeedInsights = React.lazy(() =>
+  import('@vercel/speed-insights/react').then((module) => ({
+    default: module.SpeedInsights,
+  }))
+);
+// Protected Route component
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return user ? children : <Navigate to="/" replace />;
+}
+
+// Public Route component (redirects to dashboard if authenticated)
+function PublicRoute({ children }) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return user ? <Navigate to="/dashboard" replace /> : children;
+}
+
+// Only initialize React app on /app or /dashboard routes
+const path = window.location.pathname;
+const shouldInitReact = path.startsWith('/app') || path.startsWith('/dashboard');
+
+if (shouldInitReact) {
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+      <ErrorBoundary>
+        <BrandingProvider>
+          <AuthProvider>
+            <BrowserRouter>
+              <Suspense fallback={<LoadingSpinner />}>
+                <Routes>
+                  <Route
+                    path="/app"
+                    element={
+                      <PublicRoute>
+                        <Landing />
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="/" element={<Navigate to="/app" replace />} />
+                  <Route path="*" element={<Navigate to="/app" replace />} />
+                </Routes>
+                <Suspense fallback={null}>
+                  <Analytics />
+                  <SpeedInsights />
+                </Suspense>
+              </Suspense>
+            </BrowserRouter>
+          </AuthProvider>
+        </BrandingProvider>
+      </ErrorBoundary>
+    </React.StrictMode>
+  );
+} else {
+  // Hide root element on static landing page
+  const root = document.getElementById('root');
+  if (root) root.style.display = 'none';
+}

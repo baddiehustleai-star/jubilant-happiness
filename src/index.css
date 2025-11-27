@@ -5,12 +5,12 @@
 @tailwind utilities;
 
 :root {
-  --rose-light: #fce9e9;
-  --rose: #e6a4a4;
-  --rose-dark: #b76e79;
-  --gold: #f5c26b;
-  --blush: #faf6f2;
-  --text-dark: #3d2b2b;
+  --rose-light: #f5eae6;
+  --rose: #e8c4b8;
+  --rose-dark: #d4a89e;
+  --gold: #f5c78e;
+  --blush: #fffbf8;
+  --text-dark: #6b4e4a;
 }
 
 body {
@@ -18,12 +18,138 @@ body {
   color: var(--text-dark);
   font-family: 'Montserrat', sans-serif;
 }
+
 h1,
 .logo {
   font-family: 'Cinzel Decorative', serif;
   color: var(--rose-dark);
   letter-spacing: 1px;
 }
+
+/* Luxe Rose Gold Gem Buttons */
+.gem-button {
+  position: relative;
+  color: white;
+  border-radius: 9999px;
+  padding: 16px 40px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: 0.5px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+}
+
+.gem-button-primary {
+  background: linear-gradient(135deg, #e8c4b8 0%, #f5c78e 50%, #f5dbc4 100%);
+  box-shadow:
+    0 8px 25px rgba(232, 196, 184, 0.5),
+    0 0 40px rgba(245, 199, 142, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.gem-button-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  padding: 2px;
+  background: linear-gradient(135deg, #fff, #ffd700, #fff);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.6;
+  animation: shimmer 3s infinite;
+}
+
+.gem-button-secondary {
+  background: linear-gradient(135deg, #f5eae6 0%, #fffbf8 50%, #fbe8c4 100%);
+  color: var(--rose-dark);
+  box-shadow:
+    0 6px 20px rgba(212, 168, 158, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 2px solid var(--rose);
+}
+.gem-button:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow:
+    0 12px 35px rgba(230, 164, 164, 0.6),
+    0 0 60px rgba(212, 165, 116, 0.4);
+}
+
+.gem-button:active {
+  transform: scale(0.98);
+}
+
+/* Sparkle Animation */
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+.sparkle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #ffd700, transparent);
+  border-radius: 50%;
+  animation: sparkle 3s infinite;
+}
+
+.sparkle-1 {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+.sparkle-2 {
+  top: 60%;
+  right: 15%;
+  animation-delay: 1s;
+}
+.sparkle-3 {
+  bottom: 30%;
+  left: 20%;
+  animation-delay: 2s;
+}
+
+/* Logo Float Animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Legacy button support */
 button,
 .cta {
   background: linear-gradient(90deg, var(--rose), var(--gold));
@@ -34,6 +160,7 @@ button,
   box-shadow: 0 4px 15px rgba(183, 110, 121, 0.4);
   transition: all 0.3s ease;
 }
+
 button:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(183, 110, 121, 0.5);

@@ -2,128 +2,143 @@
 
 ## Project Overview
 
-Photo2Profit is a modern React web application built with Vite and TailwindCSS, featuring a luxe rose-gold theme designed for turning photos into profitable listings. The application emphasizes elegant design with custom typography and responsive layouts.
+Photo2Profit is a full-stack React application with serverless backend functions, built with Vite and TailwindCSS. The project features a luxe rose-gold theme and includes comprehensive CI/CD automation with multi-environment deployment to Firebase Hosting and Google Cloud Run.
 
-## Tech Stack
+## Architecture
 
-- **Framework**: React 18.3.1
-- **Build Tool**: Vite 5.4.1
-- **Styling**: TailwindCSS 3.4.14 with custom theme
-- **CSS Processing**: PostCSS 8.4.38 with Autoprefixer 10.4.19
-- **Type**: ES Module project
+### Frontend (React + Vite)
 
-## Build & Development Commands
+- **Framework**: React 18.3.1 with functional components and hooks
+- **Build**: Vite 5.4.1 with ES modules (`"type": "module"`)
+- **Styling**: TailwindCSS with custom rose-gold theme + Google Fonts
+- **State**: Local component state (useState) - no global state management
+- **Deployment**: Firebase Hosting via GitHub Actions
 
-### Install Dependencies
+### Backend (Serverless Functions)
 
-```bash
-npm install
-```
+- **Runtime**: Node.js serverless functions in `/api/` directory
+- **Payment**: Stripe integration for checkout sessions
+- **External APIs**: Firebase, Remove.bg, eBay, SendGrid integration points
+- **Deployment**: Google Cloud Run via GitHub Actions
 
-### Development
+## Critical Development Workflows
 
-```bash
-npm run dev
-```
+### Pre-deployment Verification
 
-This starts the development server at `http://localhost:5173` with hot module replacement.
-
-### Build
+Always run before any deployment or PR merge:
 
 ```bash
-npm run build
+npm run verify:deploy
 ```
 
-Builds the application for production to the `/dist` directory.
+This runs the complete verification pipeline: ESLint → Prettier → Vitest → Build. All checks must pass.
 
-### Preview Production Build
+### Development Server
 
 ```bash
-npm run preview
+npm run dev    # Starts on localhost:5173 with HMR
 ```
 
-Locally preview the production build.
+### Testing Strategy
 
-## Project Structure
+- **Unit Tests**: Vitest (`npm run test`) - minimal smoke tests currently
+- **Integration**: API health checks in `/tests/api.test.js`
+- **Manual**: Upload demo component tests file optimization (WebP conversion)
 
+## Code Patterns & Conventions
+
+### React Component Structure
+
+```jsx
+// Standard functional component pattern in src/pages/
+import React, { useState } from 'react';
+
+export default function ComponentName() {
+  const [state, setState] = useState(null);
+  // Component logic
+  return <div className="tailwind-classes">Content</div>;
+}
 ```
-├── index.html                      # HTML entry point
-├── package.json                    # Dependencies and scripts
-├── vite.config.js                  # Vite configuration
-├── tailwind.config.js              # Custom Tailwind theme
-├── postcss.config.js               # PostCSS configuration
-└── src/
-    ├── main.jsx                    # React entry point
-    ├── index.css                   # Global styles + Tailwind
-    ├── pages/                      # React page components
-    │   └── Landing.jsx             # Landing page component
-    └── assets/                     # Static assets
-        └── photo2profit-logo.svg   # Logo file
+
+### Serverless API Functions
+
+```javascript
+// Pattern for /api/ functions (Vercel/Netlify compatible)
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+  // Function logic
+}
 ```
 
-## Coding Guidelines
+### Custom Tailwind Theme Usage
 
-### React Components
+```jsx
+// Use custom color palette consistently:
+className = 'bg-blush text-dark'; // Background + text
+className = 'bg-rose hover:bg-gold'; // Interactive elements
+className = 'text-rose-dark font-diamond'; // Headers with custom font
+className = 'font-sans'; // Body text
+```
 
-- Use functional components with hooks (React 18+)
-- Component files should be in `.jsx` format
-- Store page components in `src/pages/`
-- Use ES6+ syntax and ES modules
+## Configuration & Environment
 
-### Styling
+### Essential Config Files
 
-- Use TailwindCSS utility classes for styling
-- Follow mobile-first responsive design approach
-- Use custom color palette (see below)
-- Avoid inline styles; prefer Tailwind classes
+- `tailwind.config.js` - Custom color palette + font definitions (CommonJS format)
+- `eslint.config.js` - Flat config with React plugin + environment-specific rules
+- `vite.config.js` - Minimal React plugin configuration
+- `.github/workflows/` - CI/CD pipeline definitions
 
-### Custom Theme
+### Environment Variables
 
-#### Color Palette
+Required for production deployment (set in GitHub Secrets):
 
-The project uses a rose-gold luxury theme:
+- `GOOGLE_APPLICATION_CREDENTIALS_JSON` - GCP service account
+- `FIREBASE_SERVICE_ACCOUNT` - Firebase deployment credentials
+- `STRIPE_SECRET_KEY` - Payment processing
+- Optional: `SLACK_WEBHOOK_URL`, API keys for external services
 
-- **blush**: `#FAF6F2` - Background color
-- **rose**: `#E6A4A4` - Primary accent
-- **rose-dark**: `#B76E79` - Headers and emphasis
-- **gold**: `#F5C26B` - Secondary accent
-- **dark**: `#3D2B2B` - Text color
+### State Management Pattern
 
-Use these colors consistently: `bg-blush`, `text-rose-dark`, `bg-rose`, `hover:bg-gold`, etc.
+Components use local state with `useState`. Example from `Landing.jsx`:
 
-#### Typography
+```jsx
+const [showDemo, setShowDemo] = useState(false);
+if (showDemo) return <UploadDemo />; // Component switching pattern
+```
 
-- **Headers**: Use `font-diamond` class (Cinzel Decorative serif font)
-- **Body Text**: Use `font-sans` class (Montserrat sans-serif font)
-- Fonts are loaded from Google Fonts CDN in `src/index.css`
+## Deployment Architecture
 
-### File Organization
+### Multi-Environment Setup
 
-- Keep components modular and focused
-- Assets go in `src/assets/`
-- Page-level components go in `src/pages/`
-- Global styles in `src/index.css`
+1. **Frontend**: Firebase Hosting (static build output)
+2. **Backend**: Google Cloud Run (containerized serverless functions)
+3. **CI/CD**: GitHub Actions with branch protection on `main`
 
-## Testing & Quality
+### Deployment Verification
 
-- Always run `npm run build` to verify production builds work correctly
-- Test the dev server with `npm run dev` for hot reload functionality
-- Ensure responsive design works across different viewport sizes
-- Verify custom colors and fonts render correctly
+The `scripts/verify-deploy.js` script provides colored output and comprehensive pre-deployment checks. This pattern ensures deployment readiness and should be extended for new verification needs.
 
-## Deployment
+### Quality Gates
 
-The built output in `/dist` is static and can be deployed to:
+- Husky pre-commit hooks run Prettier on staged files
+- GitHub Actions CI runs full verification pipeline on PRs
+- Branch protection requires passing CI before merge to `main`
 
-- Vercel
-- Netlify
-- GitHub Pages
-- Any static hosting service
+## Integration Patterns
 
-## Important Notes
+### Client-Side File Processing
 
-- This is a frontend-only project with no backend
-- The `/dist` directory is generated by the build process and should be in `.gitignore`
-- Dependencies are managed via npm; do not commit `node_modules/`
-- Maintain the luxe, elegant aesthetic when making design changes
-- Keep the rose-gold theme consistent across all components
+See `UploadDemo.jsx` for the pattern of client-side image optimization:
+
+- Canvas API for WebP conversion and resizing
+- `createObjectURL` for immediate preview
+- Graceful fallback when optimization fails
+
+### External Service Integration
+
+- Stripe checkout sessions created via `/api/create-checkout-session.js`
+- Firebase integration prepared in dependencies
+- API endpoints follow serverless function patterns for multi-platform deployment

@@ -1,0 +1,53 @@
+rules_version = '2';
+
+// Firestore Security Rules for Photo2Profit Production
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read/write their own profile data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Photos collection - users can only access their own photos
+    match /photos/{photoId} {
+      allow read, write: if request.auth != null && 
+        resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && 
+        request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Public listings (for marketplace/gallery features)
+    match /listings/{listingId} {
+      allow read: if true; // Public read access
+      allow create, update, delete: if request.auth != null && 
+        resource.data.userId == request.auth.uid;
+    }
+    
+    // Analytics and usage stats (admin only)
+    match /analytics/{document=**} {
+      allow read, write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+  }
+}
+
+// Storage Security Rules for Photo2Profit Production  
+service firebase.storage {
+  match /b/{bucket}/o {
+    // User uploads - organized by user ID
+    match /uploads/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Processed images - same ownership rules
+    match /processed/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Public gallery images (if implementing public sharing)
+    match /gallery/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

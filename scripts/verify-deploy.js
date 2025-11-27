@@ -23,6 +23,12 @@ import chalk from 'chalk';
 // Configuration
 const checks = [
   {
+    name: 'Dependency Audit',
+    command: 'npm',
+    args: ['audit', '--audit-level=moderate'],
+    description: 'Checking for security vulnerabilities in dependencies',
+  },
+  {
     name: 'Linting',
     command: 'npm',
     args: ['run', 'lint'],
@@ -45,6 +51,13 @@ const checks = [
     command: 'npm',
     args: ['run', 'build'],
     description: 'Building application for production',
+  },
+  {
+    name: 'Bundle Analysis',
+    command: 'npx',
+    args: ['vite-bundle-analyzer', './dist', '--open', 'false', '--mode', 'static'],
+    description: 'Analyzing bundle size and dependencies',
+    optional: true,
   },
 ];
 
@@ -89,7 +102,9 @@ async function main() {
       results.push(result);
     } catch (error) {
       results.push(error);
-      allPassed = false;
+      if (!check.optional) {
+        allPassed = false;
+      }
       // Continue running remaining checks even if one fails
     }
   }
@@ -103,8 +118,30 @@ async function main() {
     const icon = result.success ? '✓' : '✗';
     const color = result.success ? chalk.green : chalk.red;
     const status = result.success ? 'PASSED' : 'FAILED';
-    console.log(color(`${icon} ${result.check}: ${status}`));
+    const optional = checks.find((c) => c.name === result.check)?.optional ? ' (optional)' : '';
+    console.log(color(`${icon} ${result.check}: ${status}${optional}`));
   });
+
+  // Additional deployment readiness checks
+  console.log(chalk.gray('\n📊 Additional Information:'));
+
+  // Check if dist folder exists and get size
+  try {
+    const fs = require('fs');
+    const path = require('path');
+
+    if (fs.existsSync('./dist')) {
+      console.log(chalk.cyan('📦 Build output: ./dist directory created'));
+
+      // Get approximate bundle size
+      const indexHtml = path.join('./dist', 'index.html');
+      if (fs.existsSync(indexHtml)) {
+        console.log(chalk.cyan('📄 Entry point: index.html generated'));
+      }
+    }
+  } catch {
+    console.log(chalk.yellow('⚠️ Could not verify build output details'));
+  }
 
   console.log('\n');
 

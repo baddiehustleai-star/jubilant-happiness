@@ -10,3 +10,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Analytics />
   </React.StrictMode>
 );
+- name: Setup Node.js environment
+  uses: actions/setup-node@v6.0.0

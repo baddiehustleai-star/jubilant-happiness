@@ -141,11 +141,49 @@ Visit: **[http://localhost:5173](http://localhost:5173)**
 
 ## 🌐 Deployment
 
-Deploy your frontend with **Vercel** or **Firebase Hosting**:
+Photo2Profit supports **multiple deployment options**. Choose the one that best fits your needs:
 
-- Connect your GitHub repo
-- Add your `.env` variables
-- Deploy the main branch
+### Option 1: Automated GitHub Actions → Cloud Run + Firebase
+
+This project includes **automated deployments** via GitHub Actions:
+
+- **Backend**: Auto-deploys to Google Cloud Run when `api/**` changes
+- **Frontend**: Auto-deploys to Firebase Hosting when `src/**` changes
+- **CI**: Runs linting, tests, and builds on every PR and push to `main`
+
+📋 **Documentation:**
+
+- **[GitHub Actions Review](./GITHUB-ACTIONS-REVIEW.md)** - Complete review of deployment workflows and what happens after merge
+- **[Post-Deployment Checklist](./POST-DEPLOYMENT-CHECKLIST.md)** - Comprehensive checklist to verify deployment success and test all features
+
+⚙️ **Required Setup:**
+
+1. Configure GitHub Secrets (Settings → Secrets → Actions):
+   - `GOOGLE_APPLICATION_CREDENTIALS_JSON` (Cloud Run deployment)
+   - `FIREBASE_SERVICE_ACCOUNT` (Firebase Hosting deployment)
+   - `SLACK_WEBHOOK_URL` (optional - deployment notifications)
+   - `CRON_SECRET` (optional - SEO refresh endpoint)
+2. Merge to `main` branch - deployments are automatic!
+
+### Option 2: Vercel or Netlify Deployment
+
+For simpler setup with custom domain `photo2profit.online`:
+
+📋 **Documentation:**
+
+- **[Vercel/Netlify Deployment Guide](./DEPLOYMENT-VERCEL-NETLIFY.md)** - Step-by-step guide for deploying to Vercel or Netlify with custom domain, environment variables, and Google OAuth setup
+
+⚙️ **Quick Setup:**
+
+1. Connect GitHub repo to Vercel or Netlify
+2. Set custom domain: `photo2profit.online`
+3. Add environment variables (see [DEPLOYMENT-VERCEL-NETLIFY.md](./DEPLOYMENT-VERCEL-NETLIFY.md))
+4. Deploy automatically on push to `main`
+
+### Additional Resources
+
+- **[Deployment Guide](./README-DEPLOY.md)** - Quick start deployment guide
+- **[DEPLOYMENT-READY.md](./DEPLOYMENT-READY.md)** - Summary of deployment readiness
 
 Your weekly scheduler runs automatically from Firebase Cloud Functions.
 

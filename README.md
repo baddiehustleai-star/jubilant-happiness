@@ -141,6 +141,16 @@ Visit: **[http://localhost:5173](http://localhost:5173)**
 
 ## 🌐 Deployment
 
+### Option 1: Google Cloud Run (Automated via GitHub Actions)
+
+For production deployments with CI/CD to Google Cloud Run:
+
+1. Follow the setup guide: [`.github/docs/CLOUD_RUN_SETUP.md`](.github/docs/CLOUD_RUN_SETUP.md)
+2. Push to `main` branch to trigger automatic deployment
+3. Monitor deployment in GitHub Actions
+
+### Option 2: Vercel or Firebase Hosting
+
 Deploy your frontend with **Vercel** or **Firebase Hosting**:
 
 - Connect your GitHub repo
